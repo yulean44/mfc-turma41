@@ -3,226 +3,306 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MFC · 2ª Unidade · Turma 41</title>
+<title>MFC · 2ª Unidade</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f7f6f3; --paper:#ffffff; --ink:#1d1d1f; --muted:#5f6368; --line:#e3e1dc;
-  --accent:#1f5f8b; --accent-soft:#e7f1fb;
-  --n1:#b3261e; --n1-soft:#fbebeb; --n2:#b4570f; --n2-soft:#f9ece7;
-  --n3:#8a6a00; --n3-soft:#f9eeda; --n4:#5f6368; --n4-soft:#f0efec;
-  --ok:#1e7a3c; --ok-soft:#e5f4e4; --warn:#8a5a00; --warn-soft:#fff4dc;
-  --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.05);
-  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
-  --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bg:#ececec; --app:#ffffff; --card:#f4f4f4; --card-2:#ebebeb; --ink:#111111; --muted:#6b6b6b; --faint:#b5b5b5; --line:#e4e4e4;
+  --side:#0d0d0d; --side-ink:#ffffff; --side-muted:#8a8a8a;
+  --btn:#0d0d0d; --btn-ink:#ffffff;
+  --ok:#1f7a3d; --bad:#b3261e;
+  --l1:#0d0d0d; --l1-ink:#fff; --l2:#4a4a4a; --l2-ink:#fff; --l3:#d6d6d6; --l3-ink:#111; --l4:#ffffff; --l4-ink:#111;
+  --shadow:0 18px 50px rgba(0,0,0,.08);
+  --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#16171a; --paper:#1e1f23; --ink:#e8e6e3; --muted:#a3a7ad; --line:#33353a;
-    --accent:#7db7e3; --accent-soft:#1d2d3a;
-    --n1:#f08a84; --n1-soft:#3a2224; --n2:#f0a46a; --n2-soft:#3a2a1f; --n3:#e2c160; --n3-soft:#35301c; --n4:#a3a7ad; --n4-soft:#2a2b2f;
-    --ok:#7bd096; --ok-soft:#1d3324; --warn:#e8c070; --warn-soft:#352c18;
+    --bg:#0b0b0c; --app:#151517; --card:#1f1f22; --card-2:#29292d; --ink:#f2f2f2; --muted:#a2a2a7; --faint:#5d5d63; --line:#2c2c30;
+    --side:#000000; --side-ink:#ffffff; --side-muted:#77777c;
+    --btn:#f2f2f2; --btn-ink:#111;
+    --ok:#7bd096; --bad:#f08a84;
+    --l1:#f2f2f2; --l1-ink:#111; --l2:#9a9a9f; --l2-ink:#111; --l3:#3a3a3f; --l3-ink:#f2f2f2; --l4:#1f1f22; --l4-ink:#f2f2f2;
     --shadow:none;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#16171a; --paper:#1e1f23; --ink:#e8e6e3; --muted:#a3a7ad; --line:#33353a;
-  --accent:#7db7e3; --accent-soft:#1d2d3a;
-  --n1:#f08a84; --n1-soft:#3a2224; --n2:#f0a46a; --n2-soft:#3a2a1f; --n3:#e2c160; --n3-soft:#35301c; --n4:#a3a7ad; --n4-soft:#2a2b2f;
-  --ok:#7bd096; --ok-soft:#1d3324; --warn:#e8c070; --warn-soft:#352c18;
+  --bg:#0b0b0c; --app:#151517; --card:#1f1f22; --card-2:#29292d; --ink:#f2f2f2; --muted:#a2a2a7; --faint:#5d5d63; --line:#2c2c30;
+  --side:#000000; --side-ink:#ffffff; --side-muted:#77777c;
+  --btn:#f2f2f2; --btn-ink:#111;
+  --ok:#7bd096; --bad:#f08a84;
+  --l1:#f2f2f2; --l1-ink:#111; --l2:#9a9a9f; --l2-ink:#111; --l3:#3a3a3f; --l3-ink:#f2f2f2; --l4:#1f1f22; --l4-ink:#f2f2f2;
   --shadow:none;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:84px}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+html{scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-/* top bar */
-.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.topbar-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap}
-.brand small{font-family:var(--sans);font-weight:500;color:var(--muted);font-size:12px;margin-left:6px}
-.tabs{display:flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px}
-.tab{border:0;background:transparent;color:var(--muted);font:600 14px var(--sans);padding:7px 14px;border-radius:8px;cursor:pointer}
-.tab[aria-selected="true"]{background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
-.spacer{flex:1}
-.progress{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-.bar{width:120px;height:6px;background:var(--line);border-radius:99px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
-.iconbtn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;padding:6px 10px;font:500 13px var(--sans);cursor:pointer}
-.iconbtn:hover{border-color:var(--accent)}
+/* ---------- app shell ---------- */
+.app{max-width:1360px;margin:24px auto;background:var(--app);border-radius:28px;box-shadow:var(--shadow);display:flex;gap:28px;padding:18px;min-height:calc(100vh - 48px)}
+.side{position:sticky;top:42px;align-self:flex-start;height:calc(100vh - 84px);min-height:520px;width:92px;flex:none;background:var(--side);color:var(--side-ink);border-radius:22px;display:flex;flex-direction:column;align-items:center;padding:26px 0 22px;gap:10px}
+.logo{font-weight:800;font-size:30px;line-height:1;letter-spacing:-.02em;margin-bottom:44px}
+.nav{display:flex;flex-direction:column;gap:10px;align-items:center}
+.navbtn{position:relative;width:52px;height:52px;border-radius:14px;border:0;background:transparent;color:var(--side-muted);display:grid;place-items:center;cursor:pointer;transition:background .15s,color .15s}
+.navbtn:hover{color:#fff;background:rgba(255,255,255,.08)}
+.navbtn.active{color:#fff;background:rgba(255,255,255,.14)}
+.navbtn .tip{position:absolute;left:62px;white-space:nowrap;background:var(--side);color:#fff;font-size:12px;font-weight:600;padding:5px 9px;border-radius:8px;opacity:0;pointer-events:none;transform:translateX(-4px);transition:.15s;z-index:5}
+.navbtn:hover .tip{opacity:1;transform:none}
+.side .grow{flex:1}
+.main{flex:1;min-width:0;padding:14px 10px 40px 0}
+.view[hidden]{display:none}
 
-/* layout */
-.layout{max-width:1240px;margin:0 auto;padding:24px 16px 80px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:32px}
-.toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;font-size:13.5px;padding-right:6px}
-.toc input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:14px var(--sans);margin-bottom:12px}
-.toc ul{list-style:none;margin:0;padding:0}
-.toc li a{display:block;padding:4px 8px;border-radius:6px;color:var(--muted);text-decoration:none;border-left:2px solid transparent}
-.toc li.l3 a{padding-left:20px;font-size:12.5px}
-.toc li a:hover{background:var(--paper);color:var(--ink)}
-.toc li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft)}
-.toc .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
-.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:48px 56px;min-width:0}
-.pane[hidden]{display:none}
-.searchhit{background:#ffe58a;color:#1d1d1f;border-radius:3px}
+/* ---------- shared bits ---------- */
+.card{background:var(--card);border-radius:18px;padding:22px 24px}
+.btn{border:0;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:13px;padding:11px 20px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.btn:hover{opacity:.88}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.circle{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--ink);background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.circle svg.i{width:18px;height:18px}
+.chips{display:flex;gap:22px;flex-wrap:wrap;margin:0 0 14px}
+.chip{border:0;background:none;padding:0;font-weight:700;font-size:13.5px;color:var(--faint);cursor:pointer}
+.chip.on{color:var(--ink)}
+.h-sec{font-size:20px;font-weight:800;margin:0 0 14px;letter-spacing:-.01em}
+.search{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:12px;padding:0 14px;height:46px}
+.search input{border:0;background:transparent;outline:0;flex:1;font:500 14px var(--font);color:var(--ink);min-width:0}
+.lvtag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:99px}
+.lvtag.l1{background:var(--l1);color:var(--l1-ink)} .lvtag.l2{background:var(--l2);color:var(--l2-ink)}
+.lvtag.l3{background:var(--l3);color:var(--l3-ink)} .lvtag.l4{background:var(--l4);color:var(--l4-ink);box-shadow:inset 0 0 0 1px var(--line)}
 
-/* typography */
-.doc h1{font-family:var(--serif);font-size:34px;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
-.doc .subtitle{color:var(--muted);font-size:14px;margin:0 0 28px}
-.doc h2{font-family:var(--serif);font-size:26px;line-height:1.25;margin:56px 0 14px;padding-top:18px;border-top:1px solid var(--line)}
-.doc h3{font-size:18px;margin:34px 0 10px;line-height:1.35}
-.doc p{margin:0 0 14px}
+/* ---------- dashboard ---------- */
+.dash{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:34px}
+.hello{min-height:150px;display:flex;flex-direction:column;justify-content:center;padding:30px 30px}
+.hello h1{font-size:30px;font-weight:800;margin:0 0 4px;letter-spacing:-.02em}
+.hello p{margin:0;color:var(--muted)}
+.cont{display:flex;align-items:center;gap:18px;margin:18px 0 34px}
+.cont .card{flex:1;display:flex;align-items:center;gap:16px;padding:14px 16px}
+.tile{width:48px;height:48px;flex:none;border-radius:12px;background:var(--app);display:grid;place-items:center;font-weight:800;font-size:15px}
+.cont-title{flex:1;min-width:0}
+.cont-title b{display:block;font-size:14.5px}
+.cont-title span{font-size:12.5px;color:var(--muted)}
+.ring{width:48px;height:48px;flex:none;position:relative}
+.ring svg{width:48px;height:48px;transform:rotate(-90deg)}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:700}
+.rows{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:16px;background:var(--card);border-radius:14px;padding:12px 14px}
+.row .t{flex:1;min-width:0}
+.row .t b{display:block;font-size:14.5px;line-height:1.3}
+.row .t span{font-size:12.5px;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;min-width:84px}
+.meta svg.i{width:16px;height:16px}
+.right{display:flex;flex-direction:column;gap:26px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.stat{display:flex;align-items:center;gap:14px;padding:20px 22px}
+.stat b{font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.stat span{font-size:13.5px;color:var(--ink);line-height:1.35}
+.chartbox h2{margin-bottom:6px}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart .ax{fill:var(--muted);font-size:11px;font-family:var(--font)}
+.chart .lbl{font-size:11px;font-weight:700;fill:var(--ink);font-family:var(--font)}
+.chart .lblbg{fill:var(--app);filter:drop-shadow(0 1px 2px rgba(0,0,0,.12))}
+.promo{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:26px 26px}
+.promo h3{margin:0;font-size:20px;font-weight:800}
+.promo p{margin:0 0 12px;max-width:340px}
+
+/* ---------- document views ---------- */
+.docgrid{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:28px;align-items:start}
+.doc{background:var(--app);min-width:0;padding:6px 6px 20px}
+.toc{position:sticky;top:42px;max-height:calc(100vh - 84px);overflow:auto;font-size:13px;display:flex;flex-direction:column;gap:12px}
+.toc ul{list-style:none;margin:0;padding:6px;background:var(--card);border-radius:16px}
+.toc li a{display:block;padding:6px 10px;border-radius:9px;color:var(--muted);text-decoration:none;font-weight:500;line-height:1.35}
+.toc li.l2 a{color:var(--ink);font-weight:700;margin-top:4px}
+.toc li.l3 a{padding-left:20px}
+.toc li a:hover{background:var(--card-2)}
+.toc li a.active{background:var(--btn);color:var(--btn-ink)}
+.toc .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.toc-toggle{display:none}
+.searchhit{background:#ffe066;color:#111;border-radius:3px}
+
+.doc h1{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin:4px 0 4px}
+.doc .subtitle{color:var(--muted);font-size:13px;margin:0 0 22px}
+.doc h2{font-size:22px;font-weight:800;letter-spacing:-.01em;line-height:1.25;margin:46px 0 14px}
+.doc h3{font-size:17px;font-weight:700;margin:32px 0 10px;line-height:1.35;padding:12px 16px;background:var(--card);border-radius:12px}
+.doc p{margin:0 0 13px}
 .doc ul,.doc ol{margin:0 0 16px;padding-left:22px}
 .doc li{margin:4px 0}
-.doc strong{font-weight:650}
-.doc a{color:var(--accent)}
-.doc blockquote{margin:18px 0;padding:14px 18px;border-left:4px solid var(--warn);background:var(--warn-soft);border-radius:0 10px 10px 0}
+.doc strong{font-weight:700}
+.doc a{color:var(--ink)}
+.doc blockquote{margin:18px 0;padding:14px 18px;background:var(--card);border-left:4px solid var(--ink);border-radius:0 12px 12px 0}
 .doc blockquote p:last-child{margin:0}
-.tablewrap{overflow-x:auto;margin:6px 0 20px;border:1px solid var(--line);border-radius:10px}
-.doc table{border-collapse:collapse;width:100%;font-size:14.5px}
-.doc th{background:var(--bg);text-align:left;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
-.doc th,.doc td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.tablewrap{overflow-x:auto;margin:6px 0 20px;border-radius:14px;background:var(--card)}
+.doc table{border-collapse:collapse;width:100%;font-size:14px}
+.doc th{text-align:left;font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--card-2)}
+.doc th,.doc td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
 .doc tr:last-child td{border-bottom:0}
-.doc tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 45%,transparent)}
-
-/* level banners */
 .level{display:flex;align-items:center;gap:12px}
-.level .badge{font:700 12px var(--sans);letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:99px}
-.lv1 .badge{background:var(--n1-soft);color:var(--n1)} .lv1{border-top-color:var(--n1)!important}
-.lv2 .badge{background:var(--n2-soft);color:var(--n2)} .lv2{border-top-color:var(--n2)!important}
-.lv3 .badge{background:var(--n3-soft);color:var(--n3)} .lv3{border-top-color:var(--n3)!important}
-.lv4 .badge{background:var(--n4-soft);color:var(--n4)} .lv4{border-top-color:var(--n4)!important}
-h2.lv1,h2.lv2,h2.lv3,h2.lv4{border-top-width:3px}
-td[data-bg]{font-weight:600}
+h2[data-level]{padding-top:4px}
+.lbl{display:block;padding:12px 16px;border-radius:12px;margin:0 0 12px}
+.lbl > strong:first-child{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.lbl-why{color:var(--muted);padding:0 2px} .lbl-why > strong:first-child{color:var(--ink)}
+.lbl-learn{background:var(--card)}
+.lbl-mem{padding:0;margin:18px 0 6px}
+.lbl-mem > strong:first-child{display:inline-block;background:var(--btn);color:var(--btn-ink);padding:3px 10px;border-radius:99px;font-size:10.5px}
+.lbl-div{border:1.5px dashed var(--ink)}
+.lbl-ref{font-size:13.5px;color:var(--muted);padding:0 2px}
+.lbl-ref > strong:first-child{display:inline;margin-right:6px;color:var(--ink)}
+.xref{cursor:pointer;color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
 
-/* topic labels */
-.lbl{display:block;padding:12px 16px;border-radius:10px;margin:0 0 12px}
-.lbl > strong:first-child{display:block;font:700 11.5px var(--sans);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
-.lbl-why{background:var(--bg);color:var(--muted)} .lbl-why > strong:first-child{color:var(--muted)}
-.lbl-learn{background:var(--accent-soft)} .lbl-learn > strong:first-child{color:var(--accent)}
-.lbl-mem{padding:0;margin:18px 0 8px;background:none}
-.lbl-mem > strong:first-child{color:var(--n1);font-size:12px}
-.lbl-div{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:0 10px 10px 0}
-.lbl-div > strong:first-child{color:var(--warn)}
-.lbl-ref{font-size:14px;color:var(--muted);border:1px dashed var(--line);background:none;padding:10px 14px}
-.lbl-ref > strong:first-child{display:inline;font-size:11px;margin-right:6px;color:var(--muted)}
-.xref{cursor:pointer;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+/* plan */
+li.task{list-style:none;margin-left:-22px;display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:var(--card);border-radius:14px;margin-bottom:10px;cursor:pointer}
+li.task input{margin-top:3px;width:20px;height:20px;accent-color:var(--ink);flex:none;cursor:pointer}
+li.task.done > span{color:var(--faint);text-decoration:line-through}
 
-/* checklist */
-li.task{list-style:none;margin-left:-22px;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer}
-li.task input{margin-top:5px;width:18px;height:18px;accent-color:var(--ok);flex:none;cursor:pointer}
-li.task.done{background:var(--ok-soft);border-color:transparent}
-li.task.done > span{color:var(--muted);text-decoration:line-through}
-
-/* quiz */
-.quizbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px;font-size:14px}
-.score{margin-left:auto;font-weight:600}
-td.ans{position:relative;cursor:pointer;min-width:180px}
-td.ans .cover{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--muted)}
-td.ans .txt{display:none}
-td.ans.open .cover{display:none}
-td.ans.open .txt{display:block}
-td.mark{white-space:nowrap}
-td.mark button{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:3px 8px;cursor:pointer;font:600 12px var(--sans);color:var(--muted)}
-td.mark button.on.ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
-td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var(--n1)}
-.goto{font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline}
-
-.backtop{position:fixed;right:18px;bottom:18px;z-index:10}
-.footer-note{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
-
-/* tabs scroll on small screens */
-.tabs{overflow-x:auto;max-width:100%;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{white-space:nowrap}
-.layout.full{grid-template-columns:minmax(0,1fr)}
-.layout.full .toc{display:none}
-.layout.full .doc{max-width:900px;margin:0 auto;width:100%}
-.pane-intro{color:var(--muted);margin:-4px 0 22px}
-
-/* side drawer */
-.drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
-.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--paper);border-left:1px solid var(--line);z-index:41;transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;box-shadow:-8px 0 30px rgba(0,0,0,.12)}
+/* ---------- drawer ---------- */
+.drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.drawer{position:fixed;top:12px;right:12px;bottom:12px;width:min(560px,calc(100% - 24px));background:var(--app);border-radius:22px;z-index:41;transform:translateX(110%);transition:transform .25s ease;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .drawer.open{transform:none}
 .drawer-bg.open{opacity:1;pointer-events:auto}
-.drawer-head{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
-.drawer-head .kicker{font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);flex:1}
-.drawer-body{overflow:auto;padding:8px 24px 40px}
-.drawer-body h2{margin-top:16px;border-top:0;padding-top:0}
-.drawer-body h3{margin-top:24px}
+.drawer-head{display:flex;align-items:center;gap:8px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.drawer-head .kicker{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);flex:1}
+.drawer-body{overflow:auto;padding:4px 24px 40px}
+.drawer-body h2{margin-top:18px}
 
-/* flashcards */
-.fc-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
-.fc-controls select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:500 14px var(--sans)}
-.fc-stats{display:flex;gap:14px;font-size:13px;color:var(--muted);margin:0 0 14px;flex-wrap:wrap}
-.fc-stats b{color:var(--ink)}
-.fc-card{perspective:1400px;cursor:pointer;user-select:none;margin:0 auto 16px;max-width:680px}
-.fc-inner{position:relative;min-height:300px;transition:transform .5s;transform-style:preserve-3d}
+/* ---------- flashcards ---------- */
+.fc-wrap{max-width:760px}
+.fc-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 18px}
+.fc-top select{flex:1;min-width:180px;height:42px;padding:0 12px;border:0;border-radius:10px;background:var(--card);color:var(--ink);font:600 13.5px var(--font)}
+.fc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 20px}
+.fc-stats .card{padding:14px 18px;display:flex;align-items:center;gap:12px}
+.fc-stats b{font-size:30px;font-weight:800;line-height:1}
+.fc-stats span{font-size:12.5px;color:var(--muted);line-height:1.3}
+.fc-card{perspective:1400px;cursor:pointer;user-select:none;margin:0 0 18px}
+.fc-inner{position:relative;min-height:320px;transition:transform .5s;transform-style:preserve-3d}
 .fc-card.flipped .fc-inner{transform:rotateY(180deg)}
-.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--line);border-radius:16px;padding:28px 30px;display:flex;flex-direction:column;justify-content:center;background:var(--paper);box-shadow:var(--shadow)}
-.fc-back{transform:rotateY(180deg);background:var(--accent-soft)}
-.fc-tag{position:absolute;top:14px;left:18px;font:600 11.5px var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.fc-lv{position:absolute;top:12px;right:16px}
-.fc-q{font-family:var(--serif);font-size:23px;line-height:1.35;text-align:center}
-.fc-a{font-size:18px;line-height:1.55;text-align:center}
-.fc-hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:12px;color:var(--muted)}
-.fc-nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;max-width:680px;margin:0 auto}
-.fc-nav .iconbtn{padding:10px 16px;font-size:14px}
-.fc-know{background:var(--ok-soft)!important;color:var(--ok)!important;border-color:var(--ok)!important}
-.fc-again{background:var(--n1-soft)!important;color:var(--n1)!important;border-color:var(--n1)!important}
-.fc-pos{text-align:center;color:var(--muted);font-size:13px;margin:10px 0 0}
-.fc-empty{text-align:center;padding:40px 10px;color:var(--muted)}
-.kbd{font:600 11px var(--sans);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--bg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;padding:44px 40px;display:flex;flex-direction:column;justify-content:center;background:var(--card)}
+.fc-back{transform:rotateY(180deg);background:var(--side);color:#fff}
+.fc-back b{color:#fff}
+.fc-tag{position:absolute;top:18px;left:22px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fc-back .fc-tag{color:#9a9a9a}
+.fc-lv{position:absolute;top:16px;right:20px}
+.fc-q{font-size:24px;font-weight:700;line-height:1.35;text-align:center;letter-spacing:-.01em}
+.fc-a{font-size:18px;line-height:1.6;text-align:center}
+.fc-hint{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:12px;color:var(--muted)}
+.fc-back .fc-hint{color:#9a9a9a}
+.fc-nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fc-nav .grow{flex:1}
+.fc-pos{font-size:13px;font-weight:600;color:var(--muted)}
+.fc-empty{padding:60px 20px;text-align:center;color:var(--muted)}
+.kbd{font-size:11px;font-weight:700;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 6px;background:var(--app)}
+.intro{color:var(--muted);margin:-6px 0 22px;max-width:640px}
+.page-h{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:4px 0 10px}
 
-@media (max-width:900px){
-  .fc-inner{min-height:260px}
-  .fc-q{font-size:20px} .fc-a{font-size:16px}
-  .fc-face{padding:30px 18px}
-  .layout{grid-template-columns:1fr;gap:16px}
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .dash{grid-template-columns:1fr}
+  .docgrid{grid-template-columns:1fr}
   .toc{position:static;max-height:none;display:none}
-  .toc.open{display:block}
-  .doc{padding:24px 18px;border-radius:10px}
-  .doc h1{font-size:27px}
-  .bar{width:70px}
-  .brand small{display:none}
+  .toc.open{display:flex}
+  .toc-toggle{display:inline-flex;margin-bottom:12px}
 }
-@media (min-width:901px){ #tocToggle{display:none} }
-
+@media (max-width:760px){
+  body{font-size:15px}
+  .app{margin:0;border-radius:0;padding:14px 14px 96px;min-height:100vh;display:block;box-shadow:none}
+  .side{position:fixed;left:10px;right:10px;bottom:10px;top:auto;height:66px;min-height:0;width:auto;flex-direction:row;justify-content:space-around;padding:0 6px;border-radius:18px;z-index:30;gap:0}
+  .logo,.side .grow,.navbtn .tip{display:none}
+  .nav{flex-direction:row;gap:2px;flex:1;justify-content:space-around}
+  .side > .navbtn{width:44px}
+  .navbtn{width:48px;height:48px}
+  .main{padding:4px 0 20px}
+  .hello{padding:24px 22px;min-height:0}
+  .hello h1{font-size:25px}
+  .dash{display:flex;flex-direction:column;gap:14px}
+  .dash > div{display:contents}
+  .dash .search{order:0} .dash .hello{order:1} .dash .cont{order:2;margin:0} .dash .stats{order:3}
+  .dash .h-sec{margin:12px 0 0} .dash > div > .h-sec{order:4} .dash #topicChips{order:5;margin:0} .dash .rows{order:6}
+  .dash .chartbox{order:7;margin-top:12px} .dash .promo{order:8}
+  .cont .circle{display:none}
+  .cont .card{flex-wrap:wrap}
+  .cont .card .btn{width:100%}
+  .row{display:grid;grid-template-columns:56px 1fr 1fr;gap:12px;align-items:center}
+  .row .t{grid-column:2 / 4}
+  .row .meta{min-width:0;justify-content:center}
+  .row .btn{width:100%}
+  .stats{gap:10px} .stat{padding:16px} .stat span{font-size:12px}
+  .stat b{font-size:36px}
+  .fc-inner{min-height:280px}
+  .fc-face{padding:44px 20px}
+  .fc-q{font-size:20px} .fc-a{font-size:16px}
+  .fc-stats b{font-size:24px}
+  .doc h1,.page-h{font-size:25px}
+}
 @media print{
   @page{size:A4;margin:16mm 14mm}
-  body{background:#fff;color:#000;font-size:11pt}
-  .topbar,.toc,.backtop,.quizbar,td.mark,th.mark{display:none!important}
-  .layout{display:block;padding:0;max-width:none}
-  .doc{border:0;box-shadow:none;padding:0}
-  .pane[hidden]{display:block!important}
-  .pane + .pane{break-before:page}
-  #pane-cards,.drawer,.drawer-bg,.pane-intro{display:none!important}
-  td.ans .cover{display:none!important} td.ans .txt{display:block!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  .side,.toc,.toc-toggle,.drawer,.drawer-bg,#view-inicio,#view-cards{display:none!important}
+  .app{display:block;box-shadow:none;margin:0;padding:0;border-radius:0}
+  .view[hidden]{display:block!important}
+  .view + .view{break-before:page}
+  .docgrid{display:block}
   h2,h3{break-after:avoid} table,.lbl,li.task{break-inside:avoid}
   .tablewrap{overflow:visible}
 }
 </style>
 </head>
 <body>
-<header class="topbar"><div class="topbar-in">
-  <div class="brand">MFC · 2ª Unidade<small>Turma 41 · 4º semestre</small></div>
-  <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" data-pane="guia">Guia</button>
-    <button class="tab" role="tab" aria-selected="false" data-pane="resumo">Resumo</button>
-    <button class="tab" role="tab" aria-selected="false" data-pane="teste">Autoteste</button>
-    <button class="tab" role="tab" aria-selected="false" data-pane="cards">Flashcards</button>
-    <button class="tab" role="tab" aria-selected="false" data-pane="plano">Plano</button>
+<div class="app">
+<nav class="side" aria-label="Navegação">
+  <div class="logo">M.</div>
+  <div class="nav">
+    <button class="navbtn" data-view="inicio" aria-label="Início"><svg class="i" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span class="tip">Início</span></button>
+    <button class="navbtn" data-view="guia" aria-label="Guia de estudo"><svg class="i" viewBox="0 0 24 24"><path d="M22 9 12 4 2 9l10 5 10-5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg><span class="tip">Guia de estudo</span></button>
+    <button class="navbtn" data-view="resumo" aria-label="Resumo completo"><svg class="i" viewBox="0 0 24 24"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H15l5 5v11.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19.5z"/><path d="M14 3v5h6M8 13h8M8 17h6"/></svg><span class="tip">Resumo completo</span></button>
+    <button class="navbtn" data-view="cards" aria-label="Flashcards"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="2.5"/><path d="M7 3h11.5A2.5 2.5 0 0 1 21 5.5V17"/></svg><span class="tip">Flashcards</span></button>
+    <button class="navbtn" data-view="plano" aria-label="Plano de estudo"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="17" rx="2.5"/><path d="M8 2.5v3M16 2.5v3M8.5 13l2.5 2.5 4.5-5"/></svg><span class="tip">Plano de estudo</span></button>
   </div>
-  <div class="spacer"></div>
-  <div class="progress" title="Sessões do plano de estudo concluídas"><span id="progTxt">0/6 sessões</span><div class="bar"><i id="progBar"></i></div></div>
-  <button class="iconbtn" id="tocToggle">Sumário</button>
-  <button class="iconbtn" id="themeBtn" title="Alternar tema claro/escuro">Tema</button>
-  <button class="iconbtn" onclick="window.print()" title="Imprimir ou salvar como PDF">Imprimir</button>
-</div></header>
-<div class="layout">
-<nav class="toc" id="toc"><input id="q" type="search" placeholder="Buscar no documento…" aria-label="Buscar"><ul id="tocList"></ul></nav>
-<main class="doc">
-<section class="pane" id="pane-guia">
+  <div class="grow"></div>
+  <button class="navbtn" id="themeBtn" aria-label="Tema claro ou escuro"><svg class="i" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span class="tip">Tema claro/escuro</span></button>
+  <button class="navbtn" onclick="window.print()" aria-label="Imprimir"><svg class="i" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></svg><span class="tip">Imprimir / PDF</span></button>
+</nav>
+<main class="main">
+
+<section class="view" id="view-inicio">
+  <div class="dash">
+    <div>
+      <div class="card hello"><h1>Olá! Bom estudo.</h1><p>Medicina de Família e Comunidade · 2ª Unidade · Turma 41</p></div>
+      <div class="cont">
+        <div class="card" id="contCard"></div>
+        <button class="circle" id="contPrev" aria-label="Anterior"><svg class="i" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+        <button class="circle" id="contNext" aria-label="Próximo"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <h2 class="h-sec">Temas</h2>
+      <div class="chips" id="topicChips">
+        <button class="chip on" data-f="all">Todos</button>
+        <button class="chip" data-f="1">Essencial</button>
+        <button class="chip" data-f="2">Importante</button>
+        <button class="chip" data-f="pend">Para revisar</button>
+      </div>
+      <div class="rows" id="topicRows"></div>
+    </div>
+    <div class="right">
+      <label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="globalSearch" type="search" placeholder="Buscar no guia e no resumo…"></label>
+      <div class="stats">
+        <div class="card stat"><b id="statSess">0</b><span>de 6 sessões<br>concluídas</span></div>
+        <div class="card stat"><b id="statCards">0</b><span id="statCardsTxt">cartões<br>dominados</span></div>
+      </div>
+      <div class="chartbox">
+        <h2 class="h-sec">Seu progresso</h2>
+        <div class="chips"><span class="chip on" style="cursor:default">Cartões dominados por tema (%)</span></div>
+        <div class="chart" id="chart"></div>
+      </div>
+      <div class="card promo">
+        <h3>Revise com flashcards</h3>
+        <p>78 cartões com os pontos que mais caem. Marque o que já sabe e foque no que falta.</p>
+        <button class="btn" data-go="cards">Começar agora</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="view-guia" hidden>
+  <div class="docgrid">
+    <article class="doc pane" id="pane-guia">
 <h1 id="mfc-guia-de-estudo-prioritário-2ª-unidade">MFC – Guia de Estudo Prioritário (2ª Unidade)</h1>
 <p><time data-atom="date" datetime="2026-11-12">2026-11-12</time> · <span data-atom="mention" data-principal="u_PR9D9RMc6Dk5dAduTNap7A">@u_PR9D9RMc6Dk5dAduTNap7A</span></p>
 <p>Este guia organiza a 2ª unidade de Medicina de Família e Comunidade em ordem de importância para a prova. Ele explica o raciocínio de cada tema e aponta o que precisa ser memorizado. Os detalhes completos, tabelas extensas e protocolos estão no documento de referência: <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a>.</p>
@@ -350,13 +430,19 @@ td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var
 <p>Responda antes de olhar a coluna da resposta. Se errar, volte ao tema indicado.</p>
 <table><thead><tr><th>#</th><th>Pergunta</th><th>Resposta</th><th>Tema</th></tr></thead><tbody><tr><td>1</td><td>Mulher de 35 anos tem DNA-HPV positivo para o tipo 18. Qual a conduta?</td><td>Colposcopia direto</td><td>1.1</td></tr><tr><td>2</td><td>Mulher de 45 anos, sem sintomas, pede mamografia. O que fazer?</td><td>Está fora da faixa: decisão compartilhada, explicando benefícios e danos; o acesso não é negado</td><td>1.1</td></tr><tr><td>3</td><td>Homem de 60 anos pede PSA. Conduta?</td><td>Decisão compartilhada; não pedir de forma automática</td><td>1.2</td></tr><tr><td>4</td><td>Qual viés faz a sobrevida parecer maior sem mudar a data da morte?</td><td>Viés de tempo ganho</td><td>1.2</td></tr><tr><td>5</td><td>Diabético de 50 anos: é preciso calcular o escore para definir a categoria?</td><td>Não: diabetes já é alto risco; meta de LDL abaixo de 70</td><td>1.3</td></tr><tr><td>6</td><td>Qual a meta de LDL no risco muito alto?</td><td>Abaixo de 50 mg/dL</td><td>1.3</td></tr><tr><td>7</td><td>PA de 150/95 confirmada, risco intermediário. Quantos fármacos iniciar?</td><td>Dois, combinados</td><td>1.4</td></tr><tr><td>8</td><td>Gestante de 12 semanas com PA de 145/92. Qual o diagnóstico?</td><td>Hipertensão crônica</td><td>1.6</td></tr><tr><td>9</td><td>Quando iniciar o AAS para prevenir pré-eclâmpsia?</td><td>Antes de 16 semanas, à noite, até 36 semanas</td><td>1.6</td></tr><tr><td>10</td><td>Qual anti-hipertensivo é proibido na gestação, mas liberado na amamentação?</td><td>Enalapril</td><td>1.6</td></tr><tr><td>11</td><td>Gestante com teste rápido de sífilis reagente e tempo de infecção desconhecido. Esquema?</td><td>Benzatina 2,4 milhões UI por semana, 3 doses, começando na consulta</td><td>1.7</td></tr><tr><td>12</td><td>Gestante com sífilis e alergia à penicilina. Conduta?</td><td>Dessensibilização</td><td>1.7</td></tr><tr><td>13</td><td>Mulher com enxaqueca com aura quer anticoncepcional combinado. Pode?</td><td>Não: progestágeno isolado ou DIU</td><td>1.8</td></tr><tr><td>14</td><td>Quais os requisitos legais da laqueadura?</td><td>Mais de 21 anos ou 2 filhos vivos; 60 dias; sem autorização do cônjuge</td><td>1.8</td></tr><tr><td>15</td><td>Na escala de Katz, qual atividade é perdida primeiro?</td><td>Banho</td><td>2.1</td></tr><tr><td>16</td><td>Idoso confuso desde ontem, desatento, piora à noite. Hipótese?</td><td>Delirium: emergência, buscar a causa</td><td>2.1</td></tr><tr><td>17</td><td>Idoso com 2 critérios de Fried. Classificação?</td><td>Pré-frágil</td><td>2.1</td></tr><tr><td>18</td><td>Gestante com glicemia de jejum de 98 na primeira consulta. Diagnóstico?</td><td>Diabetes gestacional</td><td>2.2</td></tr><tr><td>19</td><td>Criança de 18 meses deixou de falar palavras que já falava. Conduta?</td><td>Regressão: investigar imediatamente</td><td>2.3</td></tr><tr><td>20</td><td>Suspeita de violência contra criança: é preciso ter certeza para notificar?</td><td>Não; notificar ao Conselho Tutelar e ao SINAN</td><td>2.4</td></tr><tr><td>21</td><td>Gestante com bacteriúria assintomática deve ser tratada?</td><td>Sim, sempre</td><td>2.5</td></tr><tr><td>22</td><td>Mulher de 52 anos, com útero, vai iniciar terapia hormonal. O que não pode faltar?</td><td>Progestágeno associado</td><td>2.6</td></tr></tbody></table>
 <h2 id="plano-de-estudo">Plano de estudo</h2>
-<p>Seis sessões de cerca de uma hora e meia, do tema mais cobrado para o menos cobrado. Se o tempo for curto, faça as sessões 1 a 4 e o autoteste. Marque cada sessão ao concluir.</p>
-<ul><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 1 · Adulto.</strong> Temas 1.1 a 1.4 (rastreamento, prevenção quaternária, risco cardiovascular, hipertensão). Ao final, resolva os casos de Seu Antônio (54 anos) e João sem consultar.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 2 · Gestante.</strong> Temas 1.5 a 1.7 (pré-natal, síndromes hipertensivas, sífilis), mais 2.2 (diabetes gestacional) e 2.5 (infecção urinária). Ao final, resolva o caso Marina.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 3 · Saúde da mulher.</strong> Tema 1.8 (contracepção), rastreamento de colo e mama (rever 1.1) e 2.6 (climatério).</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 4 · Idoso.</strong> Tema 2.1. Ao final, resolva o caso de Seu Antônio (78 anos).</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 5 · Criança e violência.</strong> Temas 2.3 e 2.4, mais a tabela do Nível 3.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 6 · Revisão.</strong> Faça o autoteste completo e volte apenas aos temas em que errou. Releia as divergências entre aulas.</p></li></ul>
-<p><strong>Na véspera da prova:</strong> releia apenas o Nível 1 e refaça o autoteste. Evite conteúdo novo.</p>
+<p>Seis sessões de cerca de uma hora e meia, do tema mais cobrado para o menos cobrado. Se o tempo for curto, faça as sessões 1 a 4 e os flashcards. Marque cada sessão ao concluir.</p>
+<ul><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 1 · Adulto.</strong> Temas 1.1 a 1.4 (rastreamento, prevenção quaternária, risco cardiovascular, hipertensão). Ao final, resolva os casos de Seu Antônio (54 anos) e João sem consultar.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 2 · Gestante.</strong> Temas 1.5 a 1.7 (pré-natal, síndromes hipertensivas, sífilis), mais 2.2 (diabetes gestacional) e 2.5 (infecção urinária). Ao final, resolva o caso Marina.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 3 · Saúde da mulher.</strong> Tema 1.8 (contracepção), rastreamento de colo e mama (rever 1.1) e 2.6 (climatério).</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 4 · Idoso.</strong> Tema 2.1. Ao final, resolva o caso de Seu Antônio (78 anos).</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 5 · Criança e violência.</strong> Temas 2.3 e 2.4, mais a tabela do Nível 3.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 6 · Revisão.</strong> Passe por todos os flashcards e volte apenas aos temas que ficaram para revisar. Releia as divergências entre aulas.</p></li></ul>
+<p><strong>Na véspera da prova:</strong> releia apenas o Nível 1 e revise os flashcards marcados para revisar. Evite conteúdo novo.</p>
 <p>Para qualquer dúvida de detalhe durante o estudo, consulte <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a>.</p>
 
+    </article>
+    <aside class="toc" id="toc-guia"><label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="q" type="search" placeholder="Buscar no guia…"></label><ul></ul></aside>
+  </div>
 </section>
-<section class="pane" id="pane-resumo" hidden>
+
+<section class="view" id="view-resumo" hidden>
+  <div class="docgrid">
+    <article class="doc pane" id="pane-resumo">
 <h1 id="r-mfc-resumo-da-2ª-unidade-turma-41">MFC – Resumo da 2ª Unidade (Turma 41)</h1>
 <p><time data-atom="date" datetime="2026-11-12">2026-11-12</time> · <span data-atom="mention" data-principal="u_PR9D9RMc6Dk5dAduTNap7A">@u_PR9D9RMc6Dk5dAduTNap7A</span></p>
 <h2 id="r-o-que-cai-e-como-usar">O que cai e como usar</h2>
@@ -518,39 +604,50 @@ td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var
 <p><strong>Idoso e versões novas</strong></p>
 <ul><li><p>Polifarmácia ≥ 5 medicamentos; perda de peso de alerta &gt; 5% em 6 meses.</p></li><li><p>Katz: banho é a 1ª AVD perdida, alimentação a última. AIVDs (Lawton) caem antes das básicas.</p></li><li><p>TUG &lt; 10 s baixo risco, 10–20 moderado, &gt; 20 alto; &gt; 12 s → fisioterapia.</p></li><li><p>Fried: 0 robusto, 1–2 pré-frágil, ≥ 3 frágil; perda de peso &gt; 4,5 kg ou 5%/ano.</p></li><li><p>Delirium = início agudo, flutuante, atenção e consciência alteradas, reversível. Mini-Cog positivo não é demência.</p></li><li><p>Tripla whammy: AINE + IECA + diurético → lesão renal aguda.</p></li><li><p>T-score: osteoporose ≤ −2,5; osteopenia entre −1 e −2,5. DXA em &gt; 65 anos.</p></li><li><p>DMG: jejum 92–125; TOTG 1 h ≥ 180 ou 2 h 153–199; jejum ≥ 126 = DM prévio.</p></li><li><p>GBS: swab vaginal e retal 36–38 semanas.</p></li><li><p>Divergências entre aulas: nitrofurantoína 5 dias (Vinicio) x 7 dias (Raquel); intervalo entre gestações 2 anos x 18 meses; idade como fator moderado ≥ 35 x ≥ 40 anos.</p></li><li><p>Pai com IAM aos 58 não é história familiar precoce (homem &lt; 55, mulher &lt; 65).</p></li></ul>
 <p>Fontes: PDFs da pasta Turma 41 C → 4º semestre → MFC no Google Drive (aulas de Criança e Adolescente, Mulher I, Mulher/Gestante II, Adulto e o plano de aulas 2026.2), mais os PDFs enviados no chat: Mulher I (final), Gestante Parte 2 e Adulto (revisada) do Prof. Vinicio e Aula 12 Saúde do Idoso.</p>
-</section>
-<section class="pane" id="pane-teste" hidden>
-  <h1>Autoteste</h1>
-  <p class="pane-intro">22 perguntas no estilo da prova. Responda antes de tocar na resposta e marque se acertou. Toque no número do tema para revisar a explicação sem sair daqui.</p>
-</section>
-<section class="pane" id="pane-cards" hidden>
-  <h1>Flashcards</h1>
-  <p class="pane-intro">Toque no cartão (ou aperte <span class="kbd">Espaço</span>) para virar. Marque <b>Sei</b> ou <b>Revisar</b>; os cartões para revisar voltam mais vezes. Use <span class="kbd">←</span> <span class="kbd">→</span> para navegar.</p>
-  <div class="fc-controls">
-    <select id="fcFilter" aria-label="Filtrar cartões"></select>
-    <button class="iconbtn" id="fcShuffle">Embaralhar</button>
-    <button class="iconbtn" id="fcOnlyAgain">Só os de revisar</button>
-    <button class="iconbtn" id="fcReset">Zerar progresso</button>
+
+    </article>
+    <aside class="toc" id="toc-resumo"><label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="q" type="search" placeholder="Buscar no resumo…"></label><ul></ul></aside>
   </div>
-  <div class="fc-stats" id="fcStats"></div>
-  <div id="fcStage"></div>
 </section>
-<section class="pane" id="pane-plano" hidden>
-  <h1>Plano de estudo</h1>
+
+<section class="view" id="view-cards" hidden>
+  <div class="fc-wrap">
+    <h1 class="page-h">Flashcards</h1>
+    <p class="intro">Toque no cartão (ou aperte <span class="kbd">Espaço</span>) para virar. Marque <b>Sei</b> ou <b>Revisar</b>: os de revisar voltam alguns cartões depois. No computador, use <span class="kbd">←</span> <span class="kbd">→</span>.</p>
+    <div class="fc-stats">
+      <div class="card"><b id="fcKnowN">0</b><span>cartões<br>que sei</span></div>
+      <div class="card"><b id="fcAgainN">0</b><span>para<br>revisar</span></div>
+      <div class="card"><b id="fcNewN">0</b><span>ainda não<br>vistos</span></div>
+    </div>
+    <div class="fc-top">
+      <select id="fcFilter" aria-label="Filtrar cartões"></select>
+      <button class="btn ghost" id="fcShuffle">Embaralhar</button>
+      <button class="btn ghost" id="fcOnlyAgain">Só os de revisar</button>
+      <button class="btn ghost" id="fcReset">Zerar progresso</button>
+    </div>
+    <div id="fcStage"></div>
+  </div>
 </section>
-<p class="footer-note">Material de estudo gerado a partir das aulas de MFC da Turma 41 (Prof. Vinicio Britto e Profa. Raquel de Souza Sá Pessoa). Confira sempre os protocolos vigentes. Atualizado em 12/11/2026.</p>
+
+<section class="view" id="view-plano" hidden>
+  <div class="fc-wrap doc pane" id="pane-plano">
+    <h1 class="page-h">Plano de estudo</h1>
+  </div>
+</section>
+
 </main>
 </div>
+
 <div class="drawer-bg" id="drawerBg"></div>
 <aside class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer-head">
     <span class="kicker" id="drawerKicker">Consulta rápida</span>
-    <button class="iconbtn" id="drawerOpenFull">Abrir na aba</button>
-    <button class="iconbtn" id="drawerClose" title="Fechar (Esc)">Fechar ✕</button>
+    <button class="btn ghost" id="drawerOpenFull">Abrir na página</button>
+    <button class="btn" id="drawerClose" title="Fechar (Esc)">Fechar</button>
   </div>
-  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-body doc" id="drawerBody"></div>
 </aside>
-<button class="iconbtn backtop" onclick="scrollTo({top:0})" title="Voltar ao topo">↑ Topo</button>
+
 <script>
 (function(){
   "use strict";
@@ -560,35 +657,30 @@ td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var
   };
   var $ = function(s, r){ return (r||document).querySelector(s); };
   var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
-  var panes = { guia: $("#pane-guia"), resumo: $("#pane-resumo"), teste: $("#pane-teste"), cards: $("#pane-cards"), plano: $("#pane-plano") };
-  var paneG = panes.guia, paneR = panes.resumo;
+  var views = ["inicio","guia","resumo","cards","plano"];
+  var paneG = $("#pane-guia"), paneR = $("#pane-resumo"), paneP = $("#pane-plano");
+  var ICON_CARDS = '<svg class="i" viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="2.5"/><path d="M7 3h11.5A2.5 2.5 0 0 1 21 5.5V17"/></svg>';
 
   /* ---------- theme ---------- */
   var root = document.documentElement;
   var theme = store.get("theme", null);
   if (theme) root.setAttribute("data-theme", theme);
   $("#themeBtn").addEventListener("click", function(){
-    var dark = root.getAttribute("data-theme") ? root.getAttribute("data-theme")==="dark"
-             : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    var next = dark ? "light" : "dark";
-    root.setAttribute("data-theme", next); store.set("theme", next);
+    var dark = root.getAttribute("data-theme") ? root.getAttribute("data-theme")==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = dark ? "light" : "dark"; root.setAttribute("data-theme", next); store.set("theme", next); drawChart();
   });
 
-  /* ---------- cleanup of exported markup ---------- */
+  /* ---------- clean exported markup ---------- */
   $$("p").forEach(function(p){
-    if (p.querySelector("time[data-atom]")) {
-      p.className = "subtitle";
-      p.textContent = "Turma 41 · 4º semestre · atualizado em 12/11/2026";
-    }
+    if (p.querySelector("time[data-atom]")) { p.className = "subtitle"; p.textContent = "Turma 41 · 4º semestre · atualizado em 12/11/2026"; }
   });
-  $$(".doc table").forEach(function(t){
-    var w = document.createElement("div"); w.className = "tablewrap";
-    t.parentNode.insertBefore(w, t); w.appendChild(t);
+  $$(".doc table").forEach(function(t){ var w = document.createElement("div"); w.className = "tablewrap"; t.parentNode.insertBefore(w, t); w.appendChild(t); });
+  $$("td[data-bg]").forEach(function(td){
+    var m = {"#fbebeb":"l1","#f9ece7":"l2","#f9eeda":"l3","#f0efec":"l4"}[td.getAttribute("data-bg")];
+    td.removeAttribute("style");
+    if (m) { var s = td.querySelector("strong") || td; s.innerHTML = '<span class="lvtag '+m+'">'+s.textContent+'</span>'; }
   });
-  var bgMap = {"#fbebeb":"var(--n1-soft)","#f9ece7":"var(--n2-soft)","#f9eeda":"var(--n3-soft)","#f0efec":"var(--n4-soft)"};
-  $$("td[data-bg]").forEach(function(td){ td.style.backgroundColor = bgMap[td.getAttribute("data-bg")] || ""; });
 
-  /* ---------- move whole h2 sections between panes ---------- */
   function takeSection(pane, re){
     var h = $$("h2", pane).filter(function(x){ return re.test(x.textContent); })[0];
     if (!h) return [];
@@ -596,177 +688,95 @@ td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var
     while (n && n.tagName !== "H2") { out.push(n); n = n.nextElementSibling; }
     return out;
   }
-  // self-test -> its own tab (drop the old h2 + intro paragraph)
-  var quizNodes = takeSection(paneG, /^Autoteste/);
-  quizNodes.forEach(function(n, i){ if (i < 2 && !n.querySelector("table") && !n.matches(".tablewrap")) n.remove(); else panes.teste.appendChild(n); });
-  // study plan -> its own tab (keep intro, drop h2)
-  var planNodes = takeSection(paneG, /^Plano de estudo/);
-  planNodes.forEach(function(n, i){ if (i === 0) n.remove(); else panes.plano.appendChild(n); });
+  takeSection(paneG, /^Autoteste/).forEach(function(n){ n.remove(); });
+  takeSection(paneG, /^Plano de estudo/).forEach(function(n, i){ if (i === 0) n.remove(); else paneP.appendChild(n); });
 
-  /* ---------- levels ---------- */
+  /* ---------- levels + labels ---------- */
+  var LVNAME = {"1":"Essencial","2":"Importante","3":"Complementar","4":"Contexto"};
   $$("h2", paneG).forEach(function(h){
-    var m = h.textContent.match(/^Nível\s+(\d)\s*·\s*(.*)$/);
-    if (!m) return;
-    h.classList.add("lv"+m[1]); h.dataset.level = m[1]; h.dataset.title = "Nível "+m[1]+" · "+m[2];
-    h.innerHTML = '<span class="level"><span class="badge">Nível '+m[1]+'</span><span>'+m[2]+'</span></span>';
+    var m = h.textContent.match(/^Nível\s+(\d)\s*·\s*(.*)$/); if (!m) return;
+    h.dataset.level = m[1]; h.dataset.title = "Nível " + m[1] + " · " + m[2];
+    h.innerHTML = '<span class="level"><span class="lvtag l'+m[1]+'">Nível '+m[1]+'</span><span>'+m[2]+'</span></span>';
   });
-
-  /* ---------- topic labels ---------- */
-  var labels = [
-    [/^Por que é essencial/, "lbl-why", "Por que é essencial"],
-    [/^Entenda primeiro/, "lbl-learn", "Entenda primeiro"],
-    [/^Memorize\.?$/, "lbl-mem", "Memorize"],
-    [/^Divergência entre aulas/, "lbl-div", "Divergência entre aulas"],
-    [/^Para aprofundar/, "lbl-ref", "Para aprofundar"]
-  ];
+  var labels = [[/^Por que é essencial/,"lbl-why","Por que é essencial"],[/^Entenda primeiro/,"lbl-learn","Entenda primeiro"],[/^Memorize\.?$/,"lbl-mem","Memorize"],[/^Divergência entre aulas/,"lbl-div","Divergência entre aulas"],[/^Para aprofundar/,"lbl-ref","Para aprofundar"]];
   $$("p", paneG).forEach(function(p){
-    var s = p.firstElementChild;
-    if (!s || s.tagName !== "STRONG" || p.firstChild !== s) return;
+    var s = p.firstElementChild; if (!s || s.tagName !== "STRONG" || p.firstChild !== s) return;
     var t = s.textContent.trim();
-    for (var i=0;i<labels.length;i++){
-      if (labels[i][0].test(t)) { p.classList.add("lbl", labels[i][1]); s.textContent = labels[i][2]; break; }
-    }
+    for (var i=0;i<labels.length;i++){ if (labels[i][0].test(t)) { p.classList.add("lbl", labels[i][1]); s.textContent = labels[i][2]; break; } }
   });
 
-  /* ---------- tabs with remembered scroll ---------- */
+  /* ---------- views ---------- */
   var current = null, scrolls = {};
-  var layout = $(".layout");
-  function showPane(name){
-    if (!panes[name]) name = "guia";
+  function show(v, opts){
+    if (views.indexOf(v) < 0) v = "inicio";
     if (current) scrolls[current] = window.scrollY;
-    current = name;
-    $$(".tab").forEach(function(b){ b.setAttribute("aria-selected", String(b.dataset.pane===name)); });
-    Object.keys(panes).forEach(function(k){ panes[k].hidden = k !== name; });
-    layout.classList.toggle("full", name === "cards" || name === "plano" || name === "teste");
-    store.set("tab", name);
-    clearHits(); buildToc();
-    window.scrollTo(0, scrolls[name] || 0);
-    if (name === "cards") renderCard();
+    current = v;
+    views.forEach(function(k){ $("#view-"+k).hidden = k !== v; });
+    $$(".navbtn[data-view]").forEach(function(b){ b.classList.toggle("active", b.dataset.view === v); });
+    store.set("view", v);
+    if (v === "inicio") renderDash();
+    if (v === "cards") renderCard();
+    window.scrollTo(0, (opts && opts.top) ? 0 : (scrolls[v] || 0));
   }
-  $$(".tab").forEach(function(b){ b.addEventListener("click", function(){ showPane(b.dataset.pane); }); });
+  $$(".navbtn[data-view]").forEach(function(b){ b.addEventListener("click", function(){ show(b.dataset.view); }); });
+  document.addEventListener("click", function(e){ var g = e.target.closest("[data-go]"); if (g) show(g.dataset.go); });
 
-  /* ---------- side drawer (quick look without leaving) ---------- */
+  function findSection(pane, prefix){
+    var hs = $$("h2,h3", pane);
+    for (var i=0;i<hs.length;i++){ if (hs[i].textContent.trim().indexOf(prefix) === 0) return hs[i]; }
+    return null;
+  }
+  function goTo(view, h){
+    show(view);
+    if (h) setTimeout(function(){ h.scrollIntoView({block:"start"}); }, 20);
+  }
+
+  /* ---------- drawer ---------- */
   var drawer = $("#drawer"), drawerBg = $("#drawerBg"), drawerTarget = null;
   function sectionNodes(h){
     var level = h.tagName, out = [h], n = h.nextElementSibling;
     while (n && !(n.tagName === "H2" || (level === "H3" && n.tagName === "H3"))) { out.push(n); n = n.nextElementSibling; }
     return out;
   }
-  function openDrawer(h, kicker, paneName){
+  function openDrawer(h, kicker, view){
     if (!h) return;
     var body = $("#drawerBody"); body.innerHTML = "";
-    sectionNodes(h).forEach(function(n){
-      var c = n.cloneNode(true);
-      $$("[id]", c).forEach(function(x){ x.removeAttribute("id"); }); c.removeAttribute && c.removeAttribute("id");
-      body.appendChild(c);
-    });
+    sectionNodes(h).forEach(function(n){ var c = n.cloneNode(true); if (c.removeAttribute) c.removeAttribute("id"); $$("[id]", c).forEach(function(x){ x.removeAttribute("id"); }); body.appendChild(c); });
     $$(".xref", body).forEach(function(x){ x.replaceWith(document.createTextNode(x.textContent)); });
-    $("#drawerKicker").textContent = kicker;
-    drawerTarget = { h: h, pane: paneName };
-    body.scrollTop = 0;
+    $("#drawerKicker").textContent = kicker; drawerTarget = { h: h, view: view }; body.scrollTop = 0;
     drawer.classList.add("open"); drawerBg.classList.add("open"); drawer.setAttribute("aria-hidden","false");
   }
   function closeDrawer(){ drawer.classList.remove("open"); drawerBg.classList.remove("open"); drawer.setAttribute("aria-hidden","true"); }
   drawerBg.addEventListener("click", closeDrawer);
   $("#drawerClose").addEventListener("click", closeDrawer);
-  $("#drawerOpenFull").addEventListener("click", function(){
-    if (!drawerTarget) return; closeDrawer();
-    showPane(drawerTarget.pane);
-    setTimeout(function(){ drawerTarget.h.scrollIntoView({behavior:"smooth"}); }, 30);
-  });
-  function findSection(pane, prefix){
-    var hs = $$("h2,h3", pane);
-    for (var i=0;i<hs.length;i++){ if (hs[i].textContent.trim().indexOf(prefix) === 0) return hs[i]; }
-    return null;
-  }
+  $("#drawerOpenFull").addEventListener("click", function(){ if (!drawerTarget) return; closeDrawer(); goTo(drawerTarget.view, drawerTarget.h); });
 
-  /* "Para aprofundar" links -> drawer with the summary section */
   $$("a[data-atom='container']", paneG).forEach(function(a){
     var after = (a.nextSibling && a.nextSibling.textContent) || "";
     var m = after.match(/seç(?:ão|ões)\s+(\d)/);
-    var span = document.createElement("span");
-    span.className = "xref"; span.textContent = "Resumo completo";
-    span.title = "Consultar sem sair desta página";
-    span.addEventListener("click", function(){
-      if (m) openDrawer(findSection(paneR, m[1] + "."), "Resumo completo · seção " + m[1], "resumo");
-      else showPane("resumo");
-    });
+    var span = document.createElement("span"); span.className = "xref"; span.textContent = "Resumo completo"; span.title = "Consultar sem sair desta página";
+    span.addEventListener("click", function(){ if (m) openDrawer(findSection(paneR, m[1] + "."), "Resumo completo · seção " + m[1], "resumo"); else show("resumo"); });
     a.replaceWith(span);
   });
 
-  /* ---------- study checklist ---------- */
+  /* ---------- study plan ---------- */
   var checks = store.get("checks", {});
-  var tasks = $$("li[data-checked]");
-  function updateProgress(){
-    var done = tasks.filter(function(li){ return li.classList.contains("done"); }).length;
-    $("#progTxt").textContent = done + "/" + tasks.length + " sessões";
-    $("#progBar").style.width = (tasks.length ? done/tasks.length*100 : 0) + "%";
-  }
+  var tasks = $$("li[data-checked]", paneP);
+  var sessions = [];
   tasks.forEach(function(li, i){
     var old = li.querySelector("input"); if (old) old.remove();
     var content = li.querySelector("p") || li;
     var span = document.createElement("span"); span.innerHTML = content.innerHTML.trim();
+    sessions.push((span.querySelector("strong") || span).textContent.replace(/\.$/, ""));
     var cb = document.createElement("input"); cb.type = "checkbox"; cb.setAttribute("aria-label", "Concluída");
     li.innerHTML = ""; li.className = "task"; li.appendChild(cb); li.appendChild(span);
-    var set = function(v){ cb.checked = v; li.classList.toggle("done", v); checks[i] = v; store.set("checks", checks); updateProgress(); };
+    var set = function(v){ cb.checked = v; li.classList.toggle("done", v); checks[i] = v; store.set("checks", checks); };
     cb.addEventListener("click", function(e){ e.stopPropagation(); set(cb.checked); });
     li.addEventListener("click", function(){ set(!cb.checked); });
     if (checks[i]) { cb.checked = true; li.classList.add("done"); }
   });
-  $(".progress").style.cursor = "pointer";
-  $(".progress").addEventListener("click", function(){ showPane("plano"); });
-  updateProgress();
 
-  /* ---------- self-test ---------- */
-  var qTable = $("table", panes.teste);
-  if (qTable) {
-    var marks = store.get("quiz", {});
-    var head = qTable.querySelector("thead tr");
-    var th = document.createElement("th"); th.className = "mark"; th.textContent = "Acertou?"; head.appendChild(th);
-    var rows = $$("tbody tr", qTable);
-    var bar = document.createElement("div"); bar.className = "quizbar";
-    bar.innerHTML = '<button class="iconbtn" data-a="show">Mostrar todas</button>' +
-                    '<button class="iconbtn" data-a="hide">Esconder todas</button>' +
-                    '<button class="iconbtn" data-a="wrong">Só as que errei</button>' +
-                    '<button class="iconbtn" data-a="reset">Zerar placar</button>' +
-                    '<span class="score" id="score"></span>';
-    qTable.closest(".tablewrap").before(bar);
-    var onlyWrong = false;
-    function score(){
-      var ok=0, bad=0; Object.keys(marks).forEach(function(k){ if(marks[k]==="ok") ok++; else if(marks[k]==="bad") bad++; });
-      $("#score").textContent = "Acertos: " + ok + " · Erros: " + bad + " · Faltam: " + (rows.length-ok-bad);
-      rows.forEach(function(r, i){ r.style.display = onlyWrong && marks[i] !== "bad" ? "none" : ""; });
-    }
-    rows.forEach(function(tr, i){
-      var cells = tr.children, ans = cells[2], tema = cells[3];
-      ans.classList.add("ans");
-      ans.innerHTML = '<span class="cover">Toque para ver a resposta</span><span class="txt">'+ans.innerHTML+'</span>';
-      ans.addEventListener("click", function(){ ans.classList.toggle("open"); });
-      var code = tema.textContent.trim();
-      tema.innerHTML = '<span class="goto" title="Revisar o tema sem sair">'+code+'</span>';
-      tema.firstChild.addEventListener("click", function(){ openDrawer(findSection(paneG, code), "Guia · tema " + code, "guia"); });
-      var td = document.createElement("td"); td.className = "mark";
-      td.innerHTML = '<button class="ok" title="Acertei">✓</button> <button class="bad" title="Errei">✗</button>';
-      tr.appendChild(td);
-      var bOk = td.children[0], bBad = td.children[1];
-      function paint(){ bOk.classList.toggle("on", marks[i]==="ok"); bBad.classList.toggle("on", marks[i]==="bad"); }
-      function mark(v){ marks[i] = marks[i]===v ? null : v; if(!marks[i]) delete marks[i]; store.set("quiz", marks); ans.classList.add("open"); paint(); score(); }
-      bOk.addEventListener("click", function(){ mark("ok"); });
-      bBad.addEventListener("click", function(){ mark("bad"); });
-      paint();
-    });
-    bar.addEventListener("click", function(e){
-      var a = e.target.dataset && e.target.dataset.a; if (!a) return;
-      if (a==="show") rows.forEach(function(r){ r.children[2].classList.add("open"); });
-      if (a==="hide") rows.forEach(function(r){ r.children[2].classList.remove("open"); });
-      if (a==="wrong") { onlyWrong = !onlyWrong; e.target.textContent = onlyWrong ? "Mostrar todas as perguntas" : "Só as que errei"; }
-      if (a==="reset") { marks = {}; store.set("quiz", marks); rows.forEach(function(r){ $$("button", r).forEach(function(b){ b.classList.remove("on"); }); }); }
-      score();
-    });
-    score();
-  }
-
-  /* ---------- flashcards ---------- */
+  /* ---------- flashcards data ---------- */
   var DECK = [
     ["1.1","Rastreamento do câncer do colo do útero: quem, método e intervalo?","Mulheres de <b>25 a 64 anos</b>; <b>DNA-HPV a cada 5 anos</b> (com HIV: a cada 3 anos)."],
     ["1.1","DNA-HPV positivo para <b>HPV 16 ou 18</b>. Conduta?","<b>Colposcopia direto</b>, mesmo com citologia normal (risco de NIC3+ ≈ 20%)."],
@@ -847,15 +857,112 @@ td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var
     ["3","Pesquisa de estreptococo do grupo B: quando?","Swab vaginal e retal entre <b>36 e 38 semanas</b>."],
     ["3","Densitometria: critério de osteoporose?","<b>T-score ≤ −2,5</b>. Indicada acima de 65 anos."]
   ];
-  var TOPICS = {"1.1":"Rastreamento","1.2":"Prevenção quaternária","1.3":"Risco cardiovascular","1.4":"Hipertensão","1.5":"Pré-natal","1.6":"Síndromes hipertensivas","1.7":"Sífilis na gestação","1.8":"Contracepção","2.1":"Idoso","2.2":"Diabetes","2.3":"Puericultura","2.4":"Violência","2.5":"ITU na gestação","2.6":"Climatério","2.7":"Tabagismo e álcool","3":"Complementar"};
-  var fcState = store.get("cards", {}); // index -> "know" | "again"
+
+  /* topics come from the guide itself */
+  var TOPICS = [], TOPIC = {};
+  var lastLv = null;
+  $$("h2,h3", paneG).forEach(function(h){
+    if (h.tagName === "H2") { lastLv = h.dataset.level || null; if (lastLv === "3") { var t3 = {code:"3", title:"Temas complementares", level:"3", h:h}; TOPICS.push(t3); TOPIC["3"] = t3; } return; }
+    var m = h.textContent.trim().match(/^(\d\.\d)\s+(.*)$/);
+    if (m && lastLv) { var t = {code:m[1], title:m[2], level:lastLv, h:h}; TOPICS.push(t); TOPIC[m[1]] = t; }
+  });
+  function shortTitle(code){ var t = TOPIC[code]; return t ? t.title : code; }
+  var fcState = store.get("cards", {});
+  function topicStats(code){
+    var tot = 0, know = 0, again = 0;
+    DECK.forEach(function(c, i){ if (c[0] === code) { tot++; if (fcState[i] === "know") know++; else if (fcState[i] === "again") again++; } });
+    return {tot:tot, know:know, again:again, pct: tot ? Math.round(know/tot*100) : 0};
+  }
+
+  /* ---------- dashboard ---------- */
+  var topicFilter = "all", contIdx = 0;
+  function ring(pct){
+    var r = 20, c = 2*Math.PI*r;
+    return '<div class="ring"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="'+r+'" fill="none" stroke="var(--line)" stroke-width="3"/>'+(pct > 0 ? '<circle cx="24" cy="24" r="'+r+'" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-dasharray="'+(c*pct/100)+' '+c+'"/>' : '')+'</svg><span>'+pct+'%</span></div>';
+  }
+  function contSlides(){
+    var known = Object.keys(fcState).filter(function(k){ return fcState[k]==="know"; }).length;
+    var done = tasks.filter(function(li){ return li.classList.contains("done"); }).length;
+    var nextS = tasks.findIndex(function(li){ return !li.classList.contains("done"); });
+    var slides = [
+      {tile: ICON_CARDS, title:"Flashcards", sub: known + " de " + DECK.length + " cartões dominados", pct: Math.round(known/DECK.length*100), label:"Continuar", act:function(){ show("cards"); }},
+      {tile: (nextS < 0 ? "✓" : String(nextS+1)), title: nextS < 0 ? "Plano concluído" : sessions[nextS], sub: done + " de " + tasks.length + " sessões do plano", pct: Math.round(done/tasks.length*100), label:"Abrir plano", act:function(){ show("plano"); }}
+    ];
+    var last = store.get("lastTopic", null);
+    if (last && TOPIC[last]) { var s = topicStats(last); slides.unshift({tile:last, title:shortTitle(last), sub:"Último tema estudado", pct:s.pct, label:"Continuar", act:function(){ goTo("guia", TOPIC[last].h); }}); }
+    return slides;
+  }
+  function renderCont(){
+    var sl = contSlides(); contIdx = (contIdx + sl.length) % sl.length; var s = sl[contIdx];
+    var el = $("#contCard");
+    el.innerHTML = '<div class="tile">'+s.tile+'</div><div class="cont-title"><b>'+s.title+'</b><span>'+s.sub+'</span></div>'+ring(s.pct)+'<button class="btn">'+s.label+'</button>';
+    el.querySelector(".btn").addEventListener("click", s.act);
+  }
+  $("#contPrev").addEventListener("click", function(){ contIdx--; renderCont(); });
+  $("#contNext").addEventListener("click", function(){ contIdx++; renderCont(); });
+
+  function renderRows(){
+    var box = $("#topicRows"); box.innerHTML = "";
+    TOPICS.filter(function(t){
+      if (topicFilter === "all") return true;
+      if (topicFilter === "pend") return topicStats(t.code).again > 0;
+      return t.level === topicFilter;
+    }).forEach(function(t){
+      var s = topicStats(t.code);
+      var row = document.createElement("div"); row.className = "row";
+      row.innerHTML = '<div class="tile">'+(t.code === "3" ? "N3" : t.code)+'</div>' +
+        '<div class="t"><b>'+t.title+'</b><span>Nível '+t.level+' · '+LVNAME[t.level]+'</span></div>' +
+        '<div class="meta" title="Cartões dominados neste tema">'+ICON_CARDS+' '+s.know+'/'+s.tot+'</div>' +
+        '<button class="btn ghost" data-a="cards">Cards</button><button class="btn" data-a="study">Estudar</button>';
+      row.querySelector('[data-a="study"]').addEventListener("click", function(){ store.set("lastTopic", t.code); goTo("guia", t.h); });
+      row.querySelector('[data-a="cards"]').addEventListener("click", function(){ setFilter(t.code); show("cards"); });
+      box.appendChild(row);
+    });
+    if (!box.children.length) box.innerHTML = '<div class="card" style="color:var(--muted)">Nenhum tema marcado para revisar ainda. Marque cartões como "Revisar" nos flashcards.</div>';
+  }
+  $$("#topicChips .chip").forEach(function(c){ c.addEventListener("click", function(){
+    topicFilter = c.dataset.f; $$("#topicChips .chip").forEach(function(x){ x.classList.toggle("on", x === c); }); renderRows();
+  }); });
+
+  function drawChart(){
+    var pts = TOPICS.filter(function(t){ return t.code !== "3"; }).map(function(t){ return {x:t.code, y:topicStats(t.code).pct}; });
+    var W = 560, H = 250, L = 34, R = 14, T = 30, B = 30, n = pts.length;
+    var X = function(i){ return L + i * (W - L - R) / (n - 1); }, Y = function(v){ return T + (100 - v) * (H - T - B) / 100; };
+    var s = '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Porcentagem de cartões dominados por tema">';
+    [0,25,50,75,100].forEach(function(v){ s += '<text class="ax" x="'+(L-8)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v+'</text><line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="var(--line)" stroke-dasharray="'+(v?"3 4":"0")+'"/>'; });
+    var P = pts.map(function(p, i){ return [X(i), Y(p.y)]; });
+    var d = "M" + P[0][0] + "," + P[0][1];
+    for (var i = 0; i < P.length - 1; i++) {
+      var p0 = P[i-1] || P[i], p1 = P[i], p2 = P[i+1], p3 = P[i+2] || p2;
+      var c1x = p1[0] + (p2[0]-p0[0])/6, c1y = p1[1] + (p2[1]-p0[1])/6, c2x = p2[0] - (p3[0]-p1[0])/6, c2y = p2[1] - (p3[1]-p1[1])/6;
+      c1y = Math.min(Math.max(c1y, T), H-B); c2y = Math.min(Math.max(c2y, T), H-B);
+      d += " C" + c1x + "," + c1y + " " + c2x + "," + c2y + " " + p2[0] + "," + p2[1];
+    }
+    s += '<path d="'+d+'" fill="none" stroke="var(--ink)" stroke-width="2.2"/>';
+    pts.forEach(function(p, i){
+      s += '<circle cx="'+P[i][0]+'" cy="'+P[i][1]+'" r="4.2" fill="var(--ink)" stroke="var(--app)" stroke-width="2"/>';
+      if (p.y > 0) s += '<rect class="lblbg" x="'+(P[i][0]-17)+'" y="'+(P[i][1]-26)+'" width="34" height="17" rx="4"/><text class="lbl" x="'+P[i][0]+'" y="'+(P[i][1]-13.5)+'" text-anchor="middle">'+p.y+'%</text>';
+      s += '<text class="ax" x="'+P[i][0]+'" y="'+(H-8)+'" text-anchor="middle">'+p.x+'</text>';
+    });
+    s += '</svg>';
+    $("#chart").innerHTML = s;
+  }
+  function renderDash(){
+    var known = Object.keys(fcState).filter(function(k){ return fcState[k]==="know"; }).length;
+    $("#statSess").textContent = tasks.filter(function(li){ return li.classList.contains("done"); }).length;
+    $("#statCards").textContent = known;
+    $("#statCardsTxt").innerHTML = "de " + DECK.length + " cartões<br>dominados";
+    renderCont(); renderRows(); drawChart();
+  }
+
+  /* ---------- flashcards ---------- */
   var fcFilter = store.get("cardsFilter", "all"), fcOnlyAgain = false, fcOrder = [], fcPos = 0;
   var sel = $("#fcFilter");
-  sel.innerHTML = '<option value="all">Todos os cartões ('+DECK.length+')</option>' +
-    '<option value="n1">Nível 1 · Essencial</option><option value="n2">Nível 2 · Importante</option>' +
-    Object.keys(TOPICS).map(function(k){ return '<option value="'+k+'">'+(k==="3"?"Nível 3":k)+' · '+TOPICS[k]+'</option>'; }).join("");
+  sel.innerHTML = '<option value="all">Todos os cartões ('+DECK.length+')</option><option value="n1">Nível 1 · Essencial</option><option value="n2">Nível 2 · Importante</option>' +
+    TOPICS.map(function(t){ return '<option value="'+t.code+'">'+(t.code==="3"?"Nível 3":t.code)+' · '+t.title+'</option>'; }).join("");
+  function setFilter(v){ fcFilter = v; sel.value = v; store.set("cardsFilter", v); fcBuild(); }
   sel.value = fcFilter;
-  function fcBuild(keepPos){
+  function fcBuild(keep){
     fcOrder = DECK.map(function(_, i){ return i; }).filter(function(i){
       var t = DECK[i][0];
       if (fcFilter === "n1" && t.indexOf("1.") !== 0) return false;
@@ -864,64 +971,51 @@ td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var
       if (fcOnlyAgain && fcState[i] !== "again") return false;
       return true;
     });
-    if (!keepPos) fcPos = 0;
-    if (fcPos >= fcOrder.length) fcPos = 0;
+    if (!keep || fcPos >= fcOrder.length) fcPos = 0;
   }
   function fcStats(){
     var know=0, again=0; Object.keys(fcState).forEach(function(k){ if(fcState[k]==="know") know++; else if(fcState[k]==="again") again++; });
-    $("#fcStats").innerHTML = 'Sei: <b>'+know+'</b> · Revisar: <b>'+again+'</b> · Não vistos: <b>'+(DECK.length-know-again)+'</b>';
+    $("#fcKnowN").textContent = know; $("#fcAgainN").textContent = again; $("#fcNewN").textContent = DECK.length - know - again;
   }
-  function lvBadge(t){ var n = t.charAt(0); return '<span class="badge" style="font:700 11px var(--sans);padding:3px 9px;border-radius:99px;background:var(--n'+n+'-soft);color:var(--n'+n+')">Nível '+n+'</span>'; }
   function renderCard(){
-    var stage = $("#fcStage");
-    fcStats();
-    if (!fcOrder.length) { stage.innerHTML = '<div class="fc-empty">Nenhum cartão neste filtro.'+(fcOnlyAgain?' Você ainda não marcou nenhum para revisar.':'')+'</div>'; return; }
-    var i = fcOrder[fcPos], c = DECK[i], st = fcState[i];
-    var topic = c[0] === "3" ? "Complementar" : c[0] + " · " + TOPICS[c[0]];
+    var stage = $("#fcStage"); fcStats();
+    if (!fcOrder.length) { stage.innerHTML = '<div class="card fc-empty">Nenhum cartão aqui.'+(fcOnlyAgain?' Você ainda não marcou nenhum para revisar.':'')+'</div>'; return; }
+    var i = fcOrder[fcPos], c = DECK[i], st = fcState[i], lv = c[0].charAt(0);
+    var topic = c[0] === "3" ? "Complementar" : c[0] + " · " + shortTitle(c[0]);
     stage.innerHTML =
       '<div class="fc-card" id="fcCard" tabindex="0" role="button" aria-label="Virar cartão"><div class="fc-inner">' +
-        '<div class="fc-face"><span class="fc-tag">'+topic+'</span><span class="fc-lv">'+lvBadge(c[0])+'</span><div class="fc-q">'+c[1]+'</div><div class="fc-hint">toque para ver a resposta</div></div>' +
+        '<div class="fc-face"><span class="fc-tag">'+topic+'</span><span class="fc-lv"><span class="lvtag l'+lv+'">Nível '+lv+'</span></span><div class="fc-q">'+c[1]+'</div><div class="fc-hint">toque para ver a resposta</div></div>' +
         '<div class="fc-face fc-back"><span class="fc-tag">Resposta</span><div class="fc-a">'+c[2]+'</div><div class="fc-hint">'+(st==="know"?"marcado como Sei":st==="again"?"marcado para Revisar":"")+'</div></div>' +
       '</div></div>' +
       '<div class="fc-nav">' +
-        '<button class="iconbtn" id="fcPrev">← Anterior</button>' +
-        '<button class="iconbtn fc-again" id="fcAgain">Revisar</button>' +
-        '<button class="iconbtn fc-know" id="fcKnow">Sei</button>' +
-        '<button class="iconbtn" id="fcNext">Próximo →</button>' +
-        '<button class="iconbtn" id="fcTopic">Ver no guia</button>' +
-      '</div><p class="fc-pos">Cartão '+(fcPos+1)+' de '+fcOrder.length+'</p>';
+        '<button class="circle" id="fcPrev" aria-label="Anterior"><svg class="i" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>' +
+        '<button class="circle" id="fcNext" aria-label="Próximo"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>' +
+        '<span class="fc-pos">'+(fcPos+1)+' de '+fcOrder.length+'</span><span class="grow"></span>' +
+        '<button class="btn ghost" id="fcTopic">Ver no guia</button>' +
+        '<button class="btn ghost" id="fcAgain">Revisar</button>' +
+        '<button class="btn" id="fcKnow">Sei</button>' +
+      '</div>';
     var card = $("#fcCard");
     card.addEventListener("click", function(){ card.classList.toggle("flipped"); });
     $("#fcPrev").addEventListener("click", function(){ fcGo(-1); });
     $("#fcNext").addEventListener("click", function(){ fcGo(1); });
     $("#fcKnow").addEventListener("click", function(){ fcMark("know"); });
     $("#fcAgain").addEventListener("click", function(){ fcMark("again"); });
-    $("#fcTopic").addEventListener("click", function(){
-      var h = c[0] === "3" ? $$("h2", paneG).filter(function(x){ return x.dataset.level === "3"; })[0] : findSection(paneG, c[0]);
-      openDrawer(h, "Guia · " + topic, "guia");
-    });
+    $("#fcTopic").addEventListener("click", function(){ var t = TOPIC[c[0]]; if (t) openDrawer(t.h, "Guia · " + topic, "guia"); });
   }
   function fcGo(d){ if (!fcOrder.length) return; fcPos = (fcPos + d + fcOrder.length) % fcOrder.length; renderCard(); }
   function fcMark(v){
     var i = fcOrder[fcPos]; fcState[i] = v; store.set("cards", fcState);
-    if (v === "again") { // bring it back a few cards later
-      var at = Math.min(fcOrder.length, fcPos + 4); fcOrder.splice(at, 0, i);
-    }
+    if (v === "again") fcOrder.splice(Math.min(fcOrder.length, fcPos + 4), 0, i);
     if (fcOnlyAgain && v === "know") { fcOrder.splice(fcPos, 1); if (fcPos >= fcOrder.length) fcPos = 0; renderCard(); return; }
     fcGo(1);
   }
-  sel.addEventListener("change", function(){ fcFilter = sel.value; store.set("cardsFilter", fcFilter); fcBuild(); renderCard(); });
-  $("#fcShuffle").addEventListener("click", function(){
-    for (var k = fcOrder.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = fcOrder[k]; fcOrder[k] = fcOrder[j]; fcOrder[j] = t; }
-    fcPos = 0; renderCard();
-  });
-  $("#fcOnlyAgain").addEventListener("click", function(e){
-    fcOnlyAgain = !fcOnlyAgain; e.target.textContent = fcOnlyAgain ? "Todos os cartões" : "Só os de revisar"; fcBuild(); renderCard();
-  });
-  $("#fcReset").addEventListener("click", function(){ fcState = {}; store.set("cards", fcState); fcBuild(); renderCard(); });
+  sel.addEventListener("change", function(){ setFilter(sel.value); renderCard(); });
+  $("#fcShuffle").addEventListener("click", function(){ for (var k = fcOrder.length - 1; k > 0; k--) { var j = Math.floor(Math.random()*(k+1)); var t = fcOrder[k]; fcOrder[k] = fcOrder[j]; fcOrder[j] = t; } fcPos = 0; renderCard(); });
+  $("#fcOnlyAgain").addEventListener("click", function(e){ fcOnlyAgain = !fcOnlyAgain; e.target.textContent = fcOnlyAgain ? "Todos os cartões" : "Só os de revisar"; fcBuild(); renderCard(); });
+  $("#fcReset").addEventListener("click", function(){ if (!confirm("Zerar o progresso dos flashcards?")) return; fcState = {}; store.set("cards", fcState); fcBuild(); renderCard(); });
   fcBuild();
 
-  /* ---------- keyboard ---------- */
   document.addEventListener("keydown", function(e){
     if (e.key === "Escape") closeDrawer();
     if (current !== "cards" || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
@@ -930,82 +1024,68 @@ td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var
     if (e.key === "ArrowLeft") fcGo(-1);
   });
 
-  /* ---------- table of contents + scrollspy ---------- */
-  var observer = null;
+  /* ---------- tables of contents ---------- */
   function slug(s, i){ return "s-" + i + "-" + s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").slice(0,40); }
-  function buildToc(){
-    var pane = panes[current];
-    var list = $("#tocList"); list.innerHTML = "";
-    if (current !== "guia" && current !== "resumo") return;
-    var hs = $$("h2,h3", pane);
-    var colors = {"1":"var(--n1)","2":"var(--n2)","3":"var(--n3)","4":"var(--n4)"};
-    var lastLevel = null;
+  function buildToc(pane, aside, prefix){
+    var list = $("ul", aside), hs = $$("h2,h3", pane), lastLevel = null;
+    var dots = {"1":"var(--l1)","2":"var(--l2)","3":"var(--l3)","4":"var(--faint)"};
     hs.forEach(function(h, i){
-      if (!h.id) h.id = slug(h.textContent, i);
+      h.id = prefix + slug(h.textContent, i);
+      if (h.tagName === "H2") lastLevel = h.dataset.level || null;
       var li = document.createElement("li"); li.className = h.tagName === "H2" ? "l2" : "l3";
-      if (h.dataset.level) lastLevel = h.dataset.level; else if (h.tagName === "H2") lastLevel = null;
       var a = document.createElement("a"); a.href = "#" + h.id;
-      a.innerHTML = (lastLevel && current === "guia") ? '<span class="dot" style="background:'+colors[lastLevel]+'"></span>' : "";
+      if (h.tagName === "H2" && lastLevel) a.innerHTML = '<span class="dot" style="background:'+dots[lastLevel]+'"></span>';
       a.appendChild(document.createTextNode(h.dataset.title || h.textContent));
-      a.addEventListener("click", function(){ if (window.innerWidth <= 900) $("#toc").classList.remove("open"); });
+      a.addEventListener("click", function(ev){ ev.preventDefault(); h.scrollIntoView({block:"start"}); if (window.innerWidth <= 1100) aside.classList.remove("open"); });
       li.appendChild(a); list.appendChild(li);
     });
-    if (observer) observer.disconnect();
     if ("IntersectionObserver" in window) {
-      observer = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if (en.isIntersecting) $$("#tocList a").forEach(function(a){ a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id); });
-        });
-      }, {rootMargin:"-80px 0px -70% 0px"});
-      hs.forEach(function(h){ observer.observe(h); });
+      var ob = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ if (en.isIntersecting) $$("a", list).forEach(function(a){ a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id); }); });
+      }, {rootMargin:"0px 0px -75% 0px"});
+      hs.forEach(function(h){ ob.observe(h); });
     }
-    filterToc();
-  }
-  $("#tocToggle").addEventListener("click", function(){ $("#toc").classList.toggle("open"); });
-
-  /* ---------- search ---------- */
-  var hits = [], hitIdx = -1;
-  function clearHits(){
-    $$("mark.searchhit").forEach(function(m){ var t = document.createTextNode(m.textContent); var p = m.parentNode; m.replaceWith(t); p.normalize(); });
-    hits = []; hitIdx = -1;
-  }
-  function filterToc(){
-    var q = $("#q").value.trim().toLowerCase();
-    $$("#tocList li").forEach(function(li){ li.style.display = !q || li.textContent.toLowerCase().indexOf(q) >= 0 ? "" : "none"; });
-  }
-  function runSearch(){
-    clearHits();
-    var q = $("#q").value.trim(); if (q.length < 2) return;
-    var walker = document.createTreeWalker(panes[current], NodeFilter.SHOW_TEXT, null), nodes = [], n;
-    while ((n = walker.nextNode())) nodes.push(n);
-    var re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
-    nodes.forEach(function(node){
-      if (!re.test(node.nodeValue)) return; re.lastIndex = 0;
-      var frag = document.createDocumentFragment(), last = 0, m, s = node.nodeValue;
-      while ((m = re.exec(s))) {
-        frag.appendChild(document.createTextNode(s.slice(last, m.index)));
-        var mk = document.createElement("mark"); mk.className = "searchhit"; mk.textContent = m[0];
-        frag.appendChild(mk); hits.push(mk); last = m.index + m[0].length;
-      }
-      frag.appendChild(document.createTextNode(s.slice(last)));
-      node.replaceWith(frag);
+    var tg = document.createElement("button"); tg.className = "btn ghost toc-toggle"; tg.textContent = "Sumário";
+    tg.addEventListener("click", function(){ aside.classList.toggle("open"); });
+    pane.parentNode.parentNode.insertBefore(tg, pane.parentNode);
+    /* search inside this document */
+    var input = $(".q", aside), hits = [], idx = -1;
+    function clear(){ $$("mark.searchhit", pane).forEach(function(m){ var p = m.parentNode; m.replaceWith(document.createTextNode(m.textContent)); p.normalize(); }); hits = []; idx = -1; }
+    function run(q){
+      clear(); if (!q || q.length < 2) return 0;
+      var w = document.createTreeWalker(pane, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while ((n = w.nextNode())) nodes.push(n);
+      var re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+      nodes.forEach(function(node){
+        if (!re.test(node.nodeValue)) return; re.lastIndex = 0;
+        var f = document.createDocumentFragment(), last = 0, m, s = node.nodeValue;
+        while ((m = re.exec(s))) { f.appendChild(document.createTextNode(s.slice(last, m.index))); var mk = document.createElement("mark"); mk.className = "searchhit"; mk.textContent = m[0]; f.appendChild(mk); hits.push(mk); last = m.index + m[0].length; }
+        f.appendChild(document.createTextNode(s.slice(last))); node.replaceWith(f);
+      });
+      next(); return hits.length;
+    }
+    function next(){ if (!hits.length) return; idx = (idx + 1) % hits.length; hits[idx].scrollIntoView({block:"center"}); }
+    input.addEventListener("keydown", function(e){
+      if (e.key === "Enter") { e.preventDefault(); if (hits.length && hits[0].textContent.toLowerCase() === input.value.trim().toLowerCase()) next(); else run(input.value.trim()); }
+      if (e.key === "Escape") { input.value = ""; clear(); }
     });
-    nextHit();
+    input.addEventListener("input", function(){ if (!input.value) clear(); });
+    input.title = "Enter para buscar; Enter de novo vai para a próxima ocorrência";
+    return { run: function(q){ input.value = q; return run(q); } };
   }
-  function nextHit(){
-    if (!hits.length) return;
-    hitIdx = (hitIdx + 1) % hits.length;
-    var h = hits[hitIdx], ans = h.closest("td.ans"); if (ans) ans.classList.add("open");
-    h.scrollIntoView({behavior:"smooth", block:"center"});
-  }
-  $("#q").addEventListener("input", function(){ filterToc(); if (!this.value) clearHits(); });
-  $("#q").addEventListener("keydown", function(e){
-    if (e.key === "Enter") { e.preventDefault(); if (hits.length && hitIdx >= 0 && hits[0].textContent.toLowerCase() === this.value.trim().toLowerCase()) nextHit(); else runSearch(); }
-    if (e.key === "Escape") { this.value = ""; clearHits(); filterToc(); }
+  var tocG = buildToc(paneG, $("#toc-guia"), "g-"), tocR = buildToc(paneR, $("#toc-resumo"), "r-");
+  $("#globalSearch").addEventListener("keydown", function(e){
+    if (e.key !== "Enter") return; var q = this.value.trim(); if (q.length < 2) return;
+    show("guia"); if (!tocG.run(q)) { show("resumo"); tocR.run(q); }
   });
-  $("#q").title = "Digite e pressione Enter para buscar; Enter de novo vai para a próxima ocorrência";
 
-  showPane(store.get("tab", "guia"));
+  /* remember last topic while reading the guide */
+  if ("IntersectionObserver" in window) {
+    var tob = new IntersectionObserver(function(en){ en.forEach(function(x){ if (x.isIntersecting && current === "guia") { var t = TOPICS.filter(function(t){ return t.h === x.target; })[0]; if (t) store.set("lastTopic", t.code); } }); }, {rootMargin:"0px 0px -70% 0px"});
+    TOPICS.forEach(function(t){ tob.observe(t.h); });
+  }
+
+  show(store.get("view", "inicio"), {top:true});
 })();
 </script>
 </body>
