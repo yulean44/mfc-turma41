@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MFC · 2ª Unidade · Turma 41</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f3; --paper:#ffffff; --ink:#1d1d1f; --muted:#5f6368; --line:#e3e1dc;
+  --accent:#1f5f8b; --accent-soft:#e7f1fb;
+  --n1:#b3261e; --n1-soft:#fbebeb; --n2:#b4570f; --n2-soft:#f9ece7;
+  --n3:#8a6a00; --n3-soft:#f9eeda; --n4:#5f6368; --n4-soft:#f0efec;
+  --ok:#1e7a3c; --ok-soft:#e5f4e4; --warn:#8a5a00; --warn-soft:#fff4dc;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.05);
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16171a; --paper:#1e1f23; --ink:#e8e6e3; --muted:#a3a7ad; --line:#33353a;
+    --accent:#7db7e3; --accent-soft:#1d2d3a;
+    --n1:#f08a84; --n1-soft:#3a2224; --n2:#f0a46a; --n2-soft:#3a2a1f; --n3:#e2c160; --n3-soft:#35301c; --n4:#a3a7ad; --n4-soft:#2a2b2f;
+    --ok:#7bd096; --ok-soft:#1d3324; --warn:#e8c070; --warn-soft:#352c18;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16171a; --paper:#1e1f23; --ink:#e8e6e3; --muted:#a3a7ad; --line:#33353a;
+  --accent:#7db7e3; --accent-soft:#1d2d3a;
+  --n1:#f08a84; --n1-soft:#3a2224; --n2:#f0a46a; --n2-soft:#3a2a1f; --n3:#e2c160; --n3-soft:#35301c; --n4:#a3a7ad; --n4-soft:#2a2b2f;
+  --ok:#7bd096; --ok-soft:#1d3324; --warn:#e8c070; --warn-soft:#352c18;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap}
+.brand small{font-family:var(--sans);font-weight:500;color:var(--muted);font-size:12px;margin-left:6px}
+.tabs{display:flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px}
+.tab{border:0;background:transparent;color:var(--muted);font:600 14px var(--sans);padding:7px 14px;border-radius:8px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+.spacer{flex:1}
+.progress{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.bar{width:120px;height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.iconbtn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;padding:6px 10px;font:500 13px var(--sans);cursor:pointer}
+.iconbtn:hover{border-color:var(--accent)}
+
+/* layout */
+.layout{max-width:1240px;margin:0 auto;padding:24px 16px 80px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:32px}
+.toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;font-size:13.5px;padding-right:6px}
+.toc input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:14px var(--sans);margin-bottom:12px}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc li a{display:block;padding:4px 8px;border-radius:6px;color:var(--muted);text-decoration:none;border-left:2px solid transparent}
+.toc li.l3 a{padding-left:20px;font-size:12.5px}
+.toc li a:hover{background:var(--paper);color:var(--ink)}
+.toc li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft)}
+.toc .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:48px 56px;min-width:0}
+.pane[hidden]{display:none}
+.searchhit{background:#ffe58a;color:#1d1d1f;border-radius:3px}
+
+/* typography */
+.doc h1{font-family:var(--serif);font-size:34px;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+.doc .subtitle{color:var(--muted);font-size:14px;margin:0 0 28px}
+.doc h2{font-family:var(--serif);font-size:26px;line-height:1.25;margin:56px 0 14px;padding-top:18px;border-top:1px solid var(--line)}
+.doc h3{font-size:18px;margin:34px 0 10px;line-height:1.35}
+.doc p{margin:0 0 14px}
+.doc ul,.doc ol{margin:0 0 16px;padding-left:22px}
+.doc li{margin:4px 0}
+.doc strong{font-weight:650}
+.doc a{color:var(--accent)}
+.doc blockquote{margin:18px 0;padding:14px 18px;border-left:4px solid var(--warn);background:var(--warn-soft);border-radius:0 10px 10px 0}
+.doc blockquote p:last-child{margin:0}
+.tablewrap{overflow-x:auto;margin:6px 0 20px;border:1px solid var(--line);border-radius:10px}
+.doc table{border-collapse:collapse;width:100%;font-size:14.5px}
+.doc th{background:var(--bg);text-align:left;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+.doc th,.doc td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.doc tr:last-child td{border-bottom:0}
+.doc tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 45%,transparent)}
+
+/* level banners */
+.level{display:flex;align-items:center;gap:12px}
+.level .badge{font:700 12px var(--sans);letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:99px}
+.lv1 .badge{background:var(--n1-soft);color:var(--n1)} .lv1{border-top-color:var(--n1)!important}
+.lv2 .badge{background:var(--n2-soft);color:var(--n2)} .lv2{border-top-color:var(--n2)!important}
+.lv3 .badge{background:var(--n3-soft);color:var(--n3)} .lv3{border-top-color:var(--n3)!important}
+.lv4 .badge{background:var(--n4-soft);color:var(--n4)} .lv4{border-top-color:var(--n4)!important}
+h2.lv1,h2.lv2,h2.lv3,h2.lv4{border-top-width:3px}
+td[data-bg]{font-weight:600}
+
+/* topic labels */
+.lbl{display:block;padding:12px 16px;border-radius:10px;margin:0 0 12px}
+.lbl > strong:first-child{display:block;font:700 11.5px var(--sans);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
+.lbl-why{background:var(--bg);color:var(--muted)} .lbl-why > strong:first-child{color:var(--muted)}
+.lbl-learn{background:var(--accent-soft)} .lbl-learn > strong:first-child{color:var(--accent)}
+.lbl-mem{padding:0;margin:18px 0 8px;background:none}
+.lbl-mem > strong:first-child{color:var(--n1);font-size:12px}
+.lbl-div{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:0 10px 10px 0}
+.lbl-div > strong:first-child{color:var(--warn)}
+.lbl-ref{font-size:14px;color:var(--muted);border:1px dashed var(--line);background:none;padding:10px 14px}
+.lbl-ref > strong:first-child{display:inline;font-size:11px;margin-right:6px;color:var(--muted)}
+.xref{cursor:pointer;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+
+/* checklist */
+li.task{list-style:none;margin-left:-22px;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer}
+li.task input{margin-top:5px;width:18px;height:18px;accent-color:var(--ok);flex:none;cursor:pointer}
+li.task.done{background:var(--ok-soft);border-color:transparent}
+li.task.done > span{color:var(--muted);text-decoration:line-through}
+
+/* quiz */
+.quizbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px;font-size:14px}
+.score{margin-left:auto;font-weight:600}
+td.ans{position:relative;cursor:pointer;min-width:180px}
+td.ans .cover{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--muted)}
+td.ans .txt{display:none}
+td.ans.open .cover{display:none}
+td.ans.open .txt{display:block}
+td.mark{white-space:nowrap}
+td.mark button{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:3px 8px;cursor:pointer;font:600 12px var(--sans);color:var(--muted)}
+td.mark button.on.ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+td.mark button.on.bad{background:var(--n1-soft);color:var(--n1);border-color:var(--n1)}
+.goto{font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline}
+
+.backtop{position:fixed;right:18px;bottom:18px;z-index:10}
+.footer-note{color:var(--muted);font-size:13px;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;gap:16px}
+  .toc{position:static;max-height:none;display:none}
+  .toc.open{display:block}
+  .doc{padding:24px 18px;border-radius:10px}
+  .doc h1{font-size:27px}
+  .bar{width:70px}
+  .brand small{display:none}
+}
+@media (min-width:901px){ #tocToggle{display:none} }
+
+@media print{
+  @page{size:A4;margin:16mm 14mm}
+  body{background:#fff;color:#000;font-size:11pt}
+  .topbar,.toc,.backtop,.quizbar,td.mark,th.mark{display:none!important}
+  .layout{display:block;padding:0;max-width:none}
+  .doc{border:0;box-shadow:none;padding:0}
+  .pane[hidden]{display:block!important}
+  .pane + .pane{break-before:page}
+  td.ans .cover{display:none!important} td.ans .txt{display:block!important}
+  h2,h3{break-after:avoid} table,.lbl,li.task{break-inside:avoid}
+  .tablewrap{overflow:visible}
+}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div class="brand">MFC · 2ª Unidade<small>Turma 41 · 4º semestre</small></div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-pane="guia">Guia de Estudo</button>
+    <button class="tab" role="tab" aria-selected="false" data-pane="resumo">Resumo completo</button>
+  </div>
+  <div class="spacer"></div>
+  <div class="progress" title="Sessões do plano de estudo concluídas"><span id="progTxt">0/6 sessões</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="iconbtn" id="tocToggle">Sumário</button>
+  <button class="iconbtn" id="themeBtn" title="Alternar tema claro/escuro">Tema</button>
+  <button class="iconbtn" onclick="window.print()" title="Imprimir ou salvar como PDF">Imprimir</button>
+</div></header>
+<div class="layout">
+<nav class="toc" id="toc"><input id="q" type="search" placeholder="Buscar no documento…" aria-label="Buscar"><ul id="tocList"></ul></nav>
+<main class="doc">
+<section class="pane" id="pane-guia">
+<h1 id="mfc-guia-de-estudo-prioritário-2ª-unidade">MFC – Guia de Estudo Prioritário (2ª Unidade)</h1>
+<p><time data-atom="date" datetime="2026-11-12">2026-11-12</time> · <span data-atom="mention" data-principal="u_PR9D9RMc6Dk5dAduTNap7A">@u_PR9D9RMc6Dk5dAduTNap7A</span></p>
+<p>Este guia organiza a 2ª unidade de Medicina de Família e Comunidade em ordem de importância para a prova. Ele explica o raciocínio de cada tema e aponta o que precisa ser memorizado. Os detalhes completos, tabelas extensas e protocolos estão no documento de referência: <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a>.</p>
+<h2 id="como-usar-este-guia">Como usar este guia</h2>
+<h3 id="dois-documentos-duas-funções">Dois documentos, duas funções</h3>
+<table><thead><tr><th>Documento</th><th>Para que serve</th><th>Quando abrir</th></tr></thead><tbody><tr><td><strong>Guia de Estudo</strong> (este)</td><td>Decidir o que estudar primeiro e entender a lógica de cada tema</td><td>Durante o estudo e na revisão final</td></tr><tr><td><strong>Resumo completo</strong> (referência)</td><td>Consultar doses, tabelas, critérios e exceções</td><td>Quando um ponto do guia não ficar claro ou você quiser o detalhe</td></tr></tbody></table>
+<p>Cada tema termina com uma linha <strong>Para aprofundar</strong>, que indica a seção correspondente do resumo completo. Comece sempre pelo guia; vá ao resumo só quando precisar.</p>
+<h3 id="como-os-temas-foram-priorizados">Como os temas foram priorizados</h3>
+<p>A prioridade não é opinião: vem de três sinais das próprias aulas.</p>
+<ol><li><p><strong>Casos clínicos.</strong> Cada aula termina com um caso e um gabarito comentado (Marina, Seu Antônio, João, Rita). O que o gabarito cobra tende a cair na prova.</p></li><li><p><strong>Síntese final.</strong> O último slide de cada aula lista o que o professor considera essencial.</p></li><li><p><strong>Repetição entre professores.</strong> Temas que aparecem nas aulas do Prof. Vinicio e da Profa. Raquel têm peso dobrado.</p></li></ol>
+<h3 id="os-quatro-níveis">Os quatro níveis</h3>
+<table><thead><tr><th>Nível</th><th>Significado</th><th>Como estudar</th></tr></thead><tbody><tr><td data-bg="#fbebeb" style="background-color:#fbebeb"><strong>1 · Essencial</strong></td><td>Aparece nos casos e nas sínteses; alta chance de questão</td><td>Entender o raciocínio e saber os números de cor. Revisar três vezes.</td></tr><tr><td data-bg="#f9ece7" style="background-color:#f9ece7"><strong>2 · Importante</strong></td><td>Provável em questão objetiva</td><td>Entender a lógica e decorar os pontos destacados. Revisar duas vezes.</td></tr><tr><td data-bg="#f9eeda" style="background-color:#f9eeda"><strong>3 · Complementar</strong></td><td>Pode aparecer como detalhe ou alternativa</td><td>Ler uma vez com atenção.</td></tr><tr><td data-bg="#f0efec" style="background-color:#f0efec"><strong>4 · Contexto</strong></td><td>Ajuda a entender, raramente vira questão</td><td>Apenas reconhecer.</td></tr></tbody></table>
+<h3 id="a-ideia-que-atravessa-toda-a-unidade">A ideia que atravessa toda a unidade</h3>
+<p>Quase toda questão de MFC testa o mesmo princípio: <strong>cuidar da pessoa e do seu risco global, no seu contexto, e não de um exame isolado</strong>. Por isso, entre duas alternativas parecidas, costuma estar certa a que estratifica o risco, envolve a família e o território, coordena a rede a partir da APS e evita exames que não mudam a conduta.</p>
+<blockquote><p><strong>Atenção às divergências.</strong> Em alguns pontos os dois professores trazem números diferentes. O guia sinaliza esses casos com <strong>Divergência entre aulas</strong>. Na prova, vale a versão de quem a aplicar.</p></blockquote>
+<h2 id="nível-1-essencial">Nível 1 · Essencial</h2>
+<p>Oito temas que aparecem nos casos clínicos e nas sínteses das aulas. Para cada um: por que importa, o raciocínio por trás e o que memorizar.</p>
+<h3 id="11-rastreamento-no-adulto">1.1 Rastreamento no adulto</h3>
+<p><strong>Por que é essencial.</strong> É o tema mais repetido da unidade: aparece nas aulas de Mulher I, Adulto (nas duas versões) e nos casos de Seu Antônio, Rita e João.</p>
+<p><strong>Entenda primeiro.</strong> Rastrear é testar quem <strong>não tem sintomas</strong>, para achar a doença numa fase em que o tratamento muda o desfecho. Como a probabilidade de doença é baixa, só vale a pena quando o benefício comprovado supera os danos (falso-positivo, sobrediagnóstico, ansiedade). Por isso a lista de rastreamentos recomendados é curta e cada um tem faixa etária e intervalo definidos. Quem já tem sintoma (nódulo, sangramento, perda de peso) não está sendo rastreado: está sendo <strong>investigado</strong>, em qualquer idade.</p>
+<p><strong>Memorize.</strong></p>
+<table><thead><tr><th>Condição</th><th>Quem</th><th>Método e intervalo</th></tr></thead><tbody><tr><td>Colo do útero</td><td>Mulheres de 25 a 64 anos</td><td><strong>DNA-HPV a cada 5 anos</strong> (com HIV: a cada 3)</td></tr><tr><td>Mama</td><td>Mulheres de 50 a 74 anos</td><td><strong>Mamografia a cada 2 anos</strong></td></tr><tr><td>Colorretal</td><td>50 a 75 anos</td><td><strong>Sangue oculto imunoquímico (FIT) a cada 2 anos</strong>; positivo leva à colonoscopia</td></tr><tr><td>Diabetes</td><td>A partir de 35 anos</td><td>Glicemia ou HbA1c a cada 3 anos</td></tr><tr><td>Risco cardiovascular</td><td>30 a 79 anos</td><td>Escore PREVENT e perfil lipídico a cada 3 a 5 anos</td></tr><tr><td>Próstata</td><td>—</td><td><strong>PSA não é rotina</strong>: só por decisão compartilhada</td></tr></tbody></table>
+<ul><li><p><strong>DNA-HPV positivo para tipo 16 ou 18:</strong> colposcopia direto, mesmo com citologia normal. Outros tipos: citologia na mesma amostra.</p></li><li><p><strong>Não rastrear colo:</strong> antes dos 25 anos, sem vida sexual ou após histerectomia total por causa benigna.</p></li><li><p>Mamografia entre 40 e 49 anos: o SUS não nega, mas é decisão compartilhada.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seções 2 (colo e mama, BI-RADS) e 4 (tabela de rastreamentos).</p>
+<h3 id="12-prevenção-quaternária-e-vieses-do-rastreamento">1.2 Prevenção quaternária e vieses do rastreamento</h3>
+<p><strong>Por que é essencial.</strong> É a pergunta &quot;o que NÃO pedir&quot; que fecha os casos de Seu Antônio e de João, e o conceito que mais distingue a MFC de outras especialidades.</p>
+<p><strong>Entenda primeiro.</strong> Os níveis de prevenção vão de evitar o fator de risco (primordial) até reduzir complicações (terciária). A <strong>prevenção quaternária</strong> atravessa todos eles: proteger a pessoa de intervenções desnecessárias. Um exame sem indicação pode dar um falso-positivo, que leva a outro exame, depois a uma biópsia: a chamada cascata. O critério prático é simples: <strong>se o resultado não muda a conduta, o exame não deve ser pedido.</strong></p>
+<p>Os vieses explicam por que um rastreamento pode parecer útil sem ser. Por isso a evidência válida vem de ensaios randomizados que medem <strong>mortalidade</strong>, e não sobrevida.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p>Exemplos clássicos de excesso: <strong>PSA sem conversa, ECG de rotina em quem não tem risco, ultrassom de abdome, raio-X anual, TSH e vitaminas sem suspeita</strong>.</p></li><li><p><strong>Viés de tempo ganho:</strong> o diagnóstico vem antes, mas a morte ocorre na mesma data.</p></li><li><p><strong>Viés de duração:</strong> o rastreamento encontra mais os tumores lentos, de bom prognóstico.</p></li><li><p><strong>Viés de adesão:</strong> quem aceita rastrear já tem hábitos mais saudáveis.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 4, Prevenção e Rastreamento.</p>
+<h3 id="13-risco-cardiovascular-global">1.3 Risco cardiovascular global</h3>
+<p><strong>Por que é essencial.</strong> As duas aulas de Adulto giram em torno dele, e o caso de Seu Antônio pede a categoria de risco e as metas.</p>
+<p><strong>Entenda primeiro.</strong> A decisão de tratar colesterol ou pressão não depende de um número isolado, e sim da <strong>chance de a pessoa ter um infarto ou AVC</strong>. O mesmo LDL de 145 pode não pedir remédio numa mulher de 38 anos sem fatores de risco e pedir estatina num diabético fumante. O raciocínio tem quatro passos: identificar quem já é alto risco; calcular o escore nos demais; procurar <strong>agravantes</strong>, que sobem a categoria; e definir metas.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p><strong>Já é alto risco, sem calcular:</strong> doença cardiovascular, <strong>diabetes, doença renal crônica, LDL ≥ 190</strong>, aterosclerose subclínica.</p></li><li><p>Escore <strong>PREVENT</strong>: risco em 10 anos para 30–79 anos; em 30 anos para 30–59 anos.</p></li><li><p>Agravante mais cobrado: <strong>história familiar precoce = parente de 1º grau com evento antes dos 55 (homem) ou 65 (mulher)</strong>. Também: Lp(a) ≥ 50, doenças inflamatórias, pré-eclâmpsia prévia.</p></li></ul>
+<table><thead><tr><th>Categoria</th><th>Meta de LDL (mg/dL)</th></tr></thead><tbody><tr><td>Baixo</td><td>&lt; 115</td></tr><tr><td>Intermediário</td><td>&lt; 100</td></tr><tr><td><strong>Alto</strong></td><td><strong>&lt; 70</strong></td></tr><tr><td>Muito alto</td><td>&lt; 50</td></tr><tr><td>Extremo</td><td>&lt; 40</td></tr></tbody></table>
+<ul><li><p>Não-HDL = colesterol total − HDL; meta = meta do LDL + 30.</p></li><li><p>Alto risco ou acima: <strong>estatina desde o início</strong>, junto com mudança de estilo de vida.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 4, Estratificação de risco cardiovascular.</p>
+<h3 id="14-hipertensão-arterial">1.4 Hipertensão arterial</h3>
+<p><strong>Por que é essencial.</strong> Está nos casos de Seu Antônio, João e Marina, e mudou com a diretriz de 2025.</p>
+<p><strong>Entenda primeiro.</strong> O diagnóstico exige confirmação, porque uma medida isolada pode refletir ansiedade (efeito do jaleco branco). A diretriz de 2025 trouxe duas mudanças que costumam cair: a meta ficou mais baixa e o tratamento passou a começar, em geral, com <strong>dois remédios combinados</strong>, porque a monoterapia raramente controla a pressão.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p>Confirmar em <strong>duas ou mais visitas, ou por MAPA/MRPA</strong>. Exceção: lesão de órgão-alvo já fecha o diagnóstico.</p></li><li><p><strong>Meta: abaixo de 130/80</strong> para a maioria.</p></li><li><p>PA <strong>≥ 140/90:</strong> medicar no diagnóstico, com <strong>dois fármacos</strong>. Monoterapia só em estágio 1 de baixo risco, idosos com 80 anos ou mais e pessoas frágeis.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 4, Hipertensão (classificação completa por estágios).</p>
+<h3 id="15-pré-natal-na-aps">1.5 Pré-natal na APS</h3>
+<p><strong>Por que é essencial.</strong> Duas aulas inteiras (Prof. Vinicio e Profa. Raquel) e o caso Marina. É a estrutura onde se encaixam todos os agravos da gestação.</p>
+<p><strong>Entenda primeiro.</strong> O objetivo do pré-natal é identificar riscos cedo e agir antes que virem complicação. Por isso a captação precisa ser precoce e o risco é <strong>reavaliado em toda consulta</strong>: uma gestação de risco habitual pode se tornar de alto risco a qualquer momento. Mesmo quando a gestante vai para o ambulatório de alto risco, a APS <strong>continua coordenando o cuidado</strong>: não existe &quot;alta do pré-natal&quot;.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p>Primeira consulta <strong>até 12 semanas</strong>; <strong>no mínimo 6 consultas</strong>, alternando médico e enfermeiro.</p></li><li><p>Frequência: <strong>mensal até 28 semanas, quinzenal de 28 a 36, semanal a partir de 36</strong>.</p></li><li><p><strong>Regra de Naegele:</strong> data provável do parto = data da última menstruação + 7 dias − 3 meses.</p></li><li><p>Exames-chave: sorologias na 1ª consulta; <strong>teste de tolerância à glicose (75 g) entre 24 e 28 semanas</strong>; repetir sífilis e HIV no 3º trimestre e no parto.</p></li><li><p>Vacinas: <strong>dTpa a partir de 20 semanas; VSR a partir de 28</strong>; influenza em qualquer idade gestacional. <strong>Vacinas de vírus vivo são contraindicadas.</strong></p></li><li><p>Suplementos: ácido fólico 0,4 mg, ferro 40 mg e cálcio 1 g por dia.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 3 (exames por trimestre, estratificação por cores e alto risco tipos I e II).</p>
+<h3 id="16-síndromes-hipertensivas-na-gestação">1.6 Síndromes hipertensivas na gestação</h3>
+<p><strong>Por que é essencial.</strong> É a pegadinha do caso Marina e aparece nas duas aulas com os mesmos critérios.</p>
+<p><strong>Entenda primeiro.</strong> O marco que organiza tudo é a <strong>20ª semana</strong>. Pressão alta antes dela já existia antes da gravidez: é <strong>hipertensão crônica</strong>, mesmo que descoberta agora. Depois da 20ª semana, o que separa hipertensão gestacional de pré-eclâmpsia é a presença de proteinúria ou de lesão de órgão. A pré-eclâmpsia pode ser prevenida em quem tem fatores de risco, e os remédios usados fora da gestação para pressão podem prejudicar o feto.</p>
+<p><strong>Memorize.</strong></p>
+<table><thead><tr><th>Quadro</th><th>Critério</th></tr></thead><tbody><tr><td>Hipertensão crônica</td><td>PA ≥ 140/90 <strong>antes de 20 semanas</strong> (ou antes da gestação)</td></tr><tr><td>Hipertensão gestacional</td><td>Após 20 semanas, sem proteinúria e sem lesão de órgão</td></tr><tr><td>Pré-eclâmpsia</td><td>Após 20 semanas <strong>com proteinúria ou lesão de órgão</strong></td></tr><tr><td>Eclâmpsia</td><td>Pré-eclâmpsia <strong>com convulsão</strong></td></tr></tbody></table>
+<ul><li><p>Gravidade: <strong>PA ≥ 160/110</strong>, cefaleia, escotomas ou dor epigástrica. Conduta: emergência.</p></li><li><p>Prevenção: <strong>AAS 100 mg à noite, iniciado antes de 16 semanas</strong>, se houver 1 fator de risco alto ou 2 moderados; <strong>cálcio</strong> junto.</p></li><li><p>Tratamento: <strong>metildopa ou nifedipina</strong>. <strong>Proibidos na gestação: IECA (enalapril), BRA e diuréticos.</strong></p></li></ul>
+<p><strong>Divergência entre aulas.</strong> Idade como fator moderado: <strong>≥ 35 anos</strong> (Vinicio) x <strong>≥ 40 anos</strong> (Raquel).</p>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 3 (critérios de proteinúria e lista completa de fatores de risco).</p>
+<h3 id="17-sífilis-na-gestação">1.7 Sífilis na gestação</h3>
+<p><strong>Por que é essencial.</strong> Está no caso Marina e é cobrada com detalhes de esquema e de &quot;tratamento adequado&quot;.</p>
+<p><strong>Entenda primeiro.</strong> A sífilis congênita é evitável, e o único tratamento que protege o feto é a <strong>penicilina benzatina</strong>. Por isso a regra é não esperar: um teste rápido reagente já autoriza tratar na mesma consulta. O esquema depende do tempo de infecção; quando não se sabe há quanto tempo ela existe, trata-se como tardia.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p>Testar em <strong>três momentos:</strong> 1ª consulta, cerca de 28 semanas e admissão para o parto.</p></li><li><p><strong>Um teste reagente: tratar na hora.</strong></p></li><li><p>Sífilis recente: benzatina 2,4 milhões UI em dose única. <strong>Tardia ou de duração ignorada: 3 doses semanais</strong> (total 7,2 milhões UI). Intervalo acima de 9 dias: reiniciar.</p></li><li><p><strong>Alergia à penicilina: dessensibilização</strong>, pois não há alternativa na gestante.</p></li><li><p>Tratar o parceiro, notificar e acompanhar com VDRL mensal.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 3, Sífilis na gestação.</p>
+<h3 id="18-contracepção-quando-o-estrogênio-é-proibido">1.8 Contracepção: quando o estrogênio é proibido</h3>
+<p><strong>Por que é essencial.</strong> É o tema de planejamento reprodutivo que vira questão direta, em formato &quot;paciente com X quer pílula&quot;.</p>
+<p><strong>Entenda primeiro.</strong> O estrogênio dos métodos combinados aumenta o risco de trombose. Por isso ele é contraindicado em quem já tem risco trombótico ou vascular elevado. Nesses casos, as opções seguras são os métodos só de progestágeno e o DIU. A única situação que proscreve <strong>todos</strong> os hormonais é o câncer de mama.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p><strong>Combinados contraindicados:</strong> fumante acima de 35 anos, <strong>enxaqueca com aura</strong> (risco de AVC), hipertensão não controlada, trombose prévia, doença cardiovascular, amamentação nos primeiros 6 meses.</p></li><li><p><strong>Câncer de mama:</strong> nenhum método hormonal; usar DIU de cobre.</p></li><li><p>Emergência: <strong>levonorgestrel até 72 horas</strong> ou <strong>DIU de cobre até 5 dias</strong>.</p></li><li><p>Laqueadura e vasectomia: <strong>mais de 21 anos ou 2 filhos vivos</strong>, <strong>60 dias</strong> entre o pedido e a cirurgia, <strong>sem</strong> necessidade de autorização do cônjuge.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 2, Planejamento reprodutivo (pós-parto e amamentação).</p>
+<h2 id="nível-2-importante">Nível 2 · Importante</h2>
+<p>Temas com cara de questão objetiva. A explicação é mais curta; o foco é entender a lógica e fixar os pontos em negrito.</p>
+<h3 id="21-saúde-do-idoso">2.1 Saúde do idoso</h3>
+<p><strong>Entenda primeiro.</strong> No idoso, o que define o cuidado é a <strong>funcionalidade</strong>, ou seja, o que a pessoa consegue fazer sozinha, mais do que a lista de doenças. A Avaliação Multidimensional usa escalas simples para transformar cada achado em um risco e em uma conduta. Também é preciso separar o envelhecimento normal (senescência) da doença (senilidade): confundir os dois leva a subdiagnóstico.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p><strong>Katz</strong> avalia atividades básicas (banho, vestir, alimentação). <strong>O banho é o primeiro a ser perdido e a alimentação, o último.</strong></p></li><li><p><strong>Lawton</strong> avalia atividades instrumentais (remédios, finanças, compras). Elas são <strong>perdidas antes</strong> das básicas e são o primeiro sinal de demência ou fragilidade.</p></li><li><p><strong>Teste Levantar e Caminhar (TUG):</strong> menos de 10 s, baixo risco de queda; 10 a 20 s, moderado; <strong>mais de 20 s, alto</strong>.</p></li><li><p><strong>Fragilidade (Fried):</strong> perda de peso, exaustão, fraqueza, marcha lenta, pouca atividade. <strong>0 critérios = robusto; 1 a 2 = pré-frágil; 3 ou mais = frágil.</strong> O pré-frágil ainda é reversível.</p></li><li><p><strong>Delirium:</strong> início <strong>agudo</strong>, curso <strong>flutuante</strong>, <strong>atenção e consciência alteradas</strong>. É emergência e costuma ter causa tratável (infecção, remédio, retenção urinária). A demência é insidiosa e progressiva, com consciência preservada.</p></li><li><p><strong>Polifarmácia = 5 ou mais medicamentos.</strong> Risco de <strong>cascata prescritiva</strong>: o efeito adverso de um remédio é tratado como doença nova (ex.: IECA causa tosse, que recebe broncodilatador). Conduta: pedir a <strong>sacola de remédios</strong> e desprescrever.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 5, Saúde do Idoso (Mini-Cog, quedas, tabela dos 3 Ds).</p>
+<h3 id="22-diabetes-no-adulto-e-na-gestação">2.2 Diabetes no adulto e na gestação</h3>
+<p><strong>Entenda primeiro.</strong> Os pontos de corte são diferentes fora e dentro da gestação. Na gestante, valores menores já fazem diagnóstico, porque mesmo uma hiperglicemia leve afeta o feto.</p>
+<p><strong>Memorize.</strong></p>
+<table><thead><tr><th>Exame</th><th>Pré-diabetes</th><th>Diabetes (adulto)</th></tr></thead><tbody><tr><td>Glicemia de jejum</td><td>100–125</td><td><strong>≥ 126</strong></td></tr><tr><td>HbA1c</td><td>5,7–6,4%</td><td><strong>≥ 6,5%</strong></td></tr><tr><td>TOTG 2 h</td><td>140–199</td><td><strong>≥ 200</strong></td></tr></tbody></table>
+<ul><li><p>Diabético: HbA1c a cada 3 a 6 meses, <strong>meta abaixo de 7%</strong>; rim e pés todo ano; olhos a cada 1 a 2 anos.</p></li><li><p><strong>Diabetes gestacional:</strong> glicemia de jejum <strong>entre 92 e 125</strong>; ou TOTG com jejum ≥ 92, <strong>1 hora ≥ 180</strong> ou <strong>2 horas ≥ 153</strong>. Jejum ≥ 126 na gestante indica diabetes prévio.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seções 3 e 4.</p>
+<h3 id="23-puericultura">2.3 Puericultura</h3>
+<p><strong>Entenda primeiro.</strong> A consulta da criança saudável acompanha crescimento, desenvolvimento e vacinas ao longo do tempo. O que importa é a <strong>trajetória nas curvas</strong>, não um ponto isolado, e a progressão dos marcos, não uma data exata.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p>Consultas: 1ª semana, 1, 2, 4, 6, 9, 12, 18 e 24 meses (Ministério da Saúde: 9 nos dois primeiros anos).</p></li><li><p>Curvas da OMS: pontos de corte em <strong>−2 e +2 escores Z</strong>. Perímetro cefálico obrigatório até 2 anos; prematuro usa idade corrigida.</p></li><li><p>Sinais de alerta: <strong>regressão de marcos (o mais grave)</strong>; sem sorriso social aos 3 meses; sem palavras aos 12 meses; sem frases de duas palavras aos 24 meses.</p></li><li><p>Vacina atrasada: <strong>nunca reiniciar o esquema</strong>.</p></li><li><p>Criança que recebe NutriSUS <strong>não recebe</strong> ferro nem vitamina A isolados.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 1 (marcos por idade, calendário vacinal, triagem neonatal).</p>
+<h3 id="24-violência-criança-mulher-e-idoso">2.4 Violência: criança, mulher e idoso</h3>
+<p><strong>Entenda primeiro.</strong> A APS costuma ser o primeiro serviço a perceber a violência. A notificação é obrigação legal e <strong>não fere o sigilo profissional</strong>, porque protege a vítima.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p>Criança: <strong>a suspeita basta</strong>; notificar ao <strong>Conselho Tutelar e ao SINAN</strong> (ECA, art. 13).</p></li><li><p>Mulher: notificação <strong>independe do consentimento</strong>; o sigilo é mantido com o agressor, não com a rede de proteção.</p></li><li><p>Idoso: violência subnotificada; notificação compulsória.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seções 1 e 2.</p>
+<h3 id="25-infecção-urinária-na-gestação">2.5 Infecção urinária na gestação</h3>
+<p><strong>Entenda primeiro.</strong> Na gestante, a infecção urinária sobe com facilidade para o rim e aumenta o risco de parto prematuro. Por isso até a forma sem sintomas é tratada.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p><strong>Bacteriúria assintomática: sempre tratar</strong>, com urocultura de controle.</p></li><li><p>Cistite: cefalexina ou nitrofurantoína. <strong>Pielonefrite: internar</strong> e tratar por via venosa.</p></li></ul>
+<p><strong>Divergência entre aulas.</strong> Nitrofurantoína por <strong>5 dias</strong> (Vinicio) ou <strong>7 dias</strong> (Raquel). O Prof. Vinicio também indica profilaxia até o parto após pielonefrite.</p>
+<h3 id="26-climatério-e-terapia-hormonal">2.6 Climatério e terapia hormonal</h3>
+<p><strong>Entenda primeiro.</strong> A terapia hormonal é o tratamento mais eficaz para os fogachos, mas seu benefício depende de começar cedo. Em mulheres com útero, o estrogênio isolado estimula o endométrio e aumenta o risco de câncer; por isso é preciso associar progestágeno.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p>Menopausa = <strong>12 meses sem menstruar</strong>; média de 51 anos.</p></li><li><p>Janela de oportunidade: <strong>antes dos 60 anos ou até 10 anos após a menopausa</strong>.</p></li><li><p><strong>Com útero: estrogênio + progestágeno.</strong></p></li><li><p>Contraindicações: câncer de mama ou de endométrio, trombose, sangramento sem diagnóstico, doença hepática grave, doença coronariana.</p></li></ul>
+<p><strong>Para aprofundar:</strong> <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a> › seção 2 (esquemas, alternativas não hormonais, osteoporose).</p>
+<h3 id="27-tabagismo-e-álcool">2.7 Tabagismo e álcool</h3>
+<p><strong>Entenda primeiro.</strong> Parar de fumar é a intervenção individual de maior impacto no risco cardiovascular. A abordagem é breve e repetida em toda consulta; a recaída faz parte do processo.</p>
+<p><strong>Memorize.</strong></p>
+<ul><li><p>Abordagem breve em cinco passos: <strong>perguntar, avaliar, aconselhar, preparar e acompanhar</strong>. No SUS há reposição de nicotina e bupropiona.</p></li><li><p><strong>AUDIT:</strong> 0–7 baixo risco; 8–15 uso de risco; 16–19 uso nocivo; <strong>20 ou mais, provável dependência</strong>.</p></li></ul>
+<h2 id="nível-3-complementar">Nível 3 · Complementar</h2>
+<p>Pontos que podem aparecer como detalhe de uma questão ou como alternativa. Leia uma vez e guarde a ideia central. Os detalhes completos estão em <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a>.</p>
+<table><thead><tr><th>Tema</th><th>Ideia central</th><th>O que guardar</th></tr></thead><tbody><tr><td>Calendário vacinal infantil</td><td>A Caderneta é conferida em toda consulta</td><td>BCG e hepatite B ao nascer; febre amarela aos 9 meses; tríplice viral aos 12 meses; HPV dos 9 aos 14 anos</td></tr><tr><td>Triagem neonatal</td><td>Quatro testes para doenças que têm tratamento precoce</td><td><strong>Pezinho do 3º ao 5º dia</strong>; coraçãozinho entre 24 e 48 horas</td></tr><tr><td>Adolescência</td><td>O vínculo depende da confidencialidade</td><td>Sigilo só é quebrado com <strong>risco de vida</strong>, sempre avisando o adolescente</td></tr><tr><td>Classificação BI-RADS</td><td>Cada categoria tem uma conduta</td><td><strong>0:</strong> complementar · <strong>3:</strong> controle em 6 meses · <strong>4 e 5:</strong> encaminhar</td></tr><tr><td>Sinais de alerta na mama</td><td>Sintoma é investigação, não rastreamento</td><td>Nódulo fixo, secreção com sangue em um mamilo, pele em casca de laranja</td></tr><tr><td>Hiperêmese gravídica</td><td>Vômitos com repercussão sistêmica</td><td><strong>Perda de mais de 5% do peso</strong>; dar tiamina na internação</td></tr><tr><td>Hemorragia pós-parto</td><td>Causa mais comum é o útero que não contrai</td><td>Regra dos <strong>4 T</strong>: tônus, trauma, tecido, trombina</td></tr><tr><td>Puerpério</td><td>A primeira semana é a mais crítica</td><td>Visita domiciliar na 1ª semana; rastrear depressão com a escala de Edimburgo</td></tr><tr><td>Estreptococo do grupo B</td><td>Previne infecção grave no recém-nascido</td><td>Swab vaginal e retal entre <strong>36 e 38 semanas</strong></td></tr><tr><td>Doença renal crônica</td><td>Já classifica como alto risco cardiovascular</td><td>Rastrear com taxa de filtração e relação albumina/creatinina</td></tr><tr><td>Osteoporose</td><td>Diagnóstico pela densitometria</td><td>Indicada acima de 65 anos; <strong>T-score ≤ −2,5</strong></td></tr><tr><td>Mudança de comportamento</td><td>Uma meta pequena funciona melhor que várias</td><td>Estágios de mudança; entrevista motivacional</td></tr><tr><td>Lipoproteína(a)</td><td>Fator genético, dosado uma vez na vida</td><td>≥ 50 mg/dL é agravante de risco</td></tr></tbody></table>
+<p><strong>Divergência entre aulas.</strong> Intervalo ideal entre gestações: <strong>2 anos</strong> (Vinicio) x <strong>18 meses</strong> (Raquel). Visita pós-parto: <strong>3º ao 5º dia</strong> (Vinicio) x <strong>até o 7º dia</strong> (Raquel).</p>
+<h2 id="nível-4-contexto">Nível 4 · Contexto</h2>
+<p>Conteúdo que ajuda a entender os temas, mas raramente vira questão. Basta reconhecer.</p>
+<ul><li><p>Histórico e eixos da Política Nacional de Atenção Integral à Saúde da Criança.</p></li><li><p>Lista completa de métodos contraceptivos comportamentais.</p></li><li><p>Diferenças entre as vias da terapia hormonal (basta saber que a transdérmica tem menor risco de trombose).</p></li><li><p>Mapa de vinculação das maternidades de Salvador.</p></li><li><p>Fórmulas de cálculo do LDL e apolipoproteína B.</p></li><li><p>Números dos estudos citados nas aulas (redução de 40% e 53% com DNA-HPV; ensaios do PSA).</p></li></ul>
+<h2 id="como-resolver-os-casos-clínicos">Como resolver os casos clínicos</h2>
+<p>Todas as aulas da unidade terminam com um caso e um gabarito comentado, e as perguntas se repetem: <strong>qual o risco, o que fazer, o que não pedir e quais vulnerabilidades considerar</strong>. Treinar um roteiro fixo evita esquecer partes da resposta.</p>
+<h3 id="roteiro-em-sete-passos">Roteiro em sete passos</h3>
+<ol><li><p><strong>Liste os problemas.</strong> Cada diagnóstico e cada fator de risco em uma linha, inclusive hábitos (fumo, sedentarismo) e contexto social.</p></li><li><p><strong>Classifique o risco.</strong> Cardiovascular no adulto, gestacional na gestante, funcional e de fragilidade no idoso.</p></li><li><p><strong>Defina a conduta de cada problema.</strong> Sempre que possível, com a meta numérica: PA abaixo de 130/80, LDL abaixo de 70, HbA1c abaixo de 7%.</p></li><li><p><strong>Verifique os rastreamentos devidos.</strong> Pela idade e pelo sexo da pessoa e também dos acompanhantes.</p></li><li><p><strong>Diga o que não pedir.</strong> É a prevenção quaternária, cobrada em quase todo gabarito.</p></li><li><p><strong>Considere vulnerabilidades e a rede.</strong> Agente comunitário, CRAS, família, cuidador, horários possíveis, notificação.</p></li><li><p><strong>Planeje o seguimento.</strong> Retorno em quanto tempo e quem coordena (a APS, mesmo quando há especialista).</p></li></ol>
+<h3 id="os-casos-das-aulas">Os casos das aulas</h3>
+<table><thead><tr><th>Caso</th><th>Ponto central</th><th>Resposta esperada</th></tr></thead><tbody><tr><td><strong>Marina</strong>, 19 anos, 17 semanas, PA 148/94, sífilis e infecção urinária</td><td>A pressão alta aparece <strong>antes de 20 semanas</strong></td><td>Hipertensão crônica, logo <strong>alto risco</strong> (APS segue coordenando). Benzatina em 3 doses, VDRL, notificação e parceiro. Urocultura e antibiótico. AAS e cálcio. Apoio social.</td></tr><tr><td><strong>Seu Antônio</strong>, 54 anos, fumante, PA 146/90, LDL 168</td><td>O escore deu intermediário</td><td><strong>Agravantes (Lp(a) elevada, pai com infarto aos 52) sobem para alto risco.</strong> Dois anti-hipertensivos, estatina, cessação do tabagismo. Sem PSA, ultrassom ou vitaminas.</td></tr><tr><td><strong>João</strong>, 50 anos, sem queixas, pede check-up</td><td>O pai teve infarto aos 58 anos</td><td><strong>Não é história familiar precoce</strong> (corte: antes dos 55 no homem). Pedir só PA, lipídios, glicemia, creatinina e sangue oculto nas fezes. Apoio para parar de fumar.</td></tr><tr><td><strong>Seu Antônio</strong>, 78 anos, esquecimento e duas quedas</td><td>Os sintomas podem vir dos remédios</td><td><strong>Sacola de remédios</strong>; Katz, Lawton, TUG e Mini-Cog; diferenciar demência, delirium e depressão; avaliar a sobrecarga da filha.</td></tr></tbody></table>
+<p><strong>Rita, 51 anos, que nunca fez exames,</strong> aparece como acompanhante e é o modelo de &quot;o que essa pessoa precisa&quot;: DNA-HPV, mamografia, sangue oculto nas fezes, pressão, glicemia, lipídios e vacinas.</p>
+<p>Os gabaritos completos de cada caso estão em <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a>.</p>
+<h2 id="autoteste">Autoteste</h2>
+<p>Responda antes de olhar a coluna da resposta. Se errar, volte ao tema indicado.</p>
+<table><thead><tr><th>#</th><th>Pergunta</th><th>Resposta</th><th>Tema</th></tr></thead><tbody><tr><td>1</td><td>Mulher de 35 anos tem DNA-HPV positivo para o tipo 18. Qual a conduta?</td><td>Colposcopia direto</td><td>1.1</td></tr><tr><td>2</td><td>Mulher de 45 anos, sem sintomas, pede mamografia. O que fazer?</td><td>Está fora da faixa: decisão compartilhada, explicando benefícios e danos; o acesso não é negado</td><td>1.1</td></tr><tr><td>3</td><td>Homem de 60 anos pede PSA. Conduta?</td><td>Decisão compartilhada; não pedir de forma automática</td><td>1.2</td></tr><tr><td>4</td><td>Qual viés faz a sobrevida parecer maior sem mudar a data da morte?</td><td>Viés de tempo ganho</td><td>1.2</td></tr><tr><td>5</td><td>Diabético de 50 anos: é preciso calcular o escore para definir a categoria?</td><td>Não: diabetes já é alto risco; meta de LDL abaixo de 70</td><td>1.3</td></tr><tr><td>6</td><td>Qual a meta de LDL no risco muito alto?</td><td>Abaixo de 50 mg/dL</td><td>1.3</td></tr><tr><td>7</td><td>PA de 150/95 confirmada, risco intermediário. Quantos fármacos iniciar?</td><td>Dois, combinados</td><td>1.4</td></tr><tr><td>8</td><td>Gestante de 12 semanas com PA de 145/92. Qual o diagnóstico?</td><td>Hipertensão crônica</td><td>1.6</td></tr><tr><td>9</td><td>Quando iniciar o AAS para prevenir pré-eclâmpsia?</td><td>Antes de 16 semanas, à noite, até 36 semanas</td><td>1.6</td></tr><tr><td>10</td><td>Qual anti-hipertensivo é proibido na gestação, mas liberado na amamentação?</td><td>Enalapril</td><td>1.6</td></tr><tr><td>11</td><td>Gestante com teste rápido de sífilis reagente e tempo de infecção desconhecido. Esquema?</td><td>Benzatina 2,4 milhões UI por semana, 3 doses, começando na consulta</td><td>1.7</td></tr><tr><td>12</td><td>Gestante com sífilis e alergia à penicilina. Conduta?</td><td>Dessensibilização</td><td>1.7</td></tr><tr><td>13</td><td>Mulher com enxaqueca com aura quer anticoncepcional combinado. Pode?</td><td>Não: progestágeno isolado ou DIU</td><td>1.8</td></tr><tr><td>14</td><td>Quais os requisitos legais da laqueadura?</td><td>Mais de 21 anos ou 2 filhos vivos; 60 dias; sem autorização do cônjuge</td><td>1.8</td></tr><tr><td>15</td><td>Na escala de Katz, qual atividade é perdida primeiro?</td><td>Banho</td><td>2.1</td></tr><tr><td>16</td><td>Idoso confuso desde ontem, desatento, piora à noite. Hipótese?</td><td>Delirium: emergência, buscar a causa</td><td>2.1</td></tr><tr><td>17</td><td>Idoso com 2 critérios de Fried. Classificação?</td><td>Pré-frágil</td><td>2.1</td></tr><tr><td>18</td><td>Gestante com glicemia de jejum de 98 na primeira consulta. Diagnóstico?</td><td>Diabetes gestacional</td><td>2.2</td></tr><tr><td>19</td><td>Criança de 18 meses deixou de falar palavras que já falava. Conduta?</td><td>Regressão: investigar imediatamente</td><td>2.3</td></tr><tr><td>20</td><td>Suspeita de violência contra criança: é preciso ter certeza para notificar?</td><td>Não; notificar ao Conselho Tutelar e ao SINAN</td><td>2.4</td></tr><tr><td>21</td><td>Gestante com bacteriúria assintomática deve ser tratada?</td><td>Sim, sempre</td><td>2.5</td></tr><tr><td>22</td><td>Mulher de 52 anos, com útero, vai iniciar terapia hormonal. O que não pode faltar?</td><td>Progestágeno associado</td><td>2.6</td></tr></tbody></table>
+<h2 id="plano-de-estudo">Plano de estudo</h2>
+<p>Seis sessões de cerca de uma hora e meia, do tema mais cobrado para o menos cobrado. Se o tempo for curto, faça as sessões 1 a 4 e o autoteste. Marque cada sessão ao concluir.</p>
+<ul><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 1 · Adulto.</strong> Temas 1.1 a 1.4 (rastreamento, prevenção quaternária, risco cardiovascular, hipertensão). Ao final, resolva os casos de Seu Antônio (54 anos) e João sem consultar.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 2 · Gestante.</strong> Temas 1.5 a 1.7 (pré-natal, síndromes hipertensivas, sífilis), mais 2.2 (diabetes gestacional) e 2.5 (infecção urinária). Ao final, resolva o caso Marina.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 3 · Saúde da mulher.</strong> Tema 1.8 (contracepção), rastreamento de colo e mama (rever 1.1) e 2.6 (climatério).</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 4 · Idoso.</strong> Tema 2.1. Ao final, resolva o caso de Seu Antônio (78 anos).</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 5 · Criança e violência.</strong> Temas 2.3 e 2.4, mais a tabela do Nível 3.</p></li><li data-checked="false"><p><input type="checkbox" disabled> <strong>Sessão 6 · Revisão.</strong> Faça o autoteste completo e volte apenas aos temas em que errou. Releia as divergências entre aulas.</p></li></ul>
+<p><strong>Na véspera da prova:</strong> releia apenas o Nível 1 e refaça o autoteste. Evite conteúdo novo.</p>
+<p>Para qualquer dúvida de detalhe durante o estudo, consulte <a data-atom="container" data-ref="project/db009b1b-49ab-442a-b104-97df908c31d9">MFC – Resumo da 2ª Unidade (Turma 41)</a>.</p>
+
+</section>
+<section class="pane" id="pane-resumo" hidden>
+<h1 id="r-mfc-resumo-da-2ª-unidade-turma-41">MFC – Resumo da 2ª Unidade (Turma 41)</h1>
+<p><time data-atom="date" datetime="2026-11-12">2026-11-12</time> · <span data-atom="mention" data-principal="u_PR9D9RMc6Dk5dAduTNap7A">@u_PR9D9RMc6Dk5dAduTNap7A</span></p>
+<h2 id="r-o-que-cai-e-como-usar">O que cai e como usar</h2>
+<p>A 2ª unidade cobre as aulas 6 a 10 do plano de MFC 2026.2: Criança e Adolescente, Mulher I, Mulher/Gestante II, Adulto e Idoso. Fontes: PDFs da pasta MFC da Turma 41 e as versões finais/revisadas do Prof. Vinicio (Mulher I, Gestante Parte 2, Adulto e Idoso). Onde os dois professores divergem, o resumo marca. As aulas de HAS/DM e TB/Hanseníase/IST ainda não têm material.</p>
+<p><strong>Temas com maior chance de prova</strong> (os professores montaram casos clínicos: Marina, Seu Antônio e Rita):</p>
+<ol><li><p>Rastreamento: colo do útero (DNA-HPV), mama (50–74, bienal), colorretal (FIT), diabetes e PSA (decisão compartilhada).</p></li><li><p>Pré-natal: captação ≤ 12 sem, ≥ 6 consultas, exames por trimestre, vacinas, suplementos.</p></li><li><p>Síndromes hipertensivas na gestação e prevenção de pré-eclâmpsia (cálcio + AAS).</p></li><li><p>Sífilis na gestação: 3 testagens, penicilina benzatina, tratamento adequado.</p></li><li><p>Estratificação de risco cardiovascular (PREVENT, categorias, metas de LDL) e conduta na HAS.</p></li><li><p>Contracepção: contraindicações ao estrogênio, pós-parto, emergência, laqueadura/vasectomia.</p></li><li><p>Puericultura: curvas e escore Z, marcos do DNPM e sinais de alerta, calendário vacinal, suplementação.</p></li><li><p>Violência (criança e mulher): notificação compulsória e para onde notificar.</p></li><li><p>Prevenção quaternária e vieses do rastreamento.</p></li><li><p>Climatério: definição de menopausa e terapia hormonal.</p></li></ol>
+<p>Também com cara de prova: <strong>Idoso</strong> (Katz x Lawton, Mini-Cog, TUG, Fried, os 3 Ds, cascata prescritiva) e <strong>diabetes gestacional</strong> (jejum ≥ 92, TOTG 92/180/153).</p>
+<h2 id="r-1-saúde-da-criança-e-do-adolescente">1. Saúde da Criança e do Adolescente</h2>
+<p>Na APS a criança é acompanhada pela puericultura: crescimento, desenvolvimento, vacinas e orientação antecipatória, com longitudinalidade e vínculo com a família.</p>
+<p><strong>PNAISC (2015):</strong> crianças de 0 a 9 anos, ênfase na primeira infância. Eixos: atenção humanizada ao RN; aleitamento e alimentação; crescimento e desenvolvimento; doenças prevalentes (AIDPI); prevenção de violências; CRIANES (crianças com necessidades especiais); vigilância e pesquisa.</p>
+<h3 id="r-puericultura">Puericultura</h3>
+<ul><li><p><strong>Caderneta da Criança:</strong> documento oficial, deve estar em toda consulta (peso, estatura, PC, curvas OMS, desenvolvimento 0–6 anos, vacinas, suplementos).</p></li><li><p><strong>Nº de consultas:</strong> MS = 9 nos 2 primeiros anos; SBP = 12. Esquema: 1ª semana (VD ou consulta), 1, 2, 4, 6, 9, 12, 18 e 24 meses; depois anual dos 2 aos 10 anos.</p></li><li><p><strong>Orientação antecipatória:</strong> alimentação, sono e comportamento, segurança (acidentes, cadeirinha, afogamento), estimulação (leitura, brincadeira).</p></li></ul>
+<h3 id="r-crescimento">Crescimento</h3>
+<ul><li><p>Vale a <strong>trajetória</strong>, não o ponto isolado. Peso = mais sensível a agravos agudos; estatura = agravos crônicos; IMC a partir dos 2 anos; <strong>PC obrigatório até 2 anos</strong>.</p></li><li><p>Curvas OMS 2006 (0–5 anos) e OMS 2007 (adolescentes). Prematuro: <strong>idade corrigida até 24–36 meses</strong>. Síndrome de Down: curva própria.</p></li></ul>
+<table><thead><tr><th>Índice</th><th>Abaixo de −2 Z</th><th>Acima de +2 Z</th></tr></thead><tbody><tr><td>Peso/Idade</td><td>Baixo peso</td><td>Peso elevado</td></tr><tr><td>Estatura/Idade</td><td>Baixa estatura</td><td>Estatura elevada</td></tr><tr><td>Peso/Estatura e IMC/Idade</td><td>Magreza</td><td>Sobrepeso/obesidade</td></tr><tr><td>PC/Idade</td><td>Microcefalia</td><td>Macrocefalia</td></tr></tbody></table>
+<ul><li><p>Alteração de PC = investigação neurológica, independente dos outros índices.</p></li><li><p><strong>Falha de crescimento:</strong> cruzar 2 canais percentílicos para baixo; &lt; −2 Z em 2 medidas seguidas; estagnação do ganho. Causas na APS: ingestão insuficiente, infecções de repetição, insegurança alimentar, doença crônica.</p></li><li><p><strong>Obesidade (IMC/idade):</strong> ≥ +2 Z = sobrepeso; ≥ +3 Z = obesidade.</p></li></ul>
+<h3 id="r-desenvolvimento-neuropsicomotor">Desenvolvimento neuropsicomotor</h3>
+<p>Domínios: motor grosso, motor fino, linguagem, pessoal-social. Marcos são faixas, não datas.</p>
+<table><thead><tr><th>Idade</th><th>Marco</th></tr></thead><tbody><tr><td>2 meses</td><td>Sorriso social, segue objeto, vocaliza</td></tr><tr><td>4 meses</td><td>Sustenta a cabeça, ri alto</td></tr><tr><td>6 meses</td><td>Senta com apoio, transfere objetos, balbucia</td></tr><tr><td>9 meses</td><td>Engatinha, pinça, estranhamento, “mama/papa”</td></tr><tr><td>12 meses</td><td>Anda com apoio, aponta, 1–3 palavras</td></tr><tr><td>18 meses</td><td>Anda sozinho, 10+ palavras</td></tr><tr><td>2 anos</td><td>Corre, frases de 2 palavras, brincar paralelo</td></tr><tr><td>3 anos</td><td>Sobe escadas, frases completas</td></tr><tr><td>4–5 anos</td><td>Pula, conta histórias, brincadeira simbólica</td></tr></tbody></table>
+<p><strong>Sinais de alerta (investigar já):</strong> regressão de marcos (o mais grave); sem sorriso social aos 3 meses; sem palavras/gestos aos 12 meses; sem frases de 2 palavras (ou &lt; 50 palavras) aos 24 meses; hipotonia, assimetria, reflexos primitivos persistentes.</p>
+<h3 id="r-imunização-pni">Imunização (PNI)</h3>
+<table><thead><tr><th>Idade</th><th>Vacinas</th></tr></thead><tbody><tr><td>Ao nascer</td><td>BCG (ID) e Hepatite B</td></tr><tr><td>2 e 4 meses</td><td>Penta, VIP, Pneumo 10, Rotavírus</td></tr><tr><td>3 e 5 meses</td><td>Meningo C</td></tr><tr><td>6 meses</td><td>Penta, VIP, Influenza, COVID-19</td></tr><tr><td>9 meses</td><td>Febre amarela</td></tr><tr><td>12 meses</td><td>Tríplice viral, Pneumo 10 (ref.), ACWY (ref.)</td></tr><tr><td>15 meses</td><td>DTP, VIP, Varicela, Hepatite A</td></tr><tr><td>4 anos</td><td>DTP, Febre amarela, Varicela</td></tr><tr><td>9–14 anos</td><td>HPV4</td></tr><tr><td>10–14 anos</td><td>Dengue</td></tr><tr><td>11–14 anos</td><td>ACWY</td></tr></tbody></table>
+<p>Atraso vacinal: <strong>nunca reiniciar o esquema</strong>; aproveitar doses dadas; respeitar intervalos mínimos; registrar no SIPNI; toda consulta é oportunidade.</p>
+<h3 id="r-triagem-neonatal">Triagem neonatal</h3>
+<ul><li><p><strong>Pezinho:</strong> 3º a 5º dia (fenilcetonúria, hipotireoidismo congênito, fibrose cística, hemoglobinopatias, HAC, biotinidase, toxoplasmose).</p></li><li><p><strong>Olhinho:</strong> reflexo vermelho (catarata, glaucoma, retinoblastoma).</p></li><li><p><strong>Orelhinha:</strong> emissões otoacústicas, obrigatório por lei.</p></li><li><p><strong>Coraçãozinho:</strong> oximetria entre 24 e 48 h (cardiopatias congênitas críticas).</p></li></ul>
+<h3 id="r-nutrição-e-suplementos">Nutrição e suplementos</h3>
+<ul><li><p>AME até 6 meses (sem água nem chá); complementado até 2 anos ou mais.</p></li><li><p><strong>NutriSUS:</strong> 6–24 meses (Bolsa Família) e indígenas 6–59 meses; 60 sachês aos 6, 12 e 18 meses.</p></li><li><p><strong>Ferro (PNSF):</strong> 6–24 meses, 10–12,5 mg/dia, 2 ciclos de 3 meses com pausa de 3 meses.</p></li><li><p><strong>Vitamina A:</strong> 6–59 meses (N, NE, CO) ou 6–24 meses (S, SE).</p></li><li><p><strong>Pegadinha:</strong> quem recebe NutriSUS <strong>não</strong> recebe sulfato ferroso nem megadose de vitamina A.</p></li></ul>
+<h3 id="r-vulnerabilidades-e-violência">Vulnerabilidades e violência</h3>
+<ul><li><p>Vulnerabilidade = biológica + social + familiar + ambiental (não é só pobreza). Insegurança alimentar: perguntar direto, EBIA; conduta = CRAS, Bolsa Família, bancos de alimentos.</p></li><li><p>Intersetorialidade: PSE, Crescer Saudável, PNAE, CRAS, CREAS, Criança Feliz.</p></li><li><p>Violência: física, psicológica, sexual, negligência. Sinais: lesões em fases diferentes, hematomas em locais atípicos, queimaduras com padrão, regressão, comportamento sexualizado.</p></li><li><p><strong>Notificação compulsória (ECA, Lei 8.069/90, art. 13):</strong> qualquer profissional; para <strong>Conselho Tutelar + SINAN</strong>; basta a suspeita; não viola sigilo.</p></li><li><p>Conduta: acolher → registrar → notificar → articular a rede (CREAS etc.).</p></li></ul>
+<h3 id="r-adolescência-1019-anos-oms">Adolescência (10–19 anos, OMS)</h3>
+<ul><li><p>Puberdade avaliada por Tanner; pico de depressão, ansiedade, transtornos alimentares e suicídio.</p></li><li><p><strong>Confidencialidade:</strong> parte da consulta sem os pais. Quebra de sigilo só com risco de vida, sempre avisando o adolescente.</p></li><li><p>Saúde sexual: HIV a partir dos 15 anos; sífilis anual se sexualmente ativo; clamídia/gonorreia em meninas ativas ≤ 24 anos; preservativos, contracepção e vacina HPV.</p></li></ul>
+<h2 id="r-2-saúde-da-mulher-parte-i">2. Saúde da Mulher – Parte I</h2>
+<p>O cuidado à mulher na APS é integral e longitudinal, e vai além de ginecologia e obstetrícia: saúde cardiovascular (IAM com apresentação atípica), mental, trabalho e violência.</p>
+<h3 id="r-perspectiva-de-gênero-e-vulnerabilidades">Perspectiva de gênero e vulnerabilidades</h3>
+<ul><li><p>Mulheres negras: racismo + sexismo amplificam riscos.</p></li><li><p>Lésbicas e bissexuais: rastreiam menos colo e mama por barreiras de acesso.</p></li><li><p><strong>Mulheres trans: rastrear conforme os órgãos presentes</strong>, não pela identidade.</p></li><li><p>Queixas de mulheres são subestimadas (ex.: dor crônica). 1 em 3 sofre violência doméstica.</p></li><li><p>Exame clínico das mamas não substitui nem é substituído pela mamografia.</p></li></ul>
+<h3 id="r-mulher-em-situação-de-violência">Mulher em situação de violência</h3>
+<ul><li><p>Tipos: física, psicológica, sexual, moral e patrimonial. Agressor mais frequente: parceiro íntimo.</p></li><li><p>Conduta: acolher em ambiente privado; perguntar diretamente; avaliar risco imediato (ameaça de morte, arma, filhos); registrar de forma descritiva; orientar sobre a Lei Maria da Penha.</p></li><li><p><strong>Notificação compulsória independe do consentimento da mulher.</strong> O sigilo é mantido com o agressor, não com a rede.</p></li><li><p>Rede: CRAS/CREAS, Delegacia da Mulher, Casa Abrigo (risco de vida), MP, Defensoria, saúde mental.</p></li></ul>
+<h3 id="r-rastreamento-do-câncer-do-colo-do-útero-portaria-conjunta-saessectics-132025">Rastreamento do câncer do colo do útero (Portaria Conjunta SAES/SECTICS 13/2025)</h3>
+<ul><li><p><strong>Método primário: teste de DNA-HPV oncogênico</strong> (substitui a citologia).</p></li><li><p><strong>25 a 64 anos</strong>, assintomáticas; <strong>a cada 5 anos</strong> se negativo; encerrar se o último teste após os 60 for negativo.</p></li><li><p>Por que é melhor: ↓ 40% de câncer invasivo vs. citologia (Europa) e ↓ 53% de mortalidade (Índia); maior sensibilidade e VPN.</p></li></ul>
+<table><thead><tr><th>Resultado DNA-HPV</th><th>Conduta</th></tr></thead><tbody><tr><td>Não detectado</td><td>Repetir em 5 anos</td></tr><tr><td>HPV 16 e/ou 18</td><td><strong>Colposcopia direto</strong> (risco de NIC3+ ≈ 20%)</td></tr><tr><td>Outros tipos oncogênicos</td><td>Citologia reflexa na mesma amostra: alterada (≥ ASC-US) ou insatisfatória → colposcopia; negativa → repetir em 12 meses</td></tr><tr><td>Inválido</td><td>Nova coleta por profissional (se foi autocoleta, médico ou enfermeiro coleta)</td></tr></tbody></table>
+<ul><li><p><strong>Não rastrear:</strong> &lt; 25 anos; sem atividade sexual; histerectomia total por doença benigna com exames anteriores normais.</p></li><li><p><strong>Situações especiais:</strong> gestante pode coletar em qualquer IG; pós-menopausa = mesma regra; <strong>HIV/imunossuprimida:</strong> iniciar após início da vida sexual, a cada 3 anos se negativo, qualquer HPV detectado → colposcopia.</p></li><li><p>Prioridade de convocação: 1) 30–49 anos em atraso (&gt; 36 meses) ou nunca rastreadas; 2) 50–64 em atraso; 3) 30–49 independente do histórico; 4) 25–29 nunca rastreadas.</p></li><li><p><strong>Encaminhamento urgente (independe de rastreamento):</strong> sangramento anormal ou pós-coito, corrimento persistente, dor pélvica crônica, lesão cervical visível, citologia com suspeita de invasor ou adenocarcinoma in situ.</p></li></ul>
+<h3 id="r-rastreamento-do-câncer-de-mama-nt-6262025">Rastreamento do câncer de mama (NT 626/2025)</h3>
+<ul><li><p><strong>Mamografia bilateral bienal, 50 a 74 anos</strong>, assintomáticas.</p></li><li><p>40–49 anos: acesso garantido, mas por decisão compartilhada (falso-positivo, sobretratamento).</p></li><li><p><strong>Alto risco familiar</strong> (≥ 2 parentes de 1º/2º grau antes dos 50): iniciar 10 anos antes do caso mais jovem ou aos 25.</p></li><li><p>Sintomática de qualquer idade = <strong>investigação diagnóstica</strong>, não rastreamento.</p></li><li><p><strong>Sinais de alerta:</strong> nódulo endurecido e fixo; nódulo crescendo; descarga papilar sanguinolenta unilateral; pele em casca de laranja, retração de pele ou mamilo, eczema areolar refratário; linfonodo axilar endurecido; mastite que não melhora com antibiótico (carcinoma inflamatório); nódulo em homem.</p></li></ul>
+<table><thead><tr><th>BI-RADS</th><th>Significado</th><th>Conduta</th></tr></thead><tbody><tr><td>0</td><td>Incompleto</td><td>US ou incidências adicionais</td></tr><tr><td>1</td><td>Negativo</td><td>Rotina bienal</td></tr><tr><td>2</td><td>Benigno</td><td>Rotina</td></tr><tr><td>3</td><td>Provavelmente benigno</td><td>Controle em 6 meses</td></tr><tr><td>4</td><td>Suspeito</td><td>Especialista com prioridade para biópsia</td></tr><tr><td>5</td><td>Altamente suspeito</td><td>Encaminhar com urgência</td></tr></tbody></table>
+<p><strong>Erros frequentes:</strong> mamografia de rastreamento &lt; 50 anos sem orientação; não registrar resultado; mandar sintomática para rastreamento; não garantir retorno; manter citologia onde já há DNA-HPV.</p>
+<h3 id="r-planejamento-reprodutivo-e-contracepção">Planejamento reprodutivo e contracepção</h3>
+<ul><li><p>Direito reprodutivo + decisão compartilhada; <strong>dupla proteção</strong> = preservativo + outro método.</p></li><li><p>Métodos: hormonais (orais combinados e minipílula, injetáveis mensal/trimestral, SIU-LNG, implante, anel, adesivo), barreira, DIU de cobre, comportamentais (tabela, temperatura, Billings, coito interrompido) e definitivos.</p></li><li><p><strong>Uso típico vs. ideal:</strong> diferença maior nos métodos dependentes do usuário. <strong>LARC</strong> (DIU, implante) não dependem da adesão.</p></li><li><p>Critérios de elegibilidade da OMS: categorias 1 a 4.</p></li></ul>
+<p><strong>Contraindicações aos combinados (estrogênio):</strong> tabagismo &gt; 35 anos; HAS não controlada; <strong>enxaqueca com aura</strong> (risco de AVC); TEV prévio/atual; doença cardiovascular; câncer de mama; amamentação &lt; 6 meses; imobilização prolongada.</p>
+<ul><li><p><strong>Câncer de mama contraindica TODOS os hormonais</strong> → DIU de cobre.</p></li><li><p>Trombose prévia → DIU de cobre é a melhor opção de alta eficácia.</p></li><li><p><strong>Pós-parto amamentando (&lt; 6 meses):</strong> LAM (amamentação exclusiva + amenorreia + &lt; 6 meses), progestágeno isolado desde o início, DIU de cobre logo após o parto ou após 4 semanas; evitar combinados. Sem amamentar: combinado só após 21 dias.</p></li><li><p><strong>Contracepção de emergência:</strong> levonorgestrel 1,5 mg dose única até 72 h (disponível na UBS); DIU de cobre até 5 dias. Não substitui o método regular.</p></li><li><p><strong>Laqueadura/vasectomia (Lei 9.263/96, alterada pela 14.443/22):</strong> &gt; 21 anos <strong>ou</strong> 2 filhos vivos; <strong>60 dias</strong> entre a manifestação e a cirurgia; <strong>sem</strong> autorização do cônjuge; pode no parto, mas não se faz cesárea só para laquear.</p></li></ul>
+<h3 id="r-climatério-e-menopausa">Climatério e menopausa</h3>
+<ul><li><p><strong>Climatério:</strong> transição do período reprodutivo para o não reprodutivo. <strong>Perimenopausa:</strong> 2 a 8 anos de irregularidade e sintomas.</p></li><li><p><strong>Menopausa:</strong> última menstruação, confirmada após <strong>12 meses de amenorreia</strong>; média de <strong>51 anos</strong> no Brasil.</p></li><li><p>Sintomas: fogachos (60–80%, o mais frequente), sudorese noturna, síndrome geniturinária (ressecamento, dispareunia, ITU de repetição), humor, sono, memória, artralgia, libido.</p></li><li><p><strong>Terapia hormonal:</strong> tratamento mais eficaz para fogachos moderados/intensos e síndrome geniturinária; também na menopausa precoce (&lt; 40) e prevenção de osteoporose em risco alto. <strong>Janela de oportunidade: &lt; 60 anos ou &lt; 10 anos de menopausa.</strong></p></li><li><p><strong>Contraindicações absolutas:</strong> câncer de mama; câncer de endométrio; TEV ativo/recente; doença hepática grave; sangramento vaginal sem diagnóstico; doença coronariana estabelecida.</p></li><li><p><strong>Com útero = estrogênio + progestágeno</strong> (proteção endometrial). Estrogênio isolado só em histerectomizada.</p></li><li><p>Via transdérmica: menor risco trombótico; preferir em tabagistas, obesas, risco CV e hipertrigliceridemia. Estriol vaginal para síndrome geniturinária isolada.</p></li><li><p>Não hormonais: ISRS/IRSN (venlafaxina, paroxetina, escitalopram), gabapentina, clonidina. Fitoterápicos têm evidência fraca. Estilo de vida para todas.</p></li></ul>
+<h3 id="r-osteoporose-slide-novo-da-versão-final">Osteoporose (slide novo da versão final)</h3>
+<ul><li><p>Fatores de risco: menopausa precoce (&lt; 45 anos), corticoide prolongado, <strong>IMC &lt; 19</strong>, tabagismo e etilismo, história familiar de fratura osteoporótica, sedentarismo e pouco cálcio.</p></li><li><p><strong>Densitometria (DXA): mulheres &gt; 65 anos</strong> ou pós-menopausa com fatores de risco. Risco de fratura pelo <strong>FRAX</strong>.</p></li><li><p>T-score compara com adulto jovem: <strong>normal ≥ −1,0; osteopenia entre −1,0 e −2,5; osteoporose ≤ −2,5</strong>.</p></li></ul>
+<h2 id="r-3-saúde-da-mulher-e-da-gestante-parte-ii">3. Saúde da Mulher e da Gestante – Parte II</h2>
+<p>Pré-natal na APS = captação precoce, estratificação de risco em toda consulta, tratamento dos agravos comuns e vínculo com a maternidade (Rede Alyne, Portaria GM/MS 5.350/2024).</p>
+<h3 id="r-rede-alyne-e-calendário">Rede Alyne e calendário</h3>
+<ul><li><p>Captação <strong>até a 12ª semana</strong>; <strong>mínimo de 6 consultas</strong>, alternando enfermagem e médico; <strong>visita até o 7º dia pós-parto</strong>; vinculação à maternidade; estratificação de risco e vulnerabilidade.</p></li><li><p>Alto risco: meta mínima de 12 consultas no ambulatório especializado.</p></li><li><p>Periodicidade: <strong>mensal até 28 sem → quinzenal 28–36 → semanal 36 até o parto</strong>. Faltosa = busca ativa pelo ACS.</p></li><li><p>Diagnóstico: TRG na UBS ou β-hCG; US se DUM incerta.</p></li><li><p><strong>Regra de Naegele:</strong> DPP = DUM + 7 dias − 3 meses. Ex.: DUM 10/03 → DPP 17/12.</p></li></ul>
+<h3 id="r-exame-em-toda-consulta">Exame em toda consulta</h3>
+<p>Peso/IMC (curva por IMC pré-gestacional), <strong>PA sempre</strong>, altura uterina (2º tri em diante), BCF e movimentos fetais, edema, Leopold no 3º tri, e perguntas sobre alarme, humor, violência e substâncias.</p>
+<h3 id="r-exames-de-rotina">Exames de rotina</h3>
+<table><thead><tr><th>Momento</th><th>Exames</th></tr></thead><tbody><tr><td>1ª consulta</td><td>ABO/Rh, Hb/Ht, glicemia de jejum, urina 1 + urocultura, testes rápidos de sífilis, HIV, hepatites B e C, HTLV, toxoplasmose, US obstétrica, citologia se indicada</td></tr><tr><td>24–28 semanas</td><td>TOTG 75 g (diabetes gestacional); Coombs indireto se Rh negativo</td></tr><tr><td>3º tri (~28 sem)</td><td>Sífilis, HIV, Hb, urina 1 + urocultura, toxoplasmose se suscetível</td></tr><tr><td>Parto ou abortamento</td><td>Teste rápido de sífilis e HIV na admissão</td></tr></tbody></table>
+<h3 id="r-vacinas-e-suplementos">Vacinas e suplementos</h3>
+<table><thead><tr><th>Vacina</th><th>Quando</th></tr></thead><tbody><tr><td>dTpa</td><td>1 dose a cada gestação, a partir de 20 semanas</td></tr><tr><td>VSR</td><td>Dose única a partir de 28 semanas</td></tr><tr><td>Influenza</td><td>Qualquer IG, na campanha</td></tr><tr><td>Hepatite B</td><td>Completar 3 doses se suscetível</td></tr><tr><td>COVID-19</td><td>Conforme PNI</td></tr><tr><td><strong>Evitar</strong></td><td>Vacinas de vírus vivo (tríplice viral, varicela)</td></tr></tbody></table>
+<ul><li><p><strong>Ácido fólico 400 µg/dia</strong>; <strong>ferro 40 mg/dia</strong> até 3 meses pós-parto; <strong>cálcio 1 g/dia</strong> da 12ª semana ao parto (todas); AAS só se indicado.</p></li><li><p><strong>Sinais de alarme:</strong> sangramento, perda de líquido, ↓ movimentos fetais, cefaleia forte/visão turva/epigastralgia, edema súbito de face e mãos, febre/disúria/lombalgia, contrações antes de 37 sem, vômitos que impedem comer.</p></li></ul>
+<h3 id="r-estratificação-de-risco-gestacional">Estratificação de risco gestacional</h3>
+<ul><li><p><strong>Nível 1 (habitual):</strong> UBS. <strong>Nível 2 (intermediário):</strong> UBS com mais consultas + matriciamento. <strong>Nível 3 (alto):</strong> ambulatório especializado, <strong>mantendo a APS como coordenadora</strong>. Urgência: maternidade.</p></li><li><p>Reclassificar <strong>em toda consulta</strong>; risco clínico e vulnerabilidade social juntos.</p></li><li><p>Fatores: idade &lt; 15 ou &gt; 35; IMC extremo; drogas; história de aborto de repetição, óbito fetal, pré-eclâmpsia, prematuridade; HAS, DM, cardiopatia, nefropatia, lúpus, HIV; gemelar, placenta prévia, sífilis, pielonefrite, Rh sensibilizado.</p></li><li><p>Vulnerabilidade social <strong>não é sinônimo de alto risco clínico</strong>, mas exige ampliar o cuidado.</p></li></ul>
+<h3 id="r-hiperêmese">Hiperêmese</h3>
+<ul><li><p>Hiperêmese = vômitos incoercíveis + <strong>perda &gt; 5% do peso</strong>, desidratação, cetonúria, distúrbio eletrolítico.</p></li><li><p>Manejo escalonado: dieta fracionada/gengibre → piridoxina ± doxilamina → metoclopramida, ondansetrona ou dimenidrinato → internação (hidratação, eletrólitos, <strong>tiamina</strong>).</p></li><li><p>Excluir ITU, gemelar, mola e hipertireoidismo.</p></li></ul>
+<h3 id="r-infecção-urinária-tratar-sempre">Infecção urinária (tratar sempre)</h3>
+<ul><li><p><strong>Bacteriúria assintomática</strong> (≥ 100.000 UFC/mL): rastrear na 1ª consulta e tratar.</p></li><li><p><strong>Cistite:</strong> ambulatorial. Cefalexina 500 mg 6/6 h por 7 dias <strong>ou</strong> nitrofurantoína 100 mg 6/6 h por 7 dias (evitar no 1º tri e perto do termo).</p></li><li><p><strong>Pielonefrite</strong> (febre, Giordano +): <strong>internar</strong>, ceftriaxona EV.</p></li><li><p>Depois: urocultura de controle; profilaxia se recorrência.</p></li></ul>
+<h3 id="r-síndromes-hipertensivas">Síndromes hipertensivas</h3>
+<ul><li><p>HAS = <strong>≥ 140/90 em 2 medidas com 4 h de intervalo</strong>; grave = <strong>≥ 160/110</strong>.</p></li></ul>
+<table><thead><tr><th>Tipo</th><th>Critério</th></tr></thead><tbody><tr><td>HAS crônica</td><td>Antes da gestação ou <strong>antes de 20 semanas</strong></td></tr><tr><td>HAS gestacional</td><td>Após 20 sem, sem proteinúria nem lesão de órgão; normaliza após o parto</td></tr><tr><td>Pré-eclâmpsia</td><td>Após 20 sem + proteinúria <strong>ou</strong> disfunção de órgão (pode sobrepor à crônica)</td></tr><tr><td>Eclâmpsia / HELLP</td><td>Convulsão / hemólise + enzimas hepáticas ↑ + plaquetopenia</td></tr></tbody></table>
+<ul><li><p><strong>Proteinúria:</strong> fita ≥ 2+, relação P/C ≥ 0,3 ou ≥ 300 mg/24 h. Sem proteinúria: plaquetas &lt; 100 mil, creatinina ≥ 1,1, transaminases 2×.</p></li><li><p><strong>Gravidade:</strong> PA ≥ 160/110, cefaleia/escotomas, epigastralgia, EAP, convulsão, alterações laboratoriais.</p></li><li><p><strong>Prevenção:</strong> cálcio para todas; <strong>AAS 100–150 mg à noite</strong>, da 12ª sem (de preferência antes da 16ª) até 36 sem se <strong>1 fator alto</strong> (HAS crônica, DM, DRC, autoimune, pré-eclâmpsia prévia, gemelar) <strong>ou 2 moderados</strong> (primigesta, ≥ 40 anos, IMC ≥ 35, intervalo &gt; 10 anos, história familiar).</p></li><li><p><strong>Tratamento:</strong> metildopa ou nifedipina. <strong>Proibidos: IECA (enalapril), BRA e diuréticos.</strong></p></li><li><p>Pós-parto: medir PA na 1ª semana; nifedipina e enalapril são compatíveis com amamentação. Pré-eclâmpsia = risco CV futuro.</p></li></ul>
+<h3 id="r-sífilis-na-gestação">Sífilis na gestação</h3>
+<ul><li><p>Testar em <strong>3 momentos:</strong> 1ª consulta, ~28 semanas e admissão para parto/abortamento.</p></li><li><p><strong>Teste rápido reagente → tratar na mesma consulta</strong> e colher VDRL. VDRL reagente sem TR → tratar e confirmar com treponêmico.</p></li></ul>
+<table><thead><tr><th>Estágio</th><th>Esquema</th></tr></thead><tbody><tr><td>Recente (&lt; 1 ano)</td><td>Penicilina benzatina 2,4 milhões UI IM, dose única</td></tr><tr><td>Tardia ou duração ignorada</td><td>2,4 milhões UI IM semanal × 3 (7,2 milhões UI)</td></tr><tr><td>Neurossífilis</td><td>Penicilina cristalina EV por 14 dias</td></tr></tbody></table>
+<ul><li><p>Intervalo entre doses: ideal 7 dias, <strong>máx. 9 dias</strong> → se passar, reiniciar.</p></li><li><p><strong>Não há alternativa à penicilina</strong> na gestante: alergia → dessensibilização.</p></li><li><p><strong>Tratamento adequado:</strong> esquema completo com benzatina, iniciado <strong>≥ 30 dias antes do parto</strong>. VDRL mensal; esperar queda de 2 diluições.</p></li><li><p>Tratar parcerias (presuntivo se exposição recente); <strong>notificação compulsória</strong> no SINAN (gestante e congênita).</p></li></ul>
+<h3 id="r-parto">Parto</h3>
+<ul><li><p>Períodos: 1º dilatação → 2º expulsão → 3º dequitação → 4º primeira hora (Greenberg).</p></li><li><p><strong>Estimular:</strong> acompanhante, livre movimentação, métodos não farmacológicos, pele a pele e amamentação na 1ª hora, clampeamento oportuno.</p></li><li><p><strong>Evitar de rotina:</strong> episiotomia, Kristeller, tricotomia, enema, litotomia obrigatória, jejum, ocitocina sem indicação.</p></li><li><p>Leis: acompanhante no parto (11.108/2005), vinculação à maternidade (11.634/2007), acompanhante em consultas (14.737/2023).</p></li><li><p><strong>Hemorragia pós-parto:</strong> ≥ 500 mL vaginal ou ≥ 1.000 mL cesárea. <strong>4 T: Tônus (atonia, a mais comum), Trauma, Tecido, Trombina.</strong> Conduta: massagem uterina, ocitocina, ácido tranexâmico precoce, volume, transferir.</p></li></ul>
+<h3 id="r-puerpério">Puerpério</h3>
+<ul><li><p><strong>Até 7 dias:</strong> VD/consulta (“Primeira Semana Saúde Integral”), pezinho, amamentação, vacinas. <strong>Até 42 dias:</strong> consulta puerperal.</p></li><li><p>Rastrear depressão pós-parto com <strong>EPDS (Edimburgo)</strong>.</p></li><li><p>Alarme: hemorragia, infecção (febre, lóquios fétidos), pré-eclâmpsia <strong>até 6 semanas</strong>, TEV, sofrimento mental.</p></li><li><p>Intervalo ideal entre gestações: <strong>≥ 18 meses</strong>.</p></li></ul>
+<h3 id="r-determinantes-sociais">Determinantes sociais</h3>
+<p>Renda, escolaridade, racismo (mulheres negras morrem mais por causas maternas evitáveis), moradia, violência (inclusive obstétrica) e rede de apoio. Mortalidade materna é indicador de desigualdade.</p>
+<p><strong>Caso Marina (19 anos, 17 sem, PA 148/94, TR sífilis +, ITU, Hb 10,2):</strong> alto risco por HAS crônica (&lt; 20 sem); penicilina benzatina 3 doses + VDRL + notificação + parceria; urocultura e antibiótico seguro; AAS + cálcio, ferro e fólico; considerar vulnerabilidades (ACS, CRAS, horários).</p>
+<h3 id="r-versão-do-prof-vinicio-parte-2-o-que-muda-ou-acrescenta">Versão do Prof. Vinicio (Parte 2): o que muda ou acrescenta</h3>
+<p>A turma tem duas aulas de pré-natal. A do Prof. Vinicio segue protocolos da Bahia/Salvador e traz pontos diferentes; na prova, use a versão de quem aplicar.</p>
+<ul><li><p><strong>Não existe alta do pré-natal</strong>: a APS mantém o vínculo no alto risco e faz a contrarreferência (receber info do PNAR, checar se a gestante foi, priorizar após alta hospitalar).</p></li><li><p>Violência na gestação: pensar em pré-natal tardio, faltas, hematomas, ITU de repetição e sangramento. Notificar.</p></li><li><p>Registro: e-SUS/SISAB + Caderneta da Gestante; preencher raça/cor por autodeclaração (Portaria 344/2017).</p></li></ul>
+<p><strong>Estratificação por cores:</strong></p>
+<table><thead><tr><th>Cor</th><th>Significado</th></tr></thead><tbody><tr><td>Azul</td><td>Sem fatores de risco: APS</td></tr><tr><td>Verde</td><td>Fatores de risco sem necessidade de encaminhar: APS</td></tr><tr><td>Amarelo</td><td>Precisa de serviço especializado, mas não PNAR: cuidado compartilhado</td></tr><tr><td>Laranja</td><td>Pré-natal de alto risco via regulação</td></tr><tr><td>Vermelho</td><td>Emergência obstétrica imediata</td></tr></tbody></table>
+<ul><li><p><strong>Alto Risco tipo I:</strong> idade &lt; 15 ou &gt; 40; HAS gestacional (excluída pré-eclâmpsia); DM sem insulina e sem lesão de órgão; anemia refratária; aborto recorrente; gemelar dicoriônica/diamniótica.</p></li><li><p><strong>Alto Risco tipo II (maior gravidade):</strong> HAS crônica com LOA ou ≥ 2 drogas; pré-eclâmpsia confirmada; DM com insulina; doença falciforme; gemelar monocoriônica; suspeita de toxoplasmose, alterações ecográficas graves.</p></li><li><p><strong>Emergência imediata:</strong> PA ≥ 160/110 ou suspeita de pré-eclâmpsia; sangramento com dor/colo aberto; trabalho de parto prematuro (&lt; 37 sem); anemia sintomática grave ou crise falciforme.</p></li></ul>
+<p><strong>Exames (versão Vinicio):</strong></p>
+<ul><li><p>1º tri: hemograma, ABO/Rh, <strong>eletroforese de Hb</strong>, glicemia, toxo IgG/IgM, <strong>TSH e T4</strong>, HTLV, HIV, VDRL/TR, HBsAg, HCV, EAS, urocultura, <strong>CMV IgG/IgM</strong>, US. Se indicado: Coombs, citologia, parasitológico.</p></li><li><p><strong>USG:</strong> Lei 14.598/2023 garante ≥ 2 no 1º quadrimestre (OMS: ≥ 1 no 1º tri); datar pela <strong>1ª US, sem recalcular</strong>.</p></li><li><p>2º tri: TOTG 75 g, <strong>US morfológica e ecocardiograma fetal</strong> (Lei 14.598).</p></li><li><p>3º tri: repete sorologias, hemograma, glicemia, EAS, urocultura, US. <strong>GBS: swab vaginal e retal com 36–38 sem</strong>; positivo → antibiótico intraparto; RN prévio infectado ou GBS em urina → trata sem swab.</p></li></ul>
+<p><strong>Diabetes gestacional:</strong></p>
+<table><thead><tr><th>Exame</th><th>Normal</th><th>DMG</th><th>DM prévio</th></tr></thead><tbody><tr><td>Glicemia de jejum</td><td>&lt; 92 (fazer TOTG 24–28 sem)</td><td>92–125</td><td>≥ 126</td></tr><tr><td>TOTG 75 g</td><td>–</td><td>Jejum 92–125, <strong>1 h ≥ 180</strong> ou <strong>2 h 153–199</strong></td><td>2 h ≥ 200</td></tr></tbody></table>
+<ul><li><p>Metas: <strong>jejum &lt; 95 e 2 h pós-prandial &lt; 120</strong>. Sem controle em 2 semanas → alto risco.</p></li></ul>
+<p><strong>Profilaxias e vacinas (versão Vinicio):</strong></p>
+<ul><li><p>Ácido fólico 0,4 mg <strong>desde 30 dias antes da concepção até 16 semanas</strong>; ferro 40 mg até o 3º mês pós-parto; cálcio 500 mg no café + 500 mg no jantar; <strong>AAS 100 mg à noite antes de 16 sem</strong>.</p></li><li><p>Fatores de pré-eclâmpsia: <strong>alto</strong> = história familiar (mãe/irmã), HAS crônica, DM 1/2, doença renal ou autoimune, pré-eclâmpsia anterior. <strong>Moderado</strong> = <strong>≥ 35 anos</strong>, nuliparidade, <strong>raça negra</strong>, <strong>IMC ≥ 30</strong>, intervalo &gt; 10 anos.</p></li><li><p>Anti-hipertensivos: 1ª linha metildopa ou nifedipina; <strong>2ª linha anlodipino</strong>. Hipertensão gestacional normaliza até 42 dias; se persistir &gt; 42 dias = crônica.</p></li><li><p>VSR: 28–36 semanas. <strong>Contraindicadas: tríplice viral, varicela, HPV e febre amarela</strong> (podem no puerpério).</p></li><li><p>Saúde bucal: ≥ 1 consulta odontológica (cárie e periodontite ↑ prematuridade).</p></li></ul>
+<p><strong>ITU e sífilis (versão Vinicio):</strong></p>
+<ul><li><p>Bacteriúria: tratar pelo antibiograma; <strong>30% evoluem para formas graves</strong> se não tratar; urocultura de controle após 2 semanas.</p></li><li><p>Cistite: <strong>nitrofurantoína 100 mg 6/6 h por 5 dias</strong> ou cefalexina 500 mg 6/6 h por 7 dias.</p></li><li><p>Pielonefrite: internação + EV e <strong>profilaxia antibiótica até o parto sempre</strong>.</p></li><li><p>Sífilis: iniciar tratamento com <strong>apenas 1 teste reagente</strong>; VDRL mensal até o parto e trimestral até 12 meses; parceiro sempre tratado; alergia → dessensibilização hospitalar.</p></li></ul>
+<p><strong>Outros pontos:</strong></p>
+<ul><li><p><strong>Pré-natal do parceiro:</strong> testes de sífilis, HIV, hepatites B/C; tipagem se gestante Rh negativo.</p></li><li><p>Populações especiais: negras e indígenas (<strong>mortalidade materna 3× maior</strong>), situação de rua, homens trans (<strong>suspender testosterona</strong>), pessoas com deficiência (LIBRAS).</p></li><li><p>Saúde mental: depressão, ansiedade, TEPT, psicose pós-parto, pânico → RAPS.</p></li><li><p>Queixas fisiológicas: náusea leve no 1º tri, lombalgia, edema vespertino, pirose, constipação, polúria.</p></li><li><p><strong>Vinculação à maternidade (Lei 11.634/2007):</strong> nome na caderneta, visita prévia, evitar peregrinação. Plano de parto (OMS 2018, MS 2017). Rede Alyne (antiga Rede Cegonha) vai do planejamento reprodutivo até os 2 anos da criança.</p></li><li><p><strong>Visita domiciliar: 3º ao 5º dia</strong> pós-parto (&quot;5º Dia de Saúde Integral&quot;); RN de risco até 3 dias após a alta. Checar pezinho, BCG, hepatite B.</p></li><li><p>Puerpério: EPDS, exame (mamas, ferida, períneo, sinal de Homans), testagem rápida (HIV pode passar no aleitamento), <strong>intervalo interpartal mínimo de 2 anos</strong> (a outra aula fala em 18 meses).</p></li></ul>
+<h2 id="r-4-saúde-do-adulto">4. Saúde do Adulto</h2>
+<p>No adulto, a APS trata o <strong>risco cardiovascular global</strong> e a pessoa com várias doenças, não exames isolados; rastreia só o que tem benefício comprovado.</p>
+<h3 id="r-dcnt-e-fatores-de-risco">DCNT e fatores de risco</h3>
+<ul><li><p>4 grupos: cardiovasculares, neoplasias, respiratórias crônicas e diabetes. Início lento, longos anos assintomáticos, <strong>multimorbidade é a regra</strong>.</p></li><li><p><strong>Agenda 5 × 5 da OMS:</strong> tabagismo, alimentação não saudável, álcool, inatividade física, poluição do ar.</p></li><li><p>Clínicos intermediários: HAS, hiperglicemia, dislipidemia, obesidade central. Não modificáveis: idade, sexo, história familiar.</p></li><li><p>Modelo de Atenção às Condições Crônicas (Mendes): baixo risco → autocuidado apoiado; moderado → grupos e metas; alto → consultas frequentes e matriciamento; muito complexo → <strong>gestão de caso</strong>.</p></li></ul>
+<h3 id="r-hipertensão-diretriz-sbc-2025">Hipertensão (Diretriz SBC 2025)</h3>
+<table><thead><tr><th>Classificação</th><th>PAS</th><th>PAD</th></tr></thead><tbody><tr><td>Normal</td><td>&lt; 120</td><td>&lt; 80</td></tr><tr><td>Pré-hipertensão</td><td>120–139</td><td>80–89</td></tr><tr><td>Estágio 1</td><td>140–159</td><td>90–99</td></tr><tr><td>Estágio 2</td><td>160–179</td><td>100–109</td></tr><tr><td>Estágio 3</td><td>≥ 180</td><td>≥ 110</td></tr></tbody></table>
+<ul><li><p>Confirmar em <strong>≥ 2 visitas ou MAPA/MRPA</strong>. Exceção: lesão de órgão-alvo ou DCV já fecham diagnóstico.</p></li><li><p>Alto risco direto: DCV, diabetes, DRC, hipercolesterolemia familiar, LOA. Demais: <strong>escore PREVENT (30–79 anos)</strong>.</p></li><li><p><strong>Meta: &lt; 130/80</strong> para a maioria.</p></li><li><p>Não medicamentoso a partir de 120/80: sal &lt; 5 g/dia, peso, atividade, álcool, cigarro.</p></li><li><p><strong>≥ 140/90 → medicar no diagnóstico.</strong> 130–139/80–89 de alto risco → medicar se não controlar em 3 meses.</p></li><li><p><strong>Monoterapia só em:</strong> estágio 1 de baixo risco, ≥ 80 anos, frágil, hipotensão ortostática, ou 130–139/80–89 de alto risco. <strong>Demais: 2 fármacos combinados</strong> (dose baixa, 1 comprimido).</p></li><li><p>Sem controle: 3 fármacos (IECA/BRA + BCC + diurético) → depois espironolactona. Antes, rever adesão, sal, álcool, apneia, jaleco branco e drogas.</p></li></ul>
+<h3 id="r-diabetes-tipo-2">Diabetes tipo 2</h3>
+<table><thead><tr><th>Exame</th><th>Normal</th><th>Pré-DM</th><th>DM</th></tr></thead><tbody><tr><td>Glicemia de jejum (mg/dL)</td><td>&lt; 100</td><td>100–125</td><td>≥ 126</td></tr><tr><td>HbA1c (%)</td><td>&lt; 5,7</td><td>5,7–6,4</td><td>≥ 6,5</td></tr><tr><td>TOTG 2 h (mg/dL)</td><td>&lt; 140</td><td>140–199</td><td>≥ 200</td></tr><tr><td>Ao acaso + sintomas</td><td>–</td><td>–</td><td>≥ 200</td></tr></tbody></table>
+<ul><li><p>Confirmar com <strong>2 resultados alterados</strong> (mesma amostra ou não); sintomas clássicos + ≥ 200 dispensam.</p></li><li><p>Seguimento: <strong>HbA1c a cada 3–6 meses (meta &lt; 7%)</strong>; rim anual (TFG + albumina/creatinina); olhos no diagnóstico e a cada 1–2 anos; pés inspecionados em toda consulta e exame completo anual (monofilamento); <strong>todo diabético é alto risco CV</strong>.</p></li><li><p>Pé (IWGDF): sem perda sensitiva = anual; neuropatia = 6/6 meses; DAP/deformidade = 3–6 meses; úlcera/amputação prévia = 1–3 meses.</p></li></ul>
+<h3 id="r-obesidade-e-drc">Obesidade e DRC</h3>
+<ul><li><p>IMC: 25–29,9 sobrepeso; 30–34,9 grau I; 35–39,9 grau II; ≥ 40 grau III. Cintura = gordura visceral. <strong>Perder 5–10%</strong> já melhora PA, glicemia e TG.</p></li><li><p><strong>DRC:</strong> rastrear hipertensos, diabéticos, DCV, história familiar, nefrotóxicos, com <strong>creatinina/TFG + albumina/creatinina</strong>; repetir em 3 meses para confirmar cronicidade. DRC = alto risco CV.</p></li><li><p>Estágios (KDIGO): G1 ≥ 90; G2 60–89; G3a 45–59; G3b 30–44; G4 15–29; G5 &lt; 15. Albuminúria: A1 &lt; 30; A2 30–300; A3 &gt; 300 mg/g.</p></li></ul>
+<h3 id="r-prevenção">Prevenção</h3>
+<table><thead><tr><th>Nível</th><th>O que faz</th><th>Exemplo</th></tr></thead><tbody><tr><td>Primordial</td><td>Evita o surgimento dos fatores de risco</td><td>Políticas sobre tabaco, alimentação, ambiente</td></tr><tr><td>Primária</td><td>Evita a doença</td><td>Vacina, parar de fumar, atividade física</td></tr><tr><td>Secundária</td><td>Detecta cedo, sem sintomas</td><td>Rastreamento</td></tr><tr><td>Terciária</td><td>Reduz complicações e incapacidade</td><td>Reabilitação, seguimento</td></tr><tr><td><strong>Quaternária</strong></td><td>Protege de intervenções desnecessárias</td><td>Evitar PSA sem conversa, ECG/RX/US de rotina (Jamoulle)</td></tr></tbody></table>
+<ul><li><p>Pergunta-chave da quaternária: <strong>se o resultado não muda a conduta, não peça.</strong> Danos: falso-positivo, sobrediagnóstico, cascata, rótulo.</p></li><li><p>Atividade física: <strong>150 min/sem moderada ou 75 vigorosa</strong> + resistência 2×/sem.</p></li><li><p><strong>Tabagismo (PAAPA):</strong> Perguntar, Avaliar (Fagerström), Aconselhar, Preparar, Acompanhar. SUS: TRN (adesivo, goma, pastilha) e bupropiona. Parar reduz IAM em ~50% após 1 ano.</p></li><li><p><strong>Álcool (AUDIT):</strong> 0–7 baixo risco; 8–15 uso de risco; 16–19 uso nocivo (intervenção breve); ≥ 20 provável dependência (CAPS-AD).</p></li><li><p>Vacinas do adulto: dT a cada 10 anos; Hep B 3 doses; influenza anual; COVID, pneumocócica, FA e HPV conforme grupo.</p></li><li><p><strong>Mudança de comportamento:</strong> estágios de Prochaska (pré-contemplação, contemplação, preparação, ação, manutenção); entrevista motivacional <strong>OARS</strong> (perguntas abertas, afirmações, escuta reflexiva, resumos); uma meta pequena por vez; régua 0–10.</p></li></ul>
+<h3 id="r-rastreamento">Rastreamento</h3>
+<ul><li><p>Rastrear = pessoa <strong>sem sintomas</strong>, baixa probabilidade pré-teste. Sintomático = investigação diagnóstica.</p></li><li><p><strong>Critérios de Wilson e Jungner (OMS, 1968):</strong> doença frequente e importante com fase pré-clínica; bom teste; tratamento eficaz que muda a história; custo aceitável; benefício &gt; dano.</p></li><li><p><strong>Vieses:</strong> <strong>tempo ganho</strong> (lead time: diagnostica antes, morre na mesma data); <strong>duração</strong> (length: pega tumores lentos); <strong>adesão</strong> (quem participa é mais saudável). Avaliar por ECR e <strong>mortalidade, não sobrevida</strong>.</p></li></ul>
+<table><thead><tr><th>Condição</th><th>Método</th><th>Quem e quando</th></tr></thead><tbody><tr><td>HAS</td><td>PA</td><td>Todo adulto, toda oportunidade</td></tr><tr><td>Diabetes</td><td>Glicemia/HbA1c</td><td>≥ 35 anos (antes se sobrepeso + fator de risco); a cada 3 anos, anual se risco alto</td></tr><tr><td>Risco CV</td><td>PREVENT + lipídios</td><td>30–79 anos sem DCV, a cada 3–5 anos</td></tr><tr><td>Colo do útero</td><td>DNA-HPV</td><td>25–64 anos, a cada 5 anos</td></tr><tr><td>Mama</td><td>Mamografia</td><td>50–74 anos, bienal (40–49 decisão compartilhada)</td></tr><tr><td>Colorretal</td><td>Sangue oculto imunoquímico (FIT)</td><td>50–75 anos, a cada 2 anos; positivo → colonoscopia</td></tr><tr><td>Próstata</td><td>PSA</td><td><strong>Não de rotina</strong>; decisão compartilhada 55–69 anos; &gt; 70 riscos superam benefícios</td></tr></tbody></table>
+<ul><li><p><strong>Sem rastreamento de rotina:</strong> pulmão, tireoide, vitaminas, toque retal isolado.</p></li><li><p>FINDRISC: &lt; 15 repetir em 3 anos; 15–20 anual; &gt; 20 exame imediato.</p></li></ul>
+<h3 id="r-estratificação-de-risco-cardiovascular-diretriz-de-dislipidemias-2025">Estratificação de risco cardiovascular (Diretriz de Dislipidemias 2025)</h3>
+<ol><li><p>Identificar fatores e doenças. 2. Calcular <strong>PREVENT</strong> (sem DCV, 30–79 anos; risco em 10 e 30 anos, inclui IMC e TFG). 3. Buscar agravantes. 4. Definir categoria e metas.</p></li></ol>
+<p><strong>Já é alto risco sem calcular:</strong> doença aterosclerótica, diabetes, DRC, <strong>LDL ≥ 190</strong>, aterosclerose subclínica.</p>
+<table><thead><tr><th>Categoria</th><th>Critério</th><th>Meta LDL</th><th>Meta não-HDL</th></tr></thead><tbody><tr><td>Baixo</td><td>&lt; 5% em 10 anos, sem agravantes</td><td>&lt; 115</td><td>&lt; 145</td></tr><tr><td>Intermediário</td><td>5–20%, ou LDL 160–189</td><td>&lt; 100</td><td>&lt; 130</td></tr><tr><td>Alto</td><td>&gt; 20%, aterosclerose subclínica, LDL ≥ 190</td><td>&lt; 70</td><td>&lt; 100</td></tr><tr><td>Muito alto</td><td>Doença aterosclerótica/evento prévio</td><td>&lt; 50</td><td>&lt; 80</td></tr><tr><td>Extremo</td><td>Múltiplos eventos ou evento + ≥ 2 condições de alto risco</td><td>&lt; 40</td><td>&lt; 70</td></tr></tbody></table>
+<ul><li><p>Redução de LDL também é meta: ≥ 30% (baixo/intermediário), ≥ 50% (alto em diante). <strong>Não-HDL = CT − HDL</strong> = meta de LDL + 30.</p></li><li><p><strong>Agravantes (reclassificam para cima):</strong> história familiar precoce (homem &lt; 55, mulher &lt; 65), obesidade visceral/síndrome metabólica/esteatose, doenças inflamatórias (AR, psoríase, lúpus, DII, HIV), pré-eclâmpsia/DMG/menopausa precoce, transplante, <strong>Lp(a) ≥ 50 mg/dL</strong> (&gt; 180 = alto risco por si só).</p></li><li><p>Lipídios: jejum não obrigatório; LDL por Martin/Hopkins; TG &gt; 800 → usar não-HDL; <strong>Lp(a) uma vez na vida</strong>.</p></li><li><p><strong>Quando dar estatina:</strong> alto/muito alto/extremo → desde o início; intermediário → se LDL/não-HDL &gt; 30 acima da meta após MEV; baixo → se LDL &gt; 145. Repetir perfil em 4–12 semanas; ezetimiba como 2ª linha.</p></li></ul>
+<p><strong>Caso Seu Antônio (54 anos, PA 146/90 no MRPA, LDL 168, HbA1c 5,9, Lp(a) 62, PREVENT ~10%):</strong> HAS estágio 1 + pré-DM + dislipidemia + obesidade central + tabagismo; intermediário com agravantes → <strong>alto risco</strong>. Metas PA &lt; 130/80, LDL &lt; 70, não-HDL &lt; 100. Conduta: TRN, 2 anti-hipertensivos + estatina, MEV. <strong>Não pedir:</strong> PSA sem conversa, US de abdome, RX, TSH, vitaminas (ECG sim, é hipertenso). <strong>Rita (51):</strong> DNA-HPV, mamografia, FIT, PA, glicemia, lipídios + PREVENT, vacinas.</p>
+<h3 id="r-versão-revisada-prof-vinicio-o-caso-do-check-up">Versão revisada (Prof. Vinicio): o caso do check-up</h3>
+<p><strong>Caso João (50 anos, sem queixas, pede &quot;check-up completo&quot;):</strong> fuma 10 cigarros/dia, sedentário, PA 138/88, IMC 28 (sobrepeso), pai com IAM aos 58 anos.</p>
+<ul><li><p>O pedido de exames <strong>abre uma conversa</strong> sobre sintomas, riscos e expectativas; cada exame precisa responder a uma pergunta.</p></li><li><p><strong>Pai com IAM aos 58 não é história familiar precoce</strong> (o corte para homem é &lt; 55 anos).</p></li><li><p>PREVENT: <strong>risco em 10 anos de 30–79 anos; risco em 30 anos de 30–59 anos</strong>. Para decisão de lipídios, usar o risco de doença aterosclerótica em 10 anos.</p></li><li><p>Lp(a): uma vez na vida; prioridade em DAC precoce, estenose aórtica, hipercolesterolemia familiar e história familiar. Método preferido em nmol/L. Sem tratamento específico.</p></li><li><p>Estatina: repetir perfil <strong>4 semanas</strong> após início ou ajuste. Atividade física: <strong>150–300 min/semana</strong> + força 2 dias.</p></li><li><p>Fagerström avalia dependência, mas <strong>não é requisito para aconselhar</strong>. Rever 1–2 semanas após parar.</p></li><li><p><strong>Plano de João:</strong> repetir PA; perfil lipídico, glicemia de jejum e creatinina; FIT após decisão informada; apoio para parar de fumar; meta de movimento (ex.: caminhar 15 min, 3× na semana); discutir PSA sem pedir automaticamente; retorno em 4 semanas. <strong>Não pedir:</strong> ECG de rotina, US, vitaminas, TSH.</p></li></ul>
+<h2 id="r-5-saúde-do-idoso">5. Saúde do Idoso</h2>
+<p>Na APS o idoso é avaliado pela <strong>funcionalidade</strong>, não só pelas doenças: a Avaliação Multidimensional (AMI) liga cada achado a um risco e a uma conduta (Prof. Vinicio Britto).</p>
+<h3 id="r-senescência-x-senilidade">Senescência x senilidade</h3>
+<ul><li><p><strong>Senescência:</strong> envelhecimento fisiológico, universal, <strong>não é doença</strong> (cabelos brancos, pele fina, lentificação leve, menor reserva renal e aeróbica).</p></li><li><p><strong>Senilidade:</strong> processo patológico, não universal, perda funcional além do esperado. Exige investigação: perda de memória que compromete função, incontinência nova, quedas de repetição, perda de peso, dependência progressiva.</p></li><li><p>Confundir as duas é causa importante de <strong>subdiagnóstico</strong>.</p></li></ul>
+<h3 id="r-red-flags-no-idoso">Red flags no idoso</h3>
+<ul><li><p>Queda recente (sobretudo com perda de consciência ou TCE).</p></li><li><p><strong>Confusão mental aguda = delirium até prova em contrário.</strong></p></li><li><p>Perda de peso involuntária &gt; 5% em 6 meses (neoplasia, depressão, disfagia).</p></li><li><p>Recusa alimentar; fadiga intensa e súbita (pode ser infecção, IAM, anemia, depressão).</p></li><li><p><strong>Polifarmácia (≥ 5 medicamentos):</strong> risco de cascata prescritiva.</p></li></ul>
+<p><strong>Perguntar sempre:</strong> faz as atividades do dia a dia? Quem ajuda? Caiu nos últimos 12 meses? Tem medo de cair (fator de risco independente)? Está triste ou sem interesse (PHQ-2)? Trouxe todos os remédios?</p>
+<h3 id="r-avaliação-multidimensional-ami">Avaliação Multidimensional (AMI)</h3>
+<p>Domínios: funcionalidade, cognição, humor, mobilidade, polifarmácia, suporte social, nutrição e ambiente. Raciocínio: <strong>achado → risco → conduta específica</strong>.</p>
+<table><thead><tr><th>Instrumento</th><th>Avalia</th><th>Pontos-chave</th></tr></thead><tbody><tr><td><strong>Katz</strong></td><td>AVDs básicas: banho, vestir, higiene, transferência, continência, alimentação</td><td>Perda hierárquica: <strong>banho é a 1ª a ser perdida, alimentação a última</strong></td></tr><tr><td><strong>Lawton</strong></td><td>AVDs instrumentais: telefone, transporte, compras, refeições, casa, remédios, finanças</td><td><strong>Perdidas antes das básicas</strong>; perder controle de remédios/finanças → investigar cognição</td></tr><tr><td><strong>Mini-Cog</strong></td><td>Cognição: 3 palavras + desenho do relógio (11:10)</td><td>Positivo: 0 palavras, ou 1–2 palavras + relógio anormal. Positivo não é diagnóstico de demência</td></tr><tr><td><strong>TUG</strong></td><td>Levantar, andar 3 m, voltar e sentar</td><td>&lt; 10 s baixo risco; 10–20 s moderado; &gt; 20 s alto. &gt; 12 s → fisioterapia</td></tr><tr><td><strong>GDS-15</strong></td><td>Depressão geriátrica</td><td>Depressão no idoso é atípica e subdiagnosticada</td></tr><tr><td><strong>MAN</strong></td><td>Estado nutricional</td><td>Inclui circunferência da panturrilha</td></tr><tr><td><strong>Zarit</strong></td><td>Sobrecarga do cuidador</td><td>Rastrear também depressão do cuidador</td></tr></tbody></table>
+<ul><li><p>Katz: dependência em banho → risco de queda no banheiro; em transferência → úlcera por pressão; incontinência → buscar causa tratável; em alimentação → disfagia e nutrição.</p></li><li><p>Lawton: perda progressiva → fragilidade e suporte; <strong>perda súbita → causa aguda</strong>.</p></li><li><p>Mini-Cog positivo → MEEM/MoCA; excluir causas reversíveis (<strong>hipotireoidismo, B12, depressão</strong>); avaliar segurança (remédios, finanças, direção) e o cuidador.</p></li><li><p>TUG: hesitação ao levantar → hipotensão ortostática; marcha irregular → causa neurológica.</p></li><li><p>Ambiente: tapetes, iluminação, banheiro sem barras, escadas sem corrimão → <strong>visita domiciliar</strong>.</p></li></ul>
+<h3 id="r-fragilidade-critérios-de-fried">Fragilidade (critérios de Fried)</h3>
+<ol><li><p>Perda de peso involuntária &gt; 4,5 kg ou 5% no último ano.</p></li><li><p>Exaustão.</p></li><li><p>Fraqueza (preensão palmar reduzida).</p></li><li><p>Lentificação da marcha.</p></li><li><p>Baixo nível de atividade física.</p></li></ol>
+<p><strong>0 = robusto · 1–2 = pré-frágil · ≥ 3 = frágil.</strong> A pré-fragilidade é o momento ideal de intervir (exercício + suporte nutricional), porque ainda é reversível.</p>
+<h3 id="r-quedas">Quedas</h3>
+<ul><li><p>Principal causa de morbimortalidade por causas externas no idoso. Abordagem <strong>multifatorial</strong>, que reduz quedas em até <strong>30%</strong> no alto risco.</p></li><li><p>Exercício de equilíbrio e força (<strong>tai chi tem evidência robusta</strong>; eMulti).</p></li><li><p>Revisão de remédios: reduzir benzodiazepínicos, excesso de anti-hipertensivos, anticolinérgicos.</p></li><li><p>Adaptar o ambiente (barras, luz, retirar tapetes; VD do ACS).</p></li><li><p>Correção visual (<strong>catarata é causa tratável</strong>) e vitamina D se deficiente.</p></li></ul>
+<h3 id="r-os-3-ds-demência-delirium-e-depressão">Os 3 Ds: demência, delirium e depressão</h3>
+<table><thead><tr><th></th><th>Demência</th><th>Delirium</th><th>Depressão</th></tr></thead><tbody><tr><td>Início</td><td>Insidioso (meses a anos)</td><td><strong>Agudo (horas a dias)</strong></td><td>Semanas a meses</td></tr><tr><td>Curso</td><td>Progressivo</td><td><strong>Flutuante ao longo do dia</strong></td><td>Persistente</td></tr><tr><td>Atenção</td><td>Preservada no início</td><td><strong>Gravemente comprometida</strong></td><td>Levemente comprometida</td></tr><tr><td>Consciência</td><td>Preservada</td><td><strong>Alterada</strong></td><td>Preservada</td></tr><tr><td>Causa</td><td>Neurodegenerativa</td><td>Fator precipitante identificável</td><td>Multifatorial/psiquiátrica</td></tr><tr><td>Reversível</td><td>Em geral não</td><td>Sim, tratando a causa</td><td>Sim, com tratamento</td></tr></tbody></table>
+<p><strong>Delirium é emergência:</strong> buscar infecção, medicamentos, distúrbio metabólico, retenção urinária e fecaloma.</p>
+<h3 id="r-polifarmácia-e-cascata-prescritiva">Polifarmácia e cascata prescritiva</h3>
+<ul><li><p>Polifarmácia = <strong>≥ 5 medicamentos</strong>. Idoso é mais vulnerável: menor função renal/hepática, SNC mais sensível, vários prescritores, automedicação.</p></li><li><p>Riscos: quedas (psicotrópicos, anti-hipertensivos, hipoglicemiantes); delirium (anticolinérgicos, benzodiazepínicos, opioides); sangramento (anticoagulante + AINE + antiagregante); <strong>IRA pela &quot;tripla whammy&quot;: AINE + IECA + diurético</strong>.</p></li><li><p><strong>Cascata prescritiva:</strong> efeito adverso lido como doença nova → novo remédio. Exemplos: <strong>IECA → tosse → broncodilatador; metoclopramida → parkinsonismo → levodopa; diurético → hiperuricemia → alopurinol; AINE → HAS → anti-hipertensivo</strong>; antipsicótico → hipotensão → midodrina.</p></li><li><p><strong>Sacola de remédios:</strong> pedir que traga tudo; revela remédios fora do prontuário, automedicação, duplicidades, vencidos, doses erradas. Checar interações e inapropriados (<strong>critérios de Beers/STOPP</strong>) e <strong>desprescrever</strong>. Revisar anualmente e após internação.</p></li></ul>
+<h3 id="r-vulnerabilidades">Vulnerabilidades</h3>
+<p>Isolamento, baixa renda, baixo letramento, sobrecarga do cuidador e <strong>violência contra o idoso (subnotificada, notificação compulsória)</strong>. Condutas: mapear quem cuida, VD, simplificar esquemas, revezamento familiar, CRAS e centro-dia.</p>
+<p><strong>Caso Seu Antônio (78 anos, DM2 + HAS, &quot;esquecido&quot;, 2 quedas no mês):</strong> Katz, Lawton, TUG e Fried; sacola de remédios (remédio pode causar queda e esquecimento); Mini-Cog e GDS, diferenciando os 3 Ds e excluindo causas reversíveis; Zarit da filha, reunião familiar e visita domiciliar.</p>
+<h2 id="r-6-números-para-decorar-e-pegadinhas">6. Números para decorar e pegadinhas</h2>
+<table><thead><tr><th>Tema</th><th>Número</th></tr></thead><tbody><tr><td>Puericultura</td><td>9 consultas (MS) / 12 (SBP) nos 2 primeiros anos</td></tr><tr><td>Perímetro cefálico</td><td>Obrigatório até 2 anos</td></tr><tr><td>Idade corrigida (prematuro)</td><td>Até 24–36 meses</td></tr><tr><td>Escore Z</td><td>−2 e +2; obesidade infantil ≥ +3</td></tr><tr><td>Teste do pezinho</td><td>3º ao 5º dia</td></tr><tr><td>Teste do coraçãozinho</td><td>24 a 48 h</td></tr><tr><td>Adolescência (OMS)</td><td>10 a 19 anos</td></tr><tr><td>DNA-HPV</td><td>25–64 anos, a cada 5 anos (HIV: a cada 3)</td></tr><tr><td>Mamografia</td><td>50–74 anos, a cada 2 anos</td></tr><tr><td>FIT colorretal</td><td>50–75 anos, a cada 2 anos</td></tr><tr><td>Levonorgestrel / DIU de emergência</td><td>Até 72 h / até 5 dias</td></tr><tr><td>Laqueadura</td><td>&gt; 21 anos ou 2 filhos vivos; 60 dias de espera</td></tr><tr><td>Menopausa</td><td>12 meses de amenorreia; média 51 anos</td></tr><tr><td>Janela da TH</td><td>&lt; 60 anos ou &lt; 10 anos de menopausa</td></tr><tr><td>Captação do pré-natal</td><td>Até 12 semanas; ≥ 6 consultas</td></tr><tr><td>dTpa / VSR</td><td>A partir de 20 sem / a partir de 28 sem</td></tr><tr><td>TOTG</td><td>24–28 semanas, 75 g</td></tr><tr><td>Ác. fólico / ferro / cálcio</td><td>400 µg / 40 mg / 1 g (da 12ª sem)</td></tr><tr><td>AAS</td><td>100–150 mg, da 12ª (antes da 16ª) até 36 sem</td></tr><tr><td>Pré-eclâmpsia</td><td>Após 20 sem; grave ≥ 160/110; P/C ≥ 0,3</td></tr><tr><td>Sífilis</td><td>Intervalo máx. 9 dias; tratar ≥ 30 dias antes do parto</td></tr><tr><td>HPP</td><td>≥ 500 mL vaginal / ≥ 1.000 mL cesárea</td></tr><tr><td>Puerpério</td><td>VD até 7 dias; consulta até 42 dias; intervalo ≥ 18 meses</td></tr><tr><td>Meta de PA</td><td>&lt; 130/80</td></tr><tr><td>DM</td><td>Jejum ≥ 126; HbA1c ≥ 6,5; TOTG ≥ 200; meta HbA1c &lt; 7</td></tr><tr><td>Rastreio de DM</td><td>≥ 35 anos, a cada 3 anos</td></tr><tr><td>PREVENT</td><td>30–79 anos</td></tr><tr><td>Lp(a)</td><td>≥ 50 agravante; &gt; 180 alto risco</td></tr><tr><td>AUDIT</td><td>8 / 16 / 20</td></tr><tr><td>Atividade física</td><td>150 min moderada ou 75 vigorosa por semana</td></tr></tbody></table>
+<p><strong>Pegadinhas clássicas</strong></p>
+<ul><li><p>Gestante com PA ≥ 140/90 <strong>antes de 20 semanas</strong> = HAS crônica, não pré-eclâmpsia.</p></li><li><p><strong>Enalapril, BRA e diurético são proibidos na gestação</strong>, mas enalapril pode na amamentação.</p></li><li><p>Sífilis em gestante: só penicilina; alergia = dessensibilizar. Teste rápido + → trata na hora.</p></li><li><p>Bacteriúria assintomática na gestante <strong>sempre</strong> se trata. Pielonefrite = interna.</p></li><li><p>HPV 16/18 → colposcopia direto, mesmo com citologia normal.</p></li><li><p>Mulher sintomática não entra em “rastreamento”: é investigação diagnóstica.</p></li><li><p>Câncer de mama contraindica <strong>todo</strong> método hormonal; enxaqueca com aura só contraindica os combinados.</p></li><li><p>Laqueadura <strong>não</strong> precisa de autorização do cônjuge.</p></li><li><p>Mulher com útero na TH precisa de progestágeno.</p></li><li><p>NutriSUS exclui ferro e vitamina A isolados.</p></li><li><p>Atraso vacinal: nunca reiniciar o esquema.</p></li><li><p>Violência: notificar com <strong>suspeita</strong>, sem consentimento (mulher) e ao <strong>Conselho Tutelar + SINAN</strong> (criança).</p></li><li><p>Adolescente: sigilo só cai com risco de vida, e sempre avisando o adolescente.</p></li><li><p>PSA de rotina = medicalização (prevenção quaternária). Toque retal isolado não rastreia.</p></li><li><p>Diabético, DRC e LDL ≥ 190 já são alto risco: não calcular escore.</p></li><li><p>Monoterapia na HAS é exceção; a regra é iniciar com 2 fármacos.</p></li><li><p>Viés de tempo ganho = sobrevida aumenta sem mudar a data da morte.</p></li></ul>
+<p><strong>Idoso e versões novas</strong></p>
+<ul><li><p>Polifarmácia ≥ 5 medicamentos; perda de peso de alerta &gt; 5% em 6 meses.</p></li><li><p>Katz: banho é a 1ª AVD perdida, alimentação a última. AIVDs (Lawton) caem antes das básicas.</p></li><li><p>TUG &lt; 10 s baixo risco, 10–20 moderado, &gt; 20 alto; &gt; 12 s → fisioterapia.</p></li><li><p>Fried: 0 robusto, 1–2 pré-frágil, ≥ 3 frágil; perda de peso &gt; 4,5 kg ou 5%/ano.</p></li><li><p>Delirium = início agudo, flutuante, atenção e consciência alteradas, reversível. Mini-Cog positivo não é demência.</p></li><li><p>Tripla whammy: AINE + IECA + diurético → lesão renal aguda.</p></li><li><p>T-score: osteoporose ≤ −2,5; osteopenia entre −1 e −2,5. DXA em &gt; 65 anos.</p></li><li><p>DMG: jejum 92–125; TOTG 1 h ≥ 180 ou 2 h 153–199; jejum ≥ 126 = DM prévio.</p></li><li><p>GBS: swab vaginal e retal 36–38 semanas.</p></li><li><p>Divergências entre aulas: nitrofurantoína 5 dias (Vinicio) x 7 dias (Raquel); intervalo entre gestações 2 anos x 18 meses; idade como fator moderado ≥ 35 x ≥ 40 anos.</p></li><li><p>Pai com IAM aos 58 não é história familiar precoce (homem &lt; 55, mulher &lt; 65).</p></li></ul>
+<p>Fontes: PDFs da pasta Turma 41 C → 4º semestre → MFC no Google Drive (aulas de Criança e Adolescente, Mulher I, Mulher/Gestante II, Adulto e o plano de aulas 2026.2), mais os PDFs enviados no chat: Mulher I (final), Gestante Parte 2 e Adulto (revisada) do Prof. Vinicio e Aula 12 Saúde do Idoso.</p>
+</section>
+<p class="footer-note">Material de estudo gerado a partir das aulas de MFC da Turma 41 (Prof. Vinicio Britto e Profa. Raquel de Souza Sá Pessoa). Confira sempre os protocolos vigentes. Exportado em 12/11/2026.</p>
+</main>
+</div>
+<button class="iconbtn backtop" onclick="scrollTo({top:0})" title="Voltar ao topo">↑ Topo</button>
+<script>
+(function(){
+  "use strict";
+  var store = {
+    get: function(k, d){ try{ var v = localStorage.getItem("mfc41:"+k); return v===null ? d : JSON.parse(v); }catch(e){ return d; } },
+    set: function(k, v){ try{ localStorage.setItem("mfc41:"+k, JSON.stringify(v)); }catch(e){} }
+  };
+  var $ = function(s, r){ return (r||document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+  var paneG = $("#pane-guia"), paneR = $("#pane-resumo");
+
+  /* ---------- theme ---------- */
+  var root = document.documentElement;
+  var theme = store.get("theme", null);
+  if (theme) root.setAttribute("data-theme", theme);
+  $("#themeBtn").addEventListener("click", function(){
+    var dark = root.getAttribute("data-theme") ? root.getAttribute("data-theme")==="dark"
+             : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = dark ? "light" : "dark";
+    root.setAttribute("data-theme", next); store.set("theme", next);
+  });
+
+  /* ---------- cleanup of exported markup ---------- */
+  $$("p").forEach(function(p){
+    if (p.querySelector("time[data-atom]")) {
+      p.className = "subtitle";
+      p.textContent = "Turma 41 · 4º semestre · atualizado em 12/11/2026";
+    }
+  });
+  $$(".doc table").forEach(function(t){
+    var w = document.createElement("div"); w.className = "tablewrap";
+    t.parentNode.insertBefore(w, t); w.appendChild(t);
+  });
+  var bgMap = {"#fbebeb":"var(--n1-soft)","#f9ece7":"var(--n2-soft)","#f9eeda":"var(--n3-soft)","#f0efec":"var(--n4-soft)"};
+  $$("td[data-bg]").forEach(function(td){
+    td.style.backgroundColor = bgMap[td.getAttribute("data-bg")] || "";
+  });
+
+  /* ---------- levels ---------- */
+  $$("h2", paneG).forEach(function(h){
+    var m = h.textContent.match(/^Nível\s+(\d)\s*·\s*(.*)$/);
+    if (!m) return;
+    h.classList.add("lv"+m[1]); h.dataset.level = m[1]; h.dataset.title = "Nível "+m[1]+" · "+m[2];
+    h.innerHTML = '<span class="level"><span class="badge">Nível '+m[1]+'</span><span>'+m[2]+'</span></span>';
+  });
+
+  /* ---------- topic labels ---------- */
+  var labels = [
+    [/^Por que é essencial\.?/, "lbl-why"],
+    [/^Entenda primeiro\.?/, "lbl-learn"],
+    [/^Memorize\.?$/, "lbl-mem"],
+    [/^Divergência entre aulas\.?/, "lbl-div"],
+    [/^Para aprofundar:?/, "lbl-ref"],
+    [/^Atenção às divergências\.?/, null]
+  ];
+  $$("p", paneG).forEach(function(p){
+    var s = p.firstElementChild;
+    if (!s || s.tagName !== "STRONG" || p.firstChild !== s) return;
+    var t = s.textContent.trim();
+    for (var i=0;i<labels.length;i++){
+      if (labels[i][0].test(t) && labels[i][1]) { p.classList.add("lbl", labels[i][1]); break; }
+    }
+    if (/^Memorize/.test(t)) s.textContent = "Memorize";
+    if (/^Por que é essencial/.test(t)) s.textContent = "Por que é essencial";
+    if (/^Entenda primeiro/.test(t)) s.textContent = "Entenda primeiro";
+    if (/^Divergência entre aulas/.test(t)) s.textContent = "Divergência entre aulas";
+    if (/^Para aprofundar/.test(t)) s.textContent = "Para aprofundar";
+  });
+
+  /* ---------- tabs ---------- */
+  var current = "guia";
+  function showPane(name, noScroll){
+    current = name;
+    $$(".tab").forEach(function(b){ b.setAttribute("aria-selected", String(b.dataset.pane===name)); });
+    paneG.hidden = name !== "guia"; paneR.hidden = name !== "resumo";
+    store.set("tab", name);
+    buildToc();
+    if (!noScroll) scrollTo({top:0});
+  }
+  $$(".tab").forEach(function(b){ b.addEventListener("click", function(){ showPane(b.dataset.pane); }); });
+
+  /* ---------- cross references (guia -> resumo) ---------- */
+  function findSection(pane, prefix){
+    var hs = $$("h2,h3", pane);
+    for (var i=0;i<hs.length;i++){ if (hs[i].textContent.trim().indexOf(prefix) === 0) return hs[i]; }
+    return null;
+  }
+  function goToResumo(num){
+    showPane("resumo", true);
+    var h = num ? findSection(paneR, num + ".") : null;
+    setTimeout(function(){ (h || paneR).scrollIntoView({behavior:"smooth"}); }, 30);
+  }
+  $$("a[data-atom='container']", paneG).forEach(function(a){
+    var after = (a.nextSibling && a.nextSibling.textContent) || "";
+    var m = after.match(/seç(?:ão|ões)\s+(\d)/);
+    var span = document.createElement("span");
+    span.className = "xref"; span.textContent = "Resumo completo";
+    span.title = "Abrir no Resumo completo";
+    span.addEventListener("click", function(){ goToResumo(m ? m[1] : null); });
+    a.replaceWith(span);
+  });
+
+  /* ---------- study checklist ---------- */
+  var checks = store.get("checks", {});
+  var tasks = $$("li[data-checked]");
+  function updateProgress(){
+    var done = tasks.filter(function(li){ return li.classList.contains("done"); }).length;
+    $("#progTxt").textContent = done + "/" + tasks.length + " sessões";
+    $("#progBar").style.width = (tasks.length ? done/tasks.length*100 : 0) + "%";
+  }
+  tasks.forEach(function(li, i){
+    var old = li.querySelector("input"); if (old) old.remove();
+    var content = li.querySelector("p") || li;
+    var span = document.createElement("span"); span.innerHTML = content.innerHTML.trim();
+    var cb = document.createElement("input"); cb.type = "checkbox"; cb.setAttribute("aria-label", "Concluída");
+    li.innerHTML = ""; li.className = "task"; li.appendChild(cb); li.appendChild(span);
+    var set = function(v){ cb.checked = v; li.classList.toggle("done", v); checks[i] = v; store.set("checks", checks); updateProgress(); };
+    cb.addEventListener("click", function(e){ e.stopPropagation(); set(cb.checked); });
+    li.addEventListener("click", function(){ set(!cb.checked); });
+    if (checks[i]) { cb.checked = true; li.classList.add("done"); }
+  });
+  updateProgress();
+
+  /* ---------- self-test ---------- */
+  var quizH = $$("h2", paneG).filter(function(h){ return /Autoteste/.test(h.textContent); })[0];
+  var qTable = null, el = quizH;
+  while (el && !qTable) { el = el.nextElementSibling; if (el && el.querySelector) qTable = el.matches("table") ? el : el.querySelector("table"); }
+  if (qTable) {
+    var marks = store.get("quiz", {});
+    var head = qTable.querySelector("thead tr");
+    var th = document.createElement("th"); th.className = "mark"; th.textContent = "Acertou?"; head.appendChild(th);
+    var rows = $$("tbody tr", qTable);
+    var bar = document.createElement("div"); bar.className = "quizbar";
+    bar.innerHTML = '<button class="iconbtn" data-a="show">Mostrar todas as respostas</button>' +
+                    '<button class="iconbtn" data-a="hide">Esconder todas</button>' +
+                    '<button class="iconbtn" data-a="reset">Zerar placar</button>' +
+                    '<span class="score" id="score"></span>';
+    qTable.closest(".tablewrap").before(bar);
+    function score(){
+      var ok=0, bad=0; Object.keys(marks).forEach(function(k){ if(marks[k]==="ok") ok++; else if(marks[k]==="bad") bad++; });
+      $("#score").textContent = "Acertos: " + ok + " · Erros: " + bad + " · Faltam: " + (rows.length-ok-bad);
+    }
+    rows.forEach(function(tr, i){
+      var cells = tr.children, ans = cells[2], tema = cells[3];
+      ans.classList.add("ans");
+      ans.innerHTML = '<span class="cover">Toque para ver a resposta</span><span class="txt">'+ans.innerHTML+'</span>';
+      ans.addEventListener("click", function(){ ans.classList.toggle("open"); });
+      var code = tema.textContent.trim();
+      tema.innerHTML = '<span class="goto" title="Ir ao tema">'+code+'</span>';
+      tema.firstChild.addEventListener("click", function(){ var h = findSection(paneG, code); if (h) h.scrollIntoView({behavior:"smooth"}); });
+      var td = document.createElement("td"); td.className = "mark";
+      td.innerHTML = '<button class="ok" title="Acertei">✓</button> <button class="bad" title="Errei">✗</button>';
+      tr.appendChild(td);
+      var bOk = td.children[0], bBad = td.children[1];
+      function paint(){ bOk.classList.toggle("on", marks[i]==="ok"); bBad.classList.toggle("on", marks[i]==="bad"); }
+      function mark(v){ marks[i] = marks[i]===v ? null : v; if(!marks[i]) delete marks[i]; store.set("quiz", marks); ans.classList.add("open"); paint(); score(); }
+      bOk.addEventListener("click", function(){ mark("ok"); });
+      bBad.addEventListener("click", function(){ mark("bad"); });
+      paint();
+    });
+    bar.addEventListener("click", function(e){
+      var a = e.target.dataset && e.target.dataset.a; if (!a) return;
+      if (a==="show") rows.forEach(function(r){ r.children[2].classList.add("open"); });
+      if (a==="hide") rows.forEach(function(r){ r.children[2].classList.remove("open"); });
+      if (a==="reset") { marks = {}; store.set("quiz", marks); rows.forEach(function(r){ $$("button", r).forEach(function(b){ b.classList.remove("on"); }); }); }
+      score();
+    });
+    score();
+  }
+
+  /* ---------- table of contents + scrollspy ---------- */
+  var observer = null;
+  function slug(s, i){ return "s-" + i + "-" + s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").slice(0,40); }
+  function buildToc(){
+    var pane = current === "guia" ? paneG : paneR;
+    var list = $("#tocList"); list.innerHTML = "";
+    var hs = $$("h2,h3", pane);
+    var colors = {"1":"var(--n1)","2":"var(--n2)","3":"var(--n3)","4":"var(--n4)"};
+    var lastLevel = null;
+    hs.forEach(function(h, i){
+      if (!h.id) h.id = slug(h.textContent, i);
+      var li = document.createElement("li"); li.className = h.tagName === "H2" ? "l2" : "l3";
+      if (h.dataset.level) lastLevel = h.dataset.level; else if (h.tagName === "H2") lastLevel = null;
+      var a = document.createElement("a"); a.href = "#" + h.id;
+      var dot = (lastLevel && current==="guia") ? '<span class="dot" style="background:'+colors[lastLevel]+'"></span>' : "";
+      a.innerHTML = dot; a.appendChild(document.createTextNode(h.dataset.title || h.textContent));
+      a.addEventListener("click", function(){ if (window.innerWidth <= 900) $("#toc").classList.remove("open"); });
+      li.appendChild(a); list.appendChild(li);
+    });
+    if (observer) observer.disconnect();
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (en.isIntersecting) {
+            $$("#tocList a").forEach(function(a){ a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id); });
+          }
+        });
+      }, {rootMargin:"-80px 0px -70% 0px"});
+      hs.forEach(function(h){ observer.observe(h); });
+    }
+    filterToc();
+  }
+  $("#tocToggle").addEventListener("click", function(){ $("#toc").classList.toggle("open"); });
+
+  /* ---------- search ---------- */
+  var hits = [], hitIdx = -1;
+  function clearHits(){
+    $$("mark.searchhit").forEach(function(m){ var t = document.createTextNode(m.textContent); m.replaceWith(t); t.parentNode.normalize(); });
+    hits = []; hitIdx = -1;
+  }
+  function filterToc(){
+    var q = $("#q").value.trim().toLowerCase();
+    $$("#tocList li").forEach(function(li){ li.style.display = !q || li.textContent.toLowerCase().indexOf(q) >= 0 ? "" : "none"; });
+  }
+  function runSearch(){
+    clearHits();
+    var q = $("#q").value.trim(); if (q.length < 2) return;
+    var pane = current === "guia" ? paneG : paneR;
+    var walker = document.createTreeWalker(pane, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    var re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+    nodes.forEach(function(node){
+      if (!re.test(node.nodeValue)) return; re.lastIndex = 0;
+      var frag = document.createDocumentFragment(), last = 0, m, s = node.nodeValue;
+      while ((m = re.exec(s))) {
+        frag.appendChild(document.createTextNode(s.slice(last, m.index)));
+        var mk = document.createElement("mark"); mk.className = "searchhit"; mk.textContent = m[0];
+        frag.appendChild(mk); hits.push(mk); last = m.index + m[0].length;
+      }
+      frag.appendChild(document.createTextNode(s.slice(last)));
+      node.replaceWith(frag);
+    });
+    nextHit();
+  }
+  function nextHit(){
+    if (!hits.length) return;
+    hitIdx = (hitIdx + 1) % hits.length;
+    var h = hits[hitIdx], ans = h.closest("td.ans"); if (ans) ans.classList.add("open");
+    h.scrollIntoView({behavior:"smooth", block:"center"});
+  }
+  $("#q").addEventListener("input", function(){ filterToc(); if (!this.value) clearHits(); });
+  $("#q").addEventListener("keydown", function(e){
+    if (e.key === "Enter") { e.preventDefault(); if (hits.length && hitIdx >= 0 && hits[0].textContent.toLowerCase() === this.value.trim().toLowerCase()) nextHit(); else runSearch(); }
+    if (e.key === "Escape") { this.value = ""; clearHits(); filterToc(); }
+  });
+  $("#q").title = "Digite e pressione Enter para buscar; Enter de novo vai para a próxima ocorrência";
+
+  showPane(store.get("tab", "guia"), true);
+})();
+</script>
+</body>
+</html>
