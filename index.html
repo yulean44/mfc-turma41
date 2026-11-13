@@ -255,6 +255,18 @@ li.task.done > span{color:var(--faint);text-decoration:line-through}
 .edbar button:hover{background:var(--glass2)}
 .editavel{outline:none;min-height:320px}
 
+/* consulta lateral: outra seção sempre ao lado da leitura */
+.consulta{position:fixed;top:14px;right:14px;bottom:14px;width:min(560px,44vw);z-index:30;display:flex;flex-direction:column;background:var(--solid);transform:translateX(110%);transition:transform .3s ease}
+.consulta.aberta{transform:none}
+.consulta .cab{display:flex;flex-direction:column;gap:10px;padding:16px 18px 12px;border-bottom:1px solid var(--line)}
+.consulta .cab .lin{display:flex;align-items:center;gap:8px}
+.consulta .cab .tabs{flex-wrap:wrap}
+.consulta .corpo{overflow:auto;padding:6px 22px 30px}
+.consulta .corpo.doc{padding:6px 22px 30px;background:transparent}
+body.com-consulta .main{padding-right:calc(min(560px,44vw) + 30px)}
+body.com-consulta .leitura{grid-template-columns:1fr}
+body.com-consulta .leitura .toc{display:none}
+@media (max-width:900px){.consulta{width:auto;left:10px;top:10px;bottom:84px}body.com-consulta .main{padding-right:14px}}
 /* ---------- flashcards ---------- */
 .fc-wrap{max-width:780px;margin:0 auto}
 .fc-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 18px}
@@ -358,7 +370,8 @@ table.tb td{padding:11px 10px;border-bottom:1px solid var(--line);font-weight:30
 </main>
 <div class="toasts" id="toasts"></div>
 <div id="timerPill" class="timerpill chipi" hidden></div>
+<aside class="consulta vidro" id="consulta" aria-label="Consulta lateral"></aside>
 <div id="modalRoot"></div>
-<script type="module" src="app.js"></script>
+<script type="module" src="app.js?v=14"></script>
 </body>
 </html>

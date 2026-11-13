@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js";
-import { ic, ICONES_MATERIA } from "./icons.js";
-import { FIG } from "./figuras.js";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=14";
+import { ic, ICONES_MATERIA } from "./icons.js?v=14";
+import { FIG } from "./figuras.js?v=14";
 
 /* =========================================================
    utilidades
@@ -349,7 +349,7 @@ function show(v, opts = {}) {
   atual = v; LS.set("view", v);
   VIEWS.forEach(([k]) => { $("#view-" + k).hidden = k !== v; });
   $$(".navbtn[data-view]").forEach(b => b.classList.toggle("active", b.dataset.view === v));
-  layoutMundo(); render();
+  layoutMundo(); render(); renderConsulta();
   if (!opts.manterScroll) window.scrollTo(0, 0);
 }
 function layoutMundo() {
@@ -393,19 +393,28 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=14"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
-let tExplora = null;
+/* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
+let ultimoGesto = 0, segurando = false;
 function explorando() {
   if (atual !== "inicio" && atual !== "mundo") return;
+  ultimoGesto = Date.now();
   document.body.classList.add("explorando");
-  clearTimeout(tExplora); tExplora = setTimeout(() => document.body.classList.remove("explorando"), 2500);
 }
+setInterval(() => {
+  if (document.body.classList.contains("explorando") && !segurando && Date.now() - ultimoGesto > 1500) document.body.classList.remove("explorando");
+}, 250);
 async function iniciaMundo() {
   const m = await garanteMod(); if (!m) return;
   mundo = m.criaMundo($("#espaco"));
-  ["pointerdown", "pointermove", "wheel", "touchmove"].forEach(ev => $("#espaco").addEventListener(ev, e => { if (ev === "pointermove" && !e.buttons) return; explorando(); }, { passive: true }));
+  const esp = $("#espaco");
+  esp.addEventListener("pointerdown", () => { segurando = true; explorando(); });
+  esp.addEventListener("pointermove", e => { if (segurando && e.buttons) explorando(); });
+  esp.addEventListener("wheel", () => explorando(), { passive: true });
+  ["pointerup", "pointercancel", "pointerleave", "blur"].forEach(ev => (ev === "blur" ? window : esp).addEventListener(ev, () => { segurando = false; ultimoGesto = Date.now(); }));
+  document.addEventListener("pointerup", () => { segurando = false; });
   // reposiciona itens antigos que estavam sem lugar
   S.decos.forEach(d => { if (d.d[0] === 0 && d.d[1] === 1 && d.d[2] === 0) d.d = sorteioP(!!S.efeitos.agua); });
   layoutMundo(); aplicaTema(); aplicaMundo();
@@ -556,6 +565,7 @@ function renderMaterias() {
   const v = $("#view-materias");
   layoutMundo();
   if (sub.tela === "sec" && materia(sub.mat)) return renderLeitura(v);
+  renderConsulta();
   if (sub.tela === "mat" && materia(sub.mat)) return renderMateria(v);
   const ms = materias();
   v.innerHTML = `<div class="pagina">
@@ -673,7 +683,7 @@ function renderCardsMateria(corpo, m) {
     });
   });
 }
-function melhoraDoc(pane, mat) {
+function melhoraDoc(pane, mat, naConsulta = false) {
   $$("table", pane).forEach(t => { if (t.parentNode.classList.contains("tablewrap")) return; const w = document.createElement("div"); w.className = "tablewrap"; t.parentNode.insertBefore(w, t); w.appendChild(t); });
   $$("[style]", pane).forEach(el => el.removeAttribute("style"));
   $$("td[data-bg]", pane).forEach(td => {
@@ -683,7 +693,31 @@ function melhoraDoc(pane, mat) {
   });
   const labels = [[/^Por que é essencial/, "lbl-why"], [/^Entenda primeiro/, "lbl-learn"], [/^Memorize\.?$/, "lbl-mem"], [/^Divergência entre aulas/, "lbl-div"], [/^Para aprofundar/, "lbl-ref"]];
   $$("p", pane).forEach(p => { const s = p.firstElementChild; if (!s || s.tagName !== "STRONG" || p.firstChild !== s) return; const t = s.textContent.trim(); for (const [re, c] of labels) if (re.test(t)) { p.classList.add("lbl", c); s.textContent = t.replace(/[.:]$/, ""); break; } });
-  $$(".xref", pane).forEach(x => x.addEventListener("click", () => { const M = materia(mat); if (M && M.secoes.find(s => s.id === x.dataset.sec)) abreSecao(mat, x.dataset.sec); }));
+  $$(".xref", pane).forEach(x => { x.title = "Abrir ao lado, sem sair desta página"; x.addEventListener("click", () => { const M = materia(mat); if (M && M.secoes.find(s => s.id === x.dataset.sec)) abreConsulta(mat, x.dataset.sec); }); });
+}
+/* ---------- consulta lateral ---------- */
+let consulta = LS.get("consulta", null);   // {mat, sid} ou null
+function grupoDe(m, sid) { return (m.secoes.find(x => x.id === sid) || {}).grupo || ""; }
+function abreConsulta(mat, sid) { const novo = !consulta; consulta = { mat, sid }; LS.set("consulta", consulta); renderConsulta(); if (novo && atual === "materias") { const b = $("#btConsulta"); if (b) b.lastChild.textContent = "Fechar consulta"; } }
+function fechaConsulta() { consulta = null; LS.set("consulta", null); renderConsulta(); }
+function renderConsulta() {
+  const el = $("#consulta"), lendo = atual === "materias" && sub.tela === "sec";
+  const m = consulta && materia(consulta.mat);
+  const ativo = !!(lendo && m && m.secoes.find(x => x.id === consulta.sid));
+  el.classList.toggle("aberta", ativo); document.body.classList.toggle("com-consulta", ativo);
+  if (!ativo) return;
+  const grupos = [...new Set(m.secoes.map(x => x.grupo || "Seções"))], gAtual = grupoDe(m, consulta.sid) || "Seções";
+  const doGrupo = m.secoes.filter(x => (x.grupo || "Seções") === gAtual);
+  el.innerHTML = `<div class="cab">
+      <div class="lin"><span class="kicker" style="flex:1">Consulta ao lado</span><button class="btn ic sm" id="cnFecha" title="Fechar consulta">${ic("x", "s")}</button></div>
+      ${grupos.length > 1 ? `<div class="tabs">${grupos.map(g => `<button class="${g === gAtual ? "on" : ""}" data-cg="${esc(g)}">${esc(g)}</button>`).join("")}</div>` : ""}
+      <select class="f" id="cnSec">${doGrupo.map(x => `<option value="${esc(x.id)}" ${x.id === consulta.sid ? "selected" : ""}>${esc(x.titulo)}</option>`).join("")}</select>
+    </div>
+    <div class="corpo doc" id="cnCorpo">${htmlSecao(m.id, consulta.sid) || '<p class="muted">Seção vazia.</p>'}</div>`;
+  melhoraDoc($("#cnCorpo"), m.id, true);
+  $("#cnFecha").addEventListener("click", fechaConsulta);
+  $("#cnSec").addEventListener("change", e => abreConsulta(m.id, e.target.value));
+  $$("[data-cg]", el).forEach(b => b.addEventListener("click", () => { const p = m.secoes.find(x => (x.grupo || "Seções") === b.dataset.cg); if (p) abreConsulta(m.id, p.id); }));
 }
 function renderLeitura(v) {
   const m = materia(sub.mat), s = m.secoes.find(x => x.id === sub.sid);
@@ -696,6 +730,7 @@ function renderLeitura(v) {
     <div class="leitura">
       <article class="doc vidro">
         <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:220px"><div class="kicker">${esc(s.grupo || m.sigla || "")}</div><h1 class="titulo p" style="font-size:clamp(20px,2.3vw,28px);margin-top:8px;letter-spacing:.14em">${esc(s.titulo)}</h1></div>
+        <button class="btn sm" id="btConsulta" title="Deixar outra seção aberta ao lado">${ic("livro", "s")}${consulta ? "Fechar consulta" : "Resumo ao lado"}</button>
         ${souDono ? `<button class="btn sm" id="btEditar2">${ic("lapis", "s")}Editar</button>` : ""}</div>
         <div class="linha"></div>
         <div id="pane">${html || '<p class="muted">Seção vazia.</p>'}</div>
@@ -724,6 +759,12 @@ function renderLeitura(v) {
   $("#btProx")?.addEventListener("click", () => abreSecao(m.id, prox.id));
   $("#btAnt")?.addEventListener("click", () => abreSecao(m.id, ant.id));
   $("#btEditar2")?.addEventListener("click", () => { editando = true; render(); });
+  $("#btConsulta").addEventListener("click", () => {
+    // abre o outro grupo (ex.: lendo o Guia, abre o Resumo) na seção mais parecida
+    const g = s.grupo || "", outro = m.secoes.find(x => (x.grupo || "") !== g) || m.secoes.find(x => x.id !== s.id) || s;
+    if (consulta) { fechaConsulta(); render(); } else { abreConsulta(m.id, outro.id); render(); }
+  });
+  renderConsulta();
 }
 function realca(pane, q) {
   const w = document.createTreeWalker(pane, NodeFilter.SHOW_TEXT), nodes = []; let n; while ((n = w.nextNode())) nodes.push(n);
@@ -1000,7 +1041,7 @@ document.querySelector(".marca").style.cursor = "default";
    início do app
    ========================================================= */
 async function carregaFabrica() {
-  try { const r = await fetch("content/mfc.json"); FABRICA = [await r.json()]; } catch (e) { console.warn("conteúdo", e); FABRICA = []; }
+  try { const r = await fetch("content/mfc.json?v=14"); FABRICA = [await r.json()]; } catch (e) { console.warn("conteúdo", e); FABRICA = []; }
 }
 async function conectaNuvem() {
   if (!window.claude || typeof window.claude.use !== "function") return;
@@ -1040,6 +1081,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=14").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();
