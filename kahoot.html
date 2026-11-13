@@ -214,12 +214,12 @@ const perguntas = () => DADOS.kahoot.filter(x => x.tipo !== "slide");
 
 async function carrega() {
   const mat = new URLSearchParams(location.search).get("mat") || "imagem";
-  try { const r = await fetch(`content/${mat}.json?v=18`); if (!r.ok) throw 0; DADOS = await r.json(); }
+  try { const r = await fetch(`content/${mat}.json?v=19`); if (!r.ok) throw 0; DADOS = await r.json(); }
   catch { DADOS = EMBUTIDO; }
   if (!DADOS || !DADOS.kahoot) { $("#capaSub").textContent = "Não encontrei perguntas para esta matéria."; $("#btJogar").disabled = true; return; }
   $("#capaSigla").textContent = (DADOS.kahootInfo && DADOS.kahootInfo.titulo) || DADOS.nome;
   $("#chipMat").innerHTML = `Kahoot · <b>${esc(DADOS.sigla || DADOS.nome)}</b>`;
-  try { FIGS = (await import("./figuras.js?v=18")).FIG; } catch {}
+  try { FIGS = (await import("./figuras.js?v=19")).FIG; } catch {}
   $("#planetaCapa").innerHTML = planetaFig(1);
   const n = perguntas().length, sl = DADOS.kahoot.length - n;
   $("#capaSub").textContent = `${n} perguntas na ordem da professora${sl ? `, ${sl} slides de explicação` : ""} e as anotações da aula no gabarito. Quanto mais cedo acertar, mais pontos.`;
