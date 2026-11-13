@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=16";
-import { ic, ICONES_MATERIA } from "./icons.js?v=16";
-import { FIG } from "./figuras.js?v=16";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=17";
+import { ic, ICONES_MATERIA } from "./icons.js?v=17";
+import { FIG } from "./figuras.js?v=17";
 
 /* =========================================================
    utilidades
@@ -397,7 +397,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=16"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=17"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -1218,7 +1218,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=16`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=17`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1259,6 +1259,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=16").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=17").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();

@@ -88,6 +88,16 @@ h1{font-weight:200;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(
 .zoom{position:fixed;inset:0;background:rgba(6,9,16,.92);display:grid;place-items:center;z-index:50;padding:20px;cursor:zoom-out}
 .zoom img{max-width:96vw;max-height:92vh;border-radius:12px}
 .link{background:none;border:0;color:var(--acc2);font-size:13px;letter-spacing:.08em;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
+.slide .txt{text-align:left;max-width:980px;margin:0 auto;color:#d6dfeb;font-weight:300;font-size:16px}
+.slide .txt strong{color:#fff;font-weight:500}
+.slide .txt table{width:100%;border-collapse:collapse;font-size:15px;margin:10px 0}
+.slide .txt th,.slide .txt td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+.slide .txt th{color:var(--acc);font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.slide .txt ul{padding-left:20px}
+.desc{max-width:620px;margin:0 auto;padding:16px 20px;border-radius:16px;border:1px dashed var(--line2);background:rgba(255,255,255,.03);color:#d6dfeb;font-weight:300;font-size:15.5px;text-align:left}
+.desc b{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc2);font-weight:400;margin-bottom:4px}
+.anot{margin-top:10px;padding:10px 14px;border-left:2px solid var(--gold);background:rgba(242,196,110,.08);border-radius:8px;color:#e9f0f8;font-weight:300;font-size:14.5px}
+.anot strong{font-weight:500}
 .oculto{display:none!important}
 </style>
 </head>
@@ -116,14 +126,14 @@ h1{font-weight:200;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(
   <section id="telaJogo" class="oculto">
     <div class="barra"><span class="chip" id="numQ">1 / 18</span><div class="prog"><i id="progI" style="width:0"></i></div><span class="chip">Sequência <b id="seq">0</b></span></div>
     <div class="vidro pergunta"><div class="kicker" id="tagQ">Pergunta</div><h2 id="txtQ"></h2><button class="link oculto" id="btFoto">Ver a foto da aula</button></div>
-    <div class="vidro slide oculto" id="slide"><div class="kicker">Slide de explicação</div><h2 id="slT"></h2><img id="slI" alt=""><div style="margin-top:14px;display:flex;gap:10px;justify-content:center"><button class="link oculto" id="btFotoS">Ver a foto da aula</button><span style="flex:0 0 12px"></span><button class="btn" id="btSlProx">Continuar</button></div></div>
+    <div class="vidro slide oculto" id="slide"><div class="kicker">Slide de explicação</div><h2 id="slT"></h2><div class="txt" id="slH"></div><img id="slI" alt="" class="oculto"><div class="anot oculto" id="slA"></div><div style="margin-top:14px;display:flex;gap:10px;justify-content:center"><button class="link oculto" id="btFotoS">Ver a foto da aula</button><span style="flex:0 0 12px"></span><button class="btn" id="btSlProx">Continuar</button></div></div>
     <div class="meio" id="meio">
       <div class="anel"><svg viewBox="0 0 80 80" width="100%" height="100%"><circle cx="40" cy="40" r="34" stroke="rgba(255,255,255,.1)" stroke-width="4" fill="none"/><circle id="arco" cx="40" cy="40" r="34" stroke="#9fe0b0" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="0"/></svg><span id="tempo">20</span></div>
       <div id="midia"></div>
       <div class="pts"><b id="pontos">0</b>pontos</div>
     </div>
     <div class="ops" id="ops"></div>
-    <div class="vidro feedback" id="fb"><div><div class="t" id="fbT"></div><p id="fbP"></p></div><button class="btn" id="btProx">Próxima</button></div>
+    <div class="vidro feedback" id="fb"><div><div class="t" id="fbT"></div><p id="fbP"></p><div class="anot oculto" id="fbA"></div></div><button class="btn" id="btProx">Próxima</button></div>
   </section>
 
   <!-- fim -->
@@ -195,14 +205,14 @@ const perguntas = () => DADOS.kahoot.filter(x => x.tipo !== "slide");
 
 async function carrega() {
   const mat = new URLSearchParams(location.search).get("mat") || "imagem";
-  try { const r = await fetch(`content/${mat}.json?v=16`); if (!r.ok) throw 0; DADOS = await r.json(); }
+  try { const r = await fetch(`content/${mat}.json?v=17`); if (!r.ok) throw 0; DADOS = await r.json(); }
   catch { DADOS = EMBUTIDO; }
   if (!DADOS || !DADOS.kahoot) { $("#capaSub").textContent = "Não encontrei perguntas para esta matéria."; $("#btJogar").disabled = true; return; }
   $("#capaSigla").textContent = (DADOS.kahootInfo && DADOS.kahootInfo.titulo) || DADOS.nome;
   $("#chipMat").innerHTML = `Kahoot · <b>${esc(DADOS.sigla || DADOS.nome)}</b>`;
   $("#planetaCapa").innerHTML = planetaSVG(6);
   const n = perguntas().length, sl = DADOS.kahoot.length - n;
-  $("#capaSub").textContent = `${n} perguntas na ordem da professora, com as imagens${sl ? ` e ${sl} slides de explicação` : ""}. Quanto mais cedo acertar, mais pontos.`;
+  $("#capaSub").textContent = `${n} perguntas na ordem da professora${sl ? `, ${sl} slides de explicação` : ""} e as anotações da aula no gabarito. Quanto mais cedo acertar, mais pontos.`;
   const fotos = [...new Set(DADOS.kahoot.map(x => x.foto).filter(Boolean))];
   $("#btGal").classList.toggle("oculto", !fotos.length);
   $("#btGal").textContent = `Fotos da aula · ${fotos.length}`;
@@ -227,7 +237,9 @@ function mostra() {
   $("#fb").classList.remove("on");
   if (ehSlide) {
     respondeu = true;
-    $("#numQ").textContent = "Slide"; $("#slT").textContent = q.titulo; $("#slI").src = q.img; $("#slI").onclick = () => zoom(q.img);
+    $("#numQ").textContent = "Slide"; $("#slT").textContent = q.titulo;
+    $("#slH").innerHTML = q.html || ""; const sSrc = q.img || q.imgFutura; $("#slI").classList.add("oculto"); if (sSrc) { $("#slI").onload = () => $("#slI").classList.remove("oculto"); $("#slI").onerror = () => $("#slI").classList.add("oculto"); $("#slI").src = sSrc; $("#slI").onclick = () => zoom(sSrc); }
+    $("#slA").classList.toggle("oculto", !q.anot); $("#slA").innerHTML = q.anot ? "Anotação da aula: " + q.anot : "";
     $("#btFotoS").classList.toggle("oculto", !q.foto); $("#btFotoS").onclick = () => zoom(q.foto);
     return;
   }
@@ -236,8 +248,10 @@ function mostra() {
   $("#tagQ").textContent = `${DADOS.sigla || ""} · pergunta ${q.n || feitas}`;
   $("#txtQ").textContent = q.pergunta;
   $("#btFoto").classList.toggle("oculto", !q.foto); $("#btFoto").onclick = () => zoom(q.foto);
-  $("#midia").innerHTML = q.img ? `<img src="${esc(q.img)}" alt="">` : '<div class="vazio"></div>';
-  const im = $("#midia img"); if (im) im.addEventListener("click", () => zoom(q.img));
+  const src = q.img || q.imgFutura, descH = q.desc ? `<div class="desc"><b>Imagem</b>${esc(q.desc)}</div>` : '<div class="vazio"></div>';
+  $("#midia").innerHTML = src ? `<img src="${esc(src)}" alt="">` : descH;
+  const imF = $("#midia img"); if (imF && !q.img) imF.addEventListener("error", () => { $("#midia").innerHTML = descH; });
+  const im = $("#midia img"); if (im) im.addEventListener("click", () => zoom(src));
   $("#ops").innerHTML = q.opcoes.map((o, k) => `<button class="op" data-i="${k}"><svg viewBox="0 0 26 26">${FORMAS[k]}</svg><span>${esc(o)}</span><span class="num">${k + 1}</span></button>`).join("");
   $$(".op").forEach(b => b.addEventListener("click", () => responde(+b.dataset.i)));
   const dur = (q.tempo || 20) * 1000; t0 = performance.now();
@@ -261,6 +275,7 @@ function responde(k) {
   $("#fbT").textContent = ok ? `Certo! +${ganho}` : (k < 0 ? "Tempo esgotado" : "Não foi dessa vez");
   $("#fbT").className = "t " + (ok ? "ok" : "no");
   $("#fbP").textContent = (ok ? "" : `Resposta: ${q.opcoes[q.certa]}. `) + (q.explica || "");
+  $("#fbA").classList.toggle("oculto", !q.anot); $("#fbA").innerHTML = q.anot ? "Anotação da aula: " + q.anot : "";
   $("#btProx").textContent = i + 1 < lista.length ? "Próxima" : "Ver resultado";
   $("#fb").classList.add("on");
 }
