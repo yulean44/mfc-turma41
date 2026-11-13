@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=14";
-import { ic, ICONES_MATERIA } from "./icons.js?v=14";
-import { FIG } from "./figuras.js?v=14";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=15";
+import { ic, ICONES_MATERIA } from "./icons.js?v=15";
+import { FIG } from "./figuras.js?v=15";
 
 /* =========================================================
    utilidades
@@ -393,7 +393,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=14"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=15"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -1040,8 +1040,10 @@ document.querySelector(".marca").style.cursor = "default";
 /* =========================================================
    início do app
    ========================================================= */
+const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  try { const r = await fetch("content/mfc.json?v=14"); FABRICA = [await r.json()]; } catch (e) { console.warn("conteúdo", e); FABRICA = []; }
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=15`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
   if (!window.claude || typeof window.claude.use !== "function") return;
@@ -1081,6 +1083,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=14").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=15").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();

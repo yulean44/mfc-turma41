@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mini Kahoot · Planeta de Estudos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#e9f0f8; --muted:#97a6bd; --faint:#5d6b84; --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
+  --glass:rgba(22,32,52,.55); --glass2:rgba(255,255,255,.06); --glass3:rgba(255,255,255,.10);
+  --acc:#9fe0b0; --acc2:#8fd6ff; --acc-soft:rgba(159,224,176,.14); --ok:#9fe0b0; --bad:#f2a08f; --gold:#f2c46e;
+  --font:"Jost",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --fundo:radial-gradient(60% 50% at 30% 45%,#1e2d48 0%,rgba(30,45,72,0) 70%),radial-gradient(50% 40% at 80% 80%,rgba(70,110,140,.25),transparent 70%),linear-gradient(180deg,#141d31 0%,#0c1220 100%);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--font);font-size:15.5px;line-height:1.6;background:var(--fundo);background-attachment:fixed;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:980px;margin:0 auto;padding:28px 20px 60px}
+.marca{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--muted);font-weight:300}
+.topo{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:26px}
+.chip{border:1px solid var(--line2);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--muted);background:var(--glass2);backdrop-filter:blur(10px)}
+.chip b{color:var(--ink);font-weight:500}
+.vidro{background:var(--glass);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.25)}
+h1{font-weight:200;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(26px,4vw,42px);margin:8px 0 4px}
+.kicker{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--acc)}
+.muted{color:var(--muted);font-weight:300}
+.btn{border:1px solid transparent;background:var(--ink);color:#0f1626;border-radius:999px;padding:11px 26px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;transition:transform .15s,opacity .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.sec{background:transparent;color:var(--ink);border-color:var(--line2)}
+/* capa */
+.capa{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;padding:34px}
+.capa ul{padding-left:18px;color:var(--muted);font-weight:300}
+@media(max-width:760px){.capa{grid-template-columns:1fr;padding:22px}}
+/* planeta */
+.planeta{width:100%;max-width:340px;margin:0 auto;display:block;filter:drop-shadow(0 0 40px rgba(143,214,255,.18))}
+.planeta .el{opacity:0;transform-origin:center;transform-box:fill-box;transform:scale(.2);transition:opacity .6s,transform .6s cubic-bezier(.2,1.6,.4,1)}
+.planeta .el.on{opacity:1;transform:scale(1)}
+/* jogo */
+.barra{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.prog{flex:1;height:3px;background:var(--line);border-radius:3px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--acc);transition:width .4s}
+.pergunta{padding:24px 26px;text-align:center}
+.pergunta h2{font-weight:300;font-size:clamp(18px,2.4vw,24px);margin:6px 0 0;letter-spacing:.01em}
+.meio{display:grid;grid-template-columns:90px 1fr 90px;align-items:center;gap:10px;margin:18px 0}
+.meio img{max-width:100%;max-height:300px;border-radius:16px;display:block;margin:0 auto;border:1px solid var(--line)}
+.meio .vazio{height:20px}
+.anel{width:78px;height:78px;position:relative}
+.anel svg{transform:rotate(-90deg)}
+.anel span{position:absolute;inset:0;display:grid;place-items:center;font-size:24px;font-weight:300}
+.pts{text-align:center;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.pts b{display:block;font-size:24px;font-weight:300;letter-spacing:0;color:var(--ink)}
+.ops{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.ops{grid-template-columns:1fr}.meio{grid-template-columns:64px 1fr 64px}.anel{width:60px;height:60px}}
+.op{display:flex;align-items:center;gap:14px;text-align:left;padding:18px 18px;border-radius:18px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(14px);font-size:16px;font-weight:400;min-height:68px;transition:transform .15s,border-color .2s,background .2s,opacity .3s}
+.op:hover:not([disabled]){transform:translateY(-2px);border-color:var(--line2);background:var(--glass3)}
+.op svg{flex:0 0 26px;height:26px;stroke-width:1.6;fill:none}
+.op[data-i="0"] svg{stroke:#9fe0b0}.op[data-i="1"] svg{stroke:#8fd6ff}.op[data-i="2"] svg{stroke:#f2c46e}.op[data-i="3"] svg{stroke:#c9b3f0}
+.op.certa{border-color:var(--ok);background:rgba(159,224,176,.16)}
+.op.errada{border-color:var(--bad);background:rgba(242,160,143,.12)}
+.op.apaga{opacity:.35}
+.feedback{margin-top:16px;padding:16px 20px;display:none;align-items:center;gap:16px;justify-content:space-between}
+.feedback.on{display:flex}
+.feedback .t{font-weight:500}
+.feedback .t.ok{color:var(--ok)}.feedback .t.no{color:var(--bad)}
+.feedback p{margin:2px 0 0;color:var(--muted);font-weight:300}
+/* fim */
+.fim{padding:34px;text-align:center}
+.placar{display:flex;justify-content:center;gap:36px;margin:18px 0 8px;flex-wrap:wrap}
+.placar div{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.placar b{display:block;font-size:36px;font-weight:200;letter-spacing:0;color:var(--ink)}
+.revisao{text-align:left;margin-top:22px}
+.revisao .it{border-top:1px solid var(--line);padding:12px 2px}
+.revisao .it b{font-weight:500}
+.revisao .it span{display:block;color:var(--muted);font-weight:300;font-size:14px}
+.oculto{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topo"><a class="marca" href="index.html" style="text-decoration:none">← Planeta de Estudos</a><div class="chip" id="chipMat">Mini Kahoot</div></div>
+
+  <!-- capa -->
+  <section id="telaCapa" class="vidro capa">
+    <div>
+      <div class="kicker" id="capaSigla">Diagnóstico por Imagem</div>
+      <h1>Mini Kahoot</h1>
+      <p class="muted" id="capaSub">Perguntas no estilo do Kahoot da aula. Responda rápido: quanto mais cedo acertar, mais pontos.</p>
+      <ul>
+        <li>Cada acerto faz surgir algo no planeta.</li>
+        <li>3 acertos seguidos viram uma sequência e valem bônus.</li>
+        <li>No final você vê o que errou, com a explicação.</li>
+      </ul>
+      <button class="btn" id="btJogar">Começar</button>
+    </div>
+    <div id="planetaCapa"></div>
+  </section>
+
+  <!-- jogo -->
+  <section id="telaJogo" class="oculto">
+    <div class="barra"><span class="chip" id="numQ">1 / 18</span><div class="prog"><i id="progI" style="width:0"></i></div><span class="chip">Sequência <b id="seq">0</b></span></div>
+    <div class="vidro pergunta"><div class="kicker" id="tagQ">Pergunta</div><h2 id="txtQ"></h2></div>
+    <div class="meio">
+      <div class="anel"><svg viewBox="0 0 80 80" width="100%" height="100%"><circle cx="40" cy="40" r="34" stroke="rgba(255,255,255,.1)" stroke-width="4" fill="none"/><circle id="arco" cx="40" cy="40" r="34" stroke="#9fe0b0" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="0"/></svg><span id="tempo">20</span></div>
+      <div id="midia"></div>
+      <div class="pts"><b id="pontos">0</b>pontos</div>
+    </div>
+    <div class="ops" id="ops"></div>
+    <div class="vidro feedback" id="fb"><div><div class="t" id="fbT"></div><p id="fbP"></p></div><button class="btn" id="btProx">Próxima</button></div>
+  </section>
+
+  <!-- fim -->
+  <section id="telaFim" class="vidro fim oculto">
+    <div class="kicker">Resultado</div>
+    <h1 id="fimTit">Seu planeta</h1>
+    <div id="planetaFim" style="max-width:300px;margin:0 auto"></div>
+    <div class="placar"><div><b id="fPts">0</b>pontos</div><div><b id="fAc">0</b>acertos</div><div><b id="fSeq">0</b>maior sequência</div></div>
+    <p class="muted" id="fimMsg"></p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn" id="btDeNovo">Jogar de novo</button><button class="btn sec" id="btSoErros">Refazer só os erros</button></div>
+    <div class="revisao" id="revisao"></div>
+  </section>
+</div>
+
+<script>
+/* Lê o kahoot de content/<mat>.json (?mat=imagem). Se abrir o arquivo solto, usa os dados embutidos. */
+const EMBUTIDO = /*DADOS*/null;
+const FORMAS = [
+  '<path d="M13 4 23 21H3z"/>',
+  '<path d="M13 3 23 13 13 23 3 13z"/>',
+  '<circle cx="13" cy="13" r="9.5"/>',
+  '<rect x="4" y="4" width="18" height="18" rx="3"/>'
+];
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* planeta em SVG: um elemento novo a cada acerto */
+let nPl = 0;
+function planetaSVG(n) {
+  const u = "p" + (++nPl);
+  const els = [
+    '<path d="M70 118c6-14 22-18 30-10s-2 20-14 22-20-2-16-12z" fill="#7cc79a"/>',
+    '<path d="M150 70c10-8 26-4 28 8s-12 18-22 14-12-14-6-22z" fill="#8fd3a6"/>',
+    '<path d="M120 160c8-10 26-10 32 0s-6 18-18 18-20-8-14-18z" fill="#6fbf8f"/>',
+    '<g><rect x="96" y="72" width="3" height="14" fill="#a07850"/><circle cx="97.5" cy="69" r="8" fill="#5fae7c"/></g>',
+    '<g><rect x="160" y="128" width="3" height="12" fill="#a07850"/><circle cx="161.5" cy="125" r="7" fill="#7cc79a"/></g>',
+    '<path d="M60 86c4-6 12-6 14 0z" fill="#e9f0f8" opacity=".9"/>',
+    '<g><circle cx="132" cy="104" r="5" fill="#f2c46e"/><circle cx="132" cy="104" r="9" fill="#f2c46e" opacity=".25"/></g>',
+    '<path d="M84 150l6-12 6 12z" fill="#c9b3f0"/>',
+    '<g><rect x="138" y="58" width="3" height="12" fill="#a07850"/><circle cx="139.5" cy="55" r="7" fill="#6fbf8f"/></g>',
+    '<path d="M104 128c3-5 9-5 12 0-3 4-9 4-12 0z" fill="#8fd6ff"/>',
+    '<g><circle cx="76" cy="104" r="3" fill="#f2a08f"/><circle cx="82" cy="100" r="2.5" fill="#f2c46e"/></g>',
+    '<path d="M166 96l4-9 4 9z" fill="#9ff0e2"/>',
+    '<g><rect x="114" y="140" width="3" height="12" fill="#a07850"/><circle cx="115.5" cy="137" r="7" fill="#5fae7c"/></g>',
+    '<ellipse cx="120" cy="120" rx="96" ry="22" fill="none" stroke="#8fd6ff" stroke-opacity=".35" stroke-width="1.2" transform="rotate(-18 120 120)"/>',
+    '<g><circle cx="58" cy="132" r="4" fill="#e9f0f8"/><circle cx="58" cy="132" r="7" fill="#e9f0f8" opacity=".2"/></g>',
+    '<path d="M142 150c3-6 10-6 12 0z" fill="#e9f0f8" opacity=".85"/>',
+    '<g><circle cx="196" cy="58" r="6" fill="#c9b3f0"/><circle cx="196" cy="58" r="11" fill="#c9b3f0" opacity=".18"/></g>',
+    '<path d="M94 96c2-4 8-4 10 0-2 3-8 3-10 0z" fill="#9fe0b0"/>'
+  ];
+  return `<svg class="planeta" viewBox="0 0 240 240">
+    <defs><radialGradient id="pg${u}" cx="38%" cy="34%" r="70%"><stop offset="0" stop-color="#5fa8c9"/><stop offset=".6" stop-color="#2d6d8f"/><stop offset="1" stop-color="#173c55"/></radialGradient>
+    <radialGradient id="atm${u}" cx="50%" cy="50%" r="50%"><stop offset=".78" stop-color="#8fd6ff" stop-opacity="0"/><stop offset="1" stop-color="#8fd6ff" stop-opacity=".25"/></radialGradient>
+    <clipPath id="cp${u}"><circle cx="120" cy="120" r="72"/></clipPath></defs>
+    <circle cx="120" cy="120" r="86" fill="url(#atm${u})"/>
+    <circle cx="120" cy="120" r="72" fill="url(#pg${u})"/>
+    <g clip-path="url(#cp${u})">${els.slice(0, 13).map((e, i) => `<g class="el${i < n ? " on" : ""}">${e}</g>`).join("")}
+    <circle cx="150" cy="150" r="80" fill="#0c1220" opacity=".28"/></g>
+    ${els.slice(13).map((e, i) => `<g class="el${i + 13 < n ? " on" : ""}">${e}</g>`).join("")}
+  </svg>`;
+}
+
+let DADOS = null, lista = [], i = 0, pontos = 0, seq = 0, maiorSeq = 0, acertos = 0, erros = [], timer = null, t0 = 0, respondeu = false;
+
+async function carrega() {
+  const mat = new URLSearchParams(location.search).get("mat") || "imagem";
+  try { const r = await fetch(`content/${mat}.json`); if (!r.ok) throw 0; DADOS = await r.json(); }
+  catch { DADOS = EMBUTIDO; }
+  if (!DADOS || !DADOS.kahoot) { $("#capaSub").textContent = "Não encontrei perguntas para esta matéria."; $("#btJogar").disabled = true; return; }
+  $("#capaSigla").textContent = DADOS.nome; $("#chipMat").innerHTML = `Mini Kahoot · <b>${esc(DADOS.sigla || DADOS.nome)}</b>`;
+  $("#planetaCapa").innerHTML = planetaSVG(6);
+}
+function embaralha(a) { a = [...a]; for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; }
+
+function inicia(perguntas) {
+  lista = perguntas; i = 0; pontos = 0; seq = 0; maiorSeq = 0; acertos = 0; erros = [];
+  $("#telaCapa").classList.add("oculto"); $("#telaFim").classList.add("oculto"); $("#telaJogo").classList.remove("oculto");
+  $("#pontos").textContent = 0; $("#seq").textContent = 0;
+  mostra();
+}
+function mostra() {
+  const q = lista[i]; respondeu = false;
+  $("#numQ").textContent = `${i + 1} / ${lista.length}`;
+  $("#progI").style.width = `${(i / lista.length) * 100}%`;
+  $("#tagQ").textContent = DADOS.sigla ? `${DADOS.sigla} · pergunta ${i + 1}` : `Pergunta ${i + 1}`;
+  $("#txtQ").textContent = q.pergunta;
+  $("#midia").innerHTML = q.img ? `<img src="${esc(q.img)}" alt="">` : '<div class="vazio"></div>';
+  $("#ops").innerHTML = q.opcoes.map((o, k) => `<button class="op" data-i="${k}"><svg viewBox="0 0 26 26">${FORMAS[k]}</svg><span>${esc(o)}</span></button>`).join("");
+  $$(".op").forEach(b => b.addEventListener("click", () => responde(+b.dataset.i)));
+  $("#fb").classList.remove("on");
+  const dur = (q.tempo || 20) * 1000; t0 = performance.now();
+  clearInterval(timer);
+  timer = setInterval(() => {
+    const resto = Math.max(0, dur - (performance.now() - t0));
+    $("#tempo").textContent = Math.ceil(resto / 1000);
+    $("#arco").style.strokeDashoffset = 213.6 * (1 - resto / dur);
+    $("#arco").style.stroke = resto < dur * .25 ? "#f2a08f" : "#9fe0b0";
+    if (resto <= 0) responde(-1);
+  }, 100);
+}
+function $$(s) { return [...document.querySelectorAll(s)]; }
+function responde(k) {
+  if (respondeu) return; respondeu = true; clearInterval(timer);
+  const q = lista[i], dur = (q.tempo || 20) * 1000, gasto = Math.min(dur, performance.now() - t0);
+  const ok = k === q.certa;
+  $$(".op").forEach(b => { b.disabled = true; const n = +b.dataset.i; if (n === q.certa) b.classList.add("certa"); else if (n === k) b.classList.add("errada"); else b.classList.add("apaga"); });
+  let ganho = 0;
+  if (ok) { seq++; acertos++; maiorSeq = Math.max(maiorSeq, seq); ganho = Math.round(1000 * (1 - gasto / dur / 2)) + (seq >= 3 ? 100 * Math.min(seq - 2, 5) : 0); pontos += ganho; }
+  else { seq = 0; erros.push({ q, k }); }
+  $("#pontos").textContent = pontos; $("#seq").textContent = seq;
+  $("#fbT").textContent = ok ? `Certo! +${ganho}` : (k < 0 ? "Tempo esgotado" : "Não foi dessa vez");
+  $("#fbT").className = "t " + (ok ? "ok" : "no");
+  $("#fbP").textContent = (ok ? "" : `Resposta: ${q.opcoes[q.certa]}. `) + (q.explica || "");
+  $("#btProx").textContent = i + 1 < lista.length ? "Próxima" : "Ver resultado";
+  $("#fb").classList.add("on");
+}
+function fim() {
+  $("#telaJogo").classList.add("oculto"); $("#telaFim").classList.remove("oculto");
+  const pct = acertos / lista.length;
+  $("#fPts").textContent = pontos; $("#fAc").textContent = `${acertos}/${lista.length}`; $("#fSeq").textContent = maiorSeq;
+  $("#planetaFim").innerHTML = planetaSVG(Math.round(pct * 18));
+  $("#fimTit").textContent = pct >= .85 ? "Planeta florescendo" : pct >= .6 ? "Planeta crescendo" : "Planeta brotando";
+  $("#fimMsg").textContent = pct >= .85 ? "Pronto para o Kahoot. Mantenha os flashcards em dia." : pct >= .6 ? "Bom caminho. Revise os erros abaixo e jogue de novo." : "Releia os blocos do Kahoot destrinchado e tente outra vez.";
+  $("#btSoErros").classList.toggle("oculto", !erros.length);
+  $("#revisao").innerHTML = erros.length ? `<div class="kicker" style="margin-bottom:6px">O que revisar</div>` + erros.map(e => `<div class="it"><b>${esc(e.q.pergunta)}</b><span>Resposta: ${esc(e.q.opcoes[e.q.certa])}${e.k >= 0 ? ` · você marcou: ${esc(e.q.opcoes[e.k])}` : " · sem resposta"}</span><span>${esc(e.q.explica || "")}</span></div>`).join("") : "";
+  try { const h = JSON.parse(localStorage.getItem("kahootHist") || "[]"); h.push({ mat: DADOS.id, pontos, acertos, total: lista.length, quando: Date.now() }); localStorage.setItem("kahootHist", JSON.stringify(h.slice(-50))); } catch {}
+}
+$("#btProx").addEventListener("click", () => { i++; i < lista.length ? mostra() : fim(); });
+$("#btJogar").addEventListener("click", () => inicia(embaralha(DADOS.kahoot)));
+$("#btDeNovo").addEventListener("click", () => inicia(embaralha(DADOS.kahoot)));
+$("#btSoErros").addEventListener("click", () => inicia(embaralha(erros.map(e => e.q))));
+document.addEventListener("keydown", e => {
+  if ($("#telaJogo").classList.contains("oculto")) return;
+  if (!respondeu && ["1", "2", "3", "4"].includes(e.key)) responde(+e.key - 1);
+  else if (respondeu && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); $("#btProx").click(); }
+});
+carrega();
+</script>
+</body>
+</html>

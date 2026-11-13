@@ -1,0 +1,724 @@
+{
+ "id": "imagem",
+ "nome": "Diagnóstico por Imagem",
+ "sigla": "IMG",
+ "sub": "Kahoot 13/11 · Resumo de referência",
+ "cor": "#4f8fae",
+ "emoji": "",
+ "icone": "cerebro",
+ "secoes": [
+  {
+   "id": "k0",
+   "grupo": "Kahoot destrinchado",
+   "titulo": "Como usar (comece por aqui)",
+   "html": "<p>Este é o Kahoot da aula de Diagnóstico por Imagem (34 perguntas), pergunta por pergunta, com a resposta que a professora marcou e o motivo. É a parte prioritária: as questões da prova seguem o mesmo raciocínio.</p><h3>Ordem sugerida</h3><ol><li>Leia os 5 blocos do Kahoot (abaixo).</li><li>Faça os flashcards da matéria até acertar quase todos.</li><li>Jogue o <a href=\"kahoot.html?mat=imagem\"><strong>mini Kahoot</strong></a>.</li><li>Use o <span class=\"xref\" data-sec=\"r0\">Resumo de referência</span> para tirar dúvidas.</li></ol><h3>A regra que resolve metade do Kahoot</h3><p>Quase toda pergunta de caso clínico é, no fundo, <strong>qual exame pedir</strong>. Pense sempre em três perguntas:</p><ul><li><strong>O paciente está estável?</strong> Instável não vai para a TC: vai para o centro cirúrgico.</li><li><strong>Qual órgão?</strong> Vesícula e gestante → US. Pâncreas, cólon, obstrução, trauma estável → TC com contraste. Cálculo urinário → TC sem contraste. Sangue no crânio → TC sem contraste.</li><li><strong>É o exame inicial ou o melhor exame?</strong> A palavra “inicial” muda a resposta (ex.: queda no idoso → RX primeiro).</li></ul><blockquote><strong>Atenção K34:</strong> na foto, a alternativa circulada para rotura muscular foi a TC, mas o exame inicial recomendado para lesão muscular é a <strong>ultrassonografia</strong> (a RM é a melhor para detalhar). Confirme com a professora qual gabarito ela usa.</blockquote>"
+  },
+  {
+   "id": "k1",
+   "grupo": "Kahoot destrinchado",
+   "titulo": "Bloco 1 · Bases da TC e anatomia seccional (K1–K10)",
+   "html": "<p>Perguntas de anatomia seccional (cortes axiais de TC do abdome) e de princípios da TC.</p><h3>K1 · Método de imagem e estrutura apontada com “X”</h3><p><img src=\"content/img/imagem/q01.jpg\" alt=\"Imagem da questão K1\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>Tomografia computadorizada; estômago distendido.</strong></p><p>É TC (corte axial com osso branco e ar preto, não é RM). O X está dentro de uma grande estrutura no quadrante superior esquerdo, à frente do baço: o estômago cheio.</p><blockquote><strong>Pegadinha:</strong> As alternativas de RM aparecem para confundir. Na TC o osso cortical é bem branco e a gordura é escura; na RM o aspecto depende da sequência.</blockquote><h3>K2 · Vantagem da TC em relação ao ultrassom</h3><p><strong>Resposta:</strong> <strong>Melhor avaliação global do abdome.</strong></p><p>A TC mostra o abdome inteiro sem depender do operador e sem ser atrapalhada por gás ou obesidade. As outras alternativas são vantagens do US: não usa radiação, é mais barato e é portátil.</p><h3>K3 · O que afirmar sobre o contraste endovenoso</h3><p><img src=\"content/img/imagem/q03.jpg\" alt=\"Imagem da questão K3\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>Exame sem contraste endovenoso.</strong></p><p>Sem contraste, aorta, veia cava e veias renais têm a mesma densidade dos músculos e os rins ficam homogêneos e acinzentados. Com contraste, os vasos ficam brancos e os rins realçam (córtex e medula).</p><blockquote><strong>Pegadinha:</strong> “Impossível saber” é a armadilha: dá para saber olhando os vasos.</blockquote><h3>K4 · Vaso circundado (à frente e à esquerda da coluna)</h3><p><img src=\"content/img/imagem/q04.jpg\" alt=\"Imagem da questão K4\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>Aorta.</strong></p><p>A aorta abdominal fica colada à frente do corpo vertebral, um pouco à esquerda, e é redonda.</p><h3>K5 · Vaso circundado (à direita da aorta, atrás do fígado)</h3><p><img src=\"content/img/imagem/q05.jpg\" alt=\"Imagem da questão K5\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>Veia cava inferior.</strong></p><p>A VCI fica à direita da aorta, mais anterior e encostada no fígado. Regra: <em>aorta à esquerda, cava à direita</em>.</p><blockquote><strong>Pegadinha:</strong> A veia cava superior não aparece em corte de abdome.</blockquote><h3>K6 · Vaso circundado (estrutura alongada entrando no fígado)</h3><p><img src=\"content/img/imagem/q06.jpg\" alt=\"Imagem da questão K6\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>Veia porta.</strong></p><p>A veia porta entra no hilo hepático, em direção oblíqua, à frente da cava.</p><h3>K7 · Estrutura alongada atrás do estômago</h3><p><img src=\"content/img/imagem/q07.jpg\" alt=\"Imagem da questão K7\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>Pâncreas.</strong></p><p>Órgão alongado e retroperitoneal que cruza a frente da coluna, da cabeça (à direita, junto ao duodeno) à cauda (perto do baço). A veia esplênica corre logo atrás dele.</p><h3>K8 · Alça central com padrão “em penas”</h3><p><img src=\"content/img/imagem/q08.jpg\" alt=\"Imagem da questão K8\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>Intestino delgado.</strong></p><p>Alças no centro do abdome, de calibre menor, com pregas (válvulas coniventes) que dão o aspecto de penas.</p><h3>K9 · Estrutura na periferia com fezes e gás</h3><p><img src=\"content/img/imagem/q09.jpg\" alt=\"Imagem da questão K9\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>Intestino grosso.</strong></p><p>O cólon fica na periferia (moldura) e tem conteúdo fecal com gás misturado, de aspecto “bolhoso”. Aqui é o cólon ascendente/ceco à direita.</p><blockquote><strong>Pegadinha:</strong> Regra do RX de abdome: cólon = <strong>moldura</strong>, delgado = <strong>tela</strong> (centro).</blockquote><h3>K10 · Densidade em UH da estrutura circundada (bexiga)</h3><p><img src=\"content/img/imagem/q10.jpg\" alt=\"Imagem da questão K10\" style=\"max-width:100%;width:340px;border-radius:12px;display:block\"></p><p><strong>Resposta:</strong> <strong>0 UH.</strong></p><p>A bexiga contém urina, que é praticamente água, e água vale 0 UH por definição. Ar = −1000 UH; osso cortical ≈ +1000 UH.</p><blockquote><strong>Pegadinha:</strong> Gordura é negativa (≈ −100), não zero.</blockquote>"
+  },
+  {
+   "id": "k2",
+   "grupo": "Kahoot destrinchado",
+   "titulo": "Bloco 2 · Neuro: TCE, HSA, meninges e edema",
+   "html": "<p>TCE, hemorragias, meninges e edema cerebral. É o bloco com mais slides de explicação: as tabelas abaixo são as da aula.</p><h3>K11 · Moto, 23 anos: coleção extra-axial hiperdensa biconvexa (lentiforme), temporoparietal, com efeito de massa</h3><p><strong>Resposta:</strong> <strong>Pode cursar com rotura da artéria meníngea média e “intervalo lúcido”.</strong></p><p>Formato biconvexo = <strong>hematoma epidural (extradural)</strong>. Típico de jovem com trauma e fratura temporal que lacera a artéria meníngea média.</p><blockquote><strong>Pegadinha:</strong> As outras alternativas descrevem o subdural (veias ponte) ou a HSA (aneurisma).</blockquote><h3>K12 · Sobre TCE e achados tomográficos (correta)</h3><p><strong>Resposta:</strong> <strong>Hematoma epidural tem aspecto lentiforme e é limitado pelas suturas.</strong></p><p>A dura-máter é muito aderida às suturas, então o sangue epidural não as ultrapassa e forma uma lente. O subdural cruza suturas e tem forma de crescente.</p><blockquote><strong>Pegadinha:</strong> “Epidural crescente que cruza suturas” troca as características dos dois.</blockquote><h3>K13 · 78 anos, anticoagulado, queda há 2 semanas, coleção em crescente na convexidade</h3><p><strong>Resposta:</strong> <strong>O sangramento decorre tipicamente da ruptura de veias.</strong></p><p>Idoso + anticoagulante + queda leve + evolução em semanas + crescente = <strong>hematoma subdural crônico</strong>, por ruptura das <strong>veias ponte</strong> (estiradas pela atrofia cerebral).</p><blockquote><strong>Pegadinha:</strong> O HSD cruza suturas, então “não ultrapassa as suturas” está errado.</blockquote><h3>Tabela da aula · Hematoma epidural × subdural</h3><table><thead><tr><th>Característica</th><th>Epidural (HED)</th><th>Subdural (HSD)</th></tr></thead><tbody><tr><td>Localização</td><td>Entre a tábua interna e a dura-máter</td><td>Entre a dura-máter e a aracnoide</td></tr><tr><td>Origem do sangue</td><td><strong>Arterial</strong> (artéria meníngea média)</td><td><strong>Venosa</strong> (veias ponte)</td></tr><tr><td>Aspecto na TC</td><td><strong>Biconvexo (lentiforme)</strong></td><td><strong>Crescente</strong> (côncavo-convexo)</td></tr><tr><td>Cruza suturas?</td><td>Não</td><td>Sim</td></tr><tr><td>Cruza a linha média?</td><td>Não</td><td>Não (limitado pela foice e pela tenda)</td></tr><tr><td>Fratura associada</td><td>Muito frequente (80–90%)</td><td>Menos frequente</td></tr><tr><td>Quem</td><td>Jovem, acidente de carro ou moto</td><td>Idoso, alcoólatra, anticoagulado, queda simples</td></tr><tr><td>Evolução</td><td>Rápida (horas), risco de herniação</td><td>Lenta (dias a semanas), piora progressiva</td></tr><tr><td>Clínica</td><td>Perda de consciência → <strong>intervalo lúcido</strong> → piora rápida; anisocoria ipsilateral</td><td>Cefaleia, confusão, sonolência, quedas; o crônico pode imitar demência ou AVC</td></tr></tbody></table><p>Os dois podem precisar de cirurgia. O HED é emergência neurocirúrgica imediata; o HSD pode ser conservador ou cirúrgico conforme volume e clínica.</p><h3>K14 · Exame inicial para hemorragia subaracnoide aguda</h3><p><strong>Resposta:</strong> <strong>TC de encéfalo sem contraste.</strong></p><p>Sangue agudo é hiperdenso na TC sem contraste; o contraste atrapalharia, porque também fica branco. A TC é rápida e disponível.</p><blockquote><strong>Pegadinha:</strong> Angiografia serve para achar o aneurisma depois, não para o diagnóstico inicial.</blockquote><h3>K27 · Exame inicial para hemorragia intracraniana aguda</h3><p><strong>Resposta:</strong> <strong>TC de crânio sem contraste.</strong></p><p>Mesma lógica do K14: qualquer sangramento intracraniano agudo começa pela TC sem contraste.</p><blockquote><strong>Pegadinha:</strong> RM e arteriografia não são o primeiro exame na emergência.</blockquote><h3>K28 · 48 anos, cefaleia súbita intensa, náuseas, rigidez de nuca; hiperdensidade nas fissuras sylvianas e na cisterna suprasselar</h3><p><strong>Resposta:</strong> <strong>Hemorragia subaracnoide aneurismática.</strong></p><p>“Pior dor de cabeça da vida”, súbita, com meningismo, e sangue nas cisternas e sulcos (espaço subaracnoide). A causa mais comum de HSA não traumática é a ruptura de aneurisma.</p><blockquote><strong>Pegadinha:</strong> Hematoma subdural e epidural são coleções junto à calota, não sangue nas cisternas.</blockquote><h3>K31 · Meninges cranianas (correta)</h3><p><strong>Resposta:</strong> <strong>A pia-máter é a meninge mais interna e acompanha os sulcos e giros.</strong></p><p>De fora para dentro: <strong>dura-máter → aracnoide → pia-máter</strong>. A pia fica colada no cérebro.</p><blockquote><strong>Pegadinha:</strong> A dura não fica entre a aracnoide e a pia; o espaço subaracnoide é entre aracnoide e pia, não entre dura e osso.</blockquote><h3>K32 · Espaço subaracnoide (correta)</h3><p><strong>Resposta:</strong> <strong>Contém líquido cefalorraquidiano (LCR).</strong></p><p>Fica entre a aracnoide e a pia-máter, tem LCR e as artérias do polígono de Willis (por isso o aneurisma sangra ali).</p><blockquote><strong>Pegadinha:</strong> “Espaço virtual entre dura e aracnoide” é o subdural; “entre osso e dura” é o epidural.</blockquote><h3>K29 · Área hipodensa predominando na substância branca, com efeito expansivo e apagamento dos sulcos</h3><p><strong>Resposta:</strong> <strong>Edema vasogênico.</strong></p><p>Ruptura da barreira hematoencefálica: líquido sai do vaso para o interstício e espalha pela substância branca, em “dedos de luva”, ao redor de tumor, metástase ou abscesso.</p><h3>K30 · AVC isquêmico agudo: hipodensidade da substância cinzenta e branca, perda da diferenciação córtico-subcortical</h3><p><strong>Resposta:</strong> <strong>Edema citotóxico.</strong></p><p>A falta de sangue para a bomba Na⁺/K⁺-ATPase, a célula incha. Pega cinzenta e branca no território de uma artéria.</p><blockquote><strong>Pegadinha:</strong> “Ruptura da barreira hematoencefálica” é o mecanismo do vasogênico.</blockquote><h3>Tabela da aula · Edema citotóxico × vasogênico</h3><table><thead><tr><th>Característica</th><th>Citotóxico</th><th>Vasogênico</th></tr></thead><tbody><tr><td>Mecanismo</td><td>Falência da bomba Na⁺/K⁺-ATPase</td><td>Ruptura da barreira hematoencefálica</td></tr><tr><td>Onde</td><td><strong>Substância cinzenta e branca</strong></td><td><strong>Principalmente substância branca</strong></td></tr><tr><td>Causa clássica</td><td>AVC isquêmico agudo</td><td>Tumores, metástases, abscessos</td></tr><tr><td>Distribuição</td><td>Segue território vascular</td><td>Ao redor da lesão (perilesional)</td></tr><tr><td>TC</td><td>Hipodensidade de córtex e substância branca (perde a diferenciação córtico-subcortical)</td><td>Hipodensidade na substância branca</td></tr><tr><td>RM difusão (DWI)</td><td>Restrição à difusão</td><td>Geralmente sem restrição</td></tr><tr><td>Reversibilidade</td><td>Frequentemente irreversível</td><td>Potencialmente reversível</td></tr></tbody></table><h3>Slide do vídeo · TC × RM</h3><p>A aula mostrou o mesmo cérebro em 4 exames: <strong>1 TC, 2 RM T1, 3 RM T2, 4 RM FLAIR</strong>. Como reconhecer:</p><table><thead><tr><th>Exame</th><th>Líquido (LCR nos ventrículos)</th><th>Dica</th></tr></thead><tbody><tr><td>TC</td><td>Escuro (hipodenso)</td><td>Osso da calota bem branco</td></tr><tr><td>RM T1</td><td>Escuro</td><td>Boa para anatomia; substância branca mais clara que a cinzenta</td></tr><tr><td>RM T2</td><td><strong>Branco</strong></td><td>“T2 = água branca”</td></tr><tr><td>RM FLAIR</td><td>Escuro (o LCR é suprimido)</td><td>É um T2 que apaga o líquor: lesões e edema ficam brancos</td></tr></tbody></table>"
+  },
+  {
+   "id": "k3",
+   "grupo": "Kahoot destrinchado",
+   "titulo": "Bloco 3 · Abdome agudo e trauma: qual exame pedir",
+   "html": "<p>Casos de abdome agudo e trauma. A pergunta quase sempre é “qual exame” ou “qual conduta”.</p><h3>K15 · 55 anos, US: imagem hiperecogênica aderida à parede da vesícula, 8 mm, fixa e sem sombra acústica</h3><p><strong>Resposta:</strong> <strong>Pólipo da vesícula biliar.</strong></p><p>Cálculo <strong>se mexe</strong> com a mudança de decúbito e <strong>faz sombra acústica</strong>. Aqui não faz nenhum dos dois e está aderido à parede: pólipo.</p><blockquote><strong>Pegadinha:</strong> Colecistite exigiria parede espessada e Murphy; aqui a parede é normal.</blockquote><h3>Tabela da aula · Vesícula no US</h3><table><thead><tr><th></th><th>Vesícula normal</th><th>Colelitíase</th><th>Coledocolitíase</th></tr></thead><tbody><tr><td>Conteúdo</td><td>Anecoico homogêneo</td><td>Cálculos hiperecogênicos</td><td>Pode haver ou não cálculo na vesícula</td></tr><tr><td>Sombra acústica</td><td>Ausente</td><td>Presente</td><td>Presente se o cálculo do colédoco aparece</td></tr><tr><td>Mobilidade</td><td>–</td><td>Cálculo geralmente móvel</td><td>Cálculo geralmente fixo no colédoco</td></tr><tr><td>Parede</td><td>Fina (≤ 3 mm)</td><td>Normal ou espessada se colecistite</td><td>Geralmente normal</td></tr><tr><td>Murphy US</td><td>Negativo</td><td>Positivo se colecistite</td><td>Geralmente negativo</td></tr><tr><td>Colédoco</td><td>Normal (até 6 mm)</td><td>Normal</td><td>Dilatado (> 6–7 mm; varia com idade)</td></tr><tr><td>Icterícia</td><td>Ausente</td><td>Incomum</td><td>Frequente</td></tr></tbody></table><h3>K16 · 28 anos, colisão de alta energia, PA 80×50, FC 130, FAST com muito líquido, segue instável após volume</h3><p><strong>Resposta:</strong> <strong>Laparotomia exploradora imediata.</strong></p><p>Trauma + <strong>instável</strong> + FAST positivo = sangramento abdominal: vai para a cirurgia. Instável <strong>não pode ir para a TC</strong>.</p><blockquote><strong>Pegadinha:</strong> TC com contraste seria certo se ele estivesse estável.</blockquote><h3>K17 · 24 anos, facada em flanco esquerdo, estável (PA 120×80, FC 88), FAST negativo, mantém dor</h3><p><strong>Resposta:</strong> <strong>TC de abdome com contraste.</strong></p><p>Paciente <strong>estável</strong> pode fazer TC. FAST negativo não descarta lesão (principalmente retroperitoneal) e ele ainda tem dor.</p><blockquote><strong>Pegadinha:</strong> Alta imediata e laparotomia obrigatória são extremos errados.</blockquote><h3>K18 · 45 anos, dor epigástrica em faixa para o dorso, lipase alta; avaliar complicações após 48–72 h</h3><p><strong>Resposta:</strong> <strong>TC contrastada.</strong></p><p>Pancreatite: o diagnóstico é clínico + laboratório. A TC com contraste é para <strong>complicações</strong> (necrose, coleções), e é feita <strong>após 48–72 h</strong>, quando a necrose já aparece.</p><blockquote><strong>Pegadinha:</strong> O US vê mal o pâncreas (retroperitoneal, atrás do estômago com gás). O RX só mostra calcificações da pancreatite crônica.</blockquote><h3>K19 · 60 anos, dor difusa, distensão, parada de gases e fezes; RX sugere obstrução; identificar nível e causa</h3><p><strong>Resposta:</strong> <strong>TC de abdome e pelve com contraste.</strong></p><p>O RX é o exame <strong>inicial</strong> da obstrução, mas a TC mostra o <strong>ponto exato</strong> (zona de transição) e a <strong>causa</strong>.</p><blockquote><strong>Pegadinha:</strong> O US é ruim na obstrução por causa do gás nas alças.</blockquote><h3>K22 · Gestante de 24 semanas, dor em FID, febre baixa, leucocitose; exame inicial para apendicite</h3><p><strong>Resposta:</strong> <strong>Ultrassonografia abdominal.</strong></p><p>Gestante: nada de radiação como primeira escolha. US primeiro; se inconclusivo, a RM (sem gadolínio).</p><blockquote><strong>Pegadinha:</strong> A RM é a segunda opção, não a inicial.</blockquote><h3>K23 · 48 anos, dor epigástrica crônica e uso de AINE; dor súbita intensa e pneumoperitônio no RX</h3><p><strong>Resposta:</strong> <strong>Perfuração de úlcera duodenal.</strong></p><p>AINE + dispepsia crônica + dor súbita “em facada” + ar livre = úlcera péptica perfurada (duodenal ou gástrica).</p><h3>K24 · 58 anos, dor difusa e defesa involuntária: achado do RX</h3><p><strong>Resposta:</strong> <strong>Pneumoperitônio.</strong></p><p>Ar livre na cavidade, visto como faixa escura sob o diafragma no RX em pé ou de tórax. Sinal de víscera perfurada.</p><blockquote><strong>Pegadinha:</strong> Ar na árvore biliar (aerobilia) fica dentro do fígado, não sob o diafragma.</blockquote><h3>Tabela da aula · Suspeita clínica → exame de escolha</h3><table><thead><tr><th>Suspeita</th><th>Exame de escolha</th></tr></thead><tbody><tr><td>Diverticulite aguda</td><td>TC de abdome e pelve com contraste</td></tr><tr><td>Apendicite aguda</td><td>US (jovens, magros, gestantes, crianças) ou TC</td></tr><tr><td>Pancreatite complicada</td><td>TC contrastada</td></tr><tr><td>Obstrução intestinal</td><td>TC contrastada (RX como inicial)</td></tr><tr><td>Colecistite, colelitíase, coledocolitíase</td><td>US inicial → TC ou colangioRM</td></tr><tr><td>Trauma abdominal estável</td><td>TC contrastada</td></tr><tr><td>Trauma abdominal instável</td><td>FAST na sala; se positivo → laparotomia</td></tr></tbody></table>"
+  },
+  {
+   "id": "k4",
+   "grupo": "Kahoot destrinchado",
+   "titulo": "Bloco 4 · Urolitíase (K20–K21)",
+   "html": "<h3>K20 · 38 anos, dor em flanco esquerdo; TC: cálculo de 3 mm na junção ureterovesical e edema periureteral</h3><p><strong>Resposta:</strong> <strong>Ureterolitíase distal esquerda.</strong></p><p>Junção ureterovesical = parte mais distal do ureter, junto à bexiga. Cálculo pequeno, ureter: ureterolitíase distal.</p><blockquote><strong>Pegadinha:</strong> Coraliforme é cálculo grande que molda a pelve renal, não ureteral.</blockquote><h3>K21 · 48 anos, dor lombar intensa e náuseas; TC sem contraste: hidronefrose direita e foco hiperdenso no ureter proximal</h3><p><strong>Resposta:</strong> <strong>Obstrução ureteral proximal direita por cálculo.</strong></p><p>Cálculo = foco hiperdenso; obstrução = hidronefrose acima dele. Lado e altura são dados pelo enunciado.</p><blockquote><strong>Pegadinha:</strong> Leia o enunciado: “proximal”, não distal.</blockquote><h3>Slide da aula · TC é o padrão-ouro na litíase urinária</h3><table><thead><tr><th>Achados diretos</th><th>Achados indiretos</th></tr></thead><tbody><tr><td>Cálculo hiperdenso no trato urinário</td><td>Hidronefrose e hidroureter</td></tr><tr><td>Localização exata (rim, ureter, bexiga)</td><td>Estriações da gordura perirrenal</td></tr><tr><td>Tamanho em mm e densidade em UH</td><td>Nefrograma retardado (fase contrastada)</td></tr><tr><td></td><td>Edema ureteral perilesional</td></tr></tbody></table><p><strong>Vantagens:</strong> detecta quase todos os tipos de cálculo, sensibilidade e especificidade acima de 95%, avalia complicações obstrutivas e infecciosas e não depende do biotipo. É feita <strong>sem contraste</strong> (o contraste esconderia o cálculo, que já é branco).</p>"
+  },
+  {
+   "id": "k5",
+   "grupo": "Kahoot destrinchado",
+   "titulo": "Bloco 5 · Osso e músculo (K25, K26, K33, K34)",
+   "html": "<h3>K25 · 15 anos, dor óssea progressiva há 2 meses; RX com margens mal definidas, destruição cortical e reação periosteal exuberante. Qual sinal sugere mais agressividade?</h3><p><strong>Resposta:</strong> <strong>Destruição cortical.</strong></p><p>Uma lesão que rompe a cortical está invadindo, sinal de malignidade (ex.: osteossarcoma). Margens escleróticas bem definidas e lesão geográfica sugerem lesão benigna, de crescimento lento.</p><blockquote><strong>Pegadinha:</strong> “Margens mal definidas” também é sinal de agressividade, mas a resposta marcada foi destruição cortical, que é o sinal mais forte.</blockquote><h3>K26 · RX de joelho: linha radiolucente atravessando a cortical tibial com discreto desvio</h3><p><strong>Resposta:</strong> <strong>Fratura.</strong></p><p>Linha radiolucente (escura, “linha preta”) que cruza a cortical, com desvio dos fragmentos = traço de fratura.</p><h3>Slide da aula · Lesão osteolítica × osteoblástica</h3><p>A professora mostrou dois RX de criança: um <strong>cisto ósseo</strong> (lesão lítica, escura, bem delimitada, benigna) e um <strong>osteossarcoma</strong> (lesão densa/esclerótica, mal delimitada, com reação periosteal). Lítica = destrói osso (fica mais escuro). Blástica = forma osso (fica mais branco).</p><h3>K33 · 68 anos, queda e dor no quadril: exame inicial para lesão do colo do fêmur</h3><p><strong>Resposta:</strong> <strong>Raio X.</strong></p><p>Suspeita de fratura começa pelo RX: rápido, barato, disponível. Se o RX for normal e a suspeita continuar, segue com TC ou RM.</p><blockquote><strong>Pegadinha:</strong> A anotação da aula: TC/RM ficam para depois, ou se a suspeita fosse de lesão muscular.</blockquote><h3>K34 · Dor na panturrilha com suspeita de rotura muscular: exame inicial</h3><p><strong>Resposta:</strong> <strong>Ultrassonografia</strong> (na foto está circulada a TC — confirme o gabarito).</p><p>Músculo e tendão são partes moles: o US vê bem, é dinâmico, barato e sem radiação, e é o exame inicial na lesão muscular. A RM é a melhor para detalhar. A TC tem pouca resolução para partes moles.</p><blockquote><strong>Pegadinha:</strong> Se a professora mantiver a TC como gabarito, decore o gabarito dela para a prova, mas saiba que a literatura indica US.</blockquote>"
+  },
+  {
+   "id": "k6",
+   "grupo": "Kahoot destrinchado",
+   "titulo": "Pegadinhas e regras de bolso",
+   "html": "<ul><li><strong>Instável não vai para a TC.</strong> Trauma instável com FAST positivo → laparotomia.</li><li><strong>Sangue no crânio → TC sem contraste.</strong> Vale para HSA, HED, HSD e AVC na emergência.</li><li><strong>Cálculo urinário → TC sem contraste</strong> (padrão-ouro).</li><li><strong>Vesícula → US.</strong> Cálculo mexe e faz sombra; pólipo não mexe e não faz sombra.</li><li><strong>Gestante e criança → US primeiro</strong>; se precisar, RM.</li><li><strong>Pâncreas → TC com contraste depois de 48–72 h</strong>, para complicações.</li><li><strong>Obstrução: RX inicial, TC para nível e causa.</strong></li><li><strong>Epidural = lente, artéria, jovem, intervalo lúcido, não cruza sutura.</strong> Subdural = crescente, veia ponte, idoso, cruza sutura.</li><li><strong>Citotóxico = cinzenta + branca, AVC.</strong> Vasogênico = branca, tumor.</li><li><strong>Água = 0 UH, ar = −1000 UH, osso ≈ +1000 UH.</strong></li><li><strong>Aorta à esquerda, cava à direita.</strong> Cólon na moldura, delgado no centro.</li><li>Leia <strong>“inicial”</strong> com atenção: queda no idoso → RX; dor muscular → US.</li></ul>"
+  },
+  {
+   "id": "r0",
+   "grupo": "Resumo de referência",
+   "titulo": "Fontes e como usar",
+   "html": "<p>Resumo de consulta, para tirar dúvidas do Kahoot. Fontes: Kahoot e slides de explicação da aula (fotos de 13/11), <strong>Aula 8 · Métodos de imagem nas emergências abdominais</strong>, <strong>Aula 2 · Anatomia radiológica e interpretação do RX de tórax</strong> e o Kahoot de revisão da turma anterior (pasta Diagnóstico por imagem do Drive).</p><p>A Aula 5 (Padrões patológicos à tomografia) está no Drive, mas o arquivo é grande demais para ser lido aqui. A parte de neuro deste resumo vem dos slides do Kahoot.</p>"
+  },
+  {
+   "id": "r1",
+   "grupo": "Resumo de referência",
+   "titulo": "1. Princípios dos métodos de imagem",
+   "html": "<h3>Cada método, em uma linha</h3><table><thead><tr><th>Método</th><th>Princípio</th><th>Bom para</th><th>Limites</th></tr></thead><tbody><tr><td>Raio X</td><td>Radiação ionizante; imagem 2D de estruturas 3D (sobreposição)</td><td>Pneumoperitônio, obstrução, calcificações, corpo estranho, fraturas, tórax</td><td>Sobreposição; pouca informação de partes moles</td></tr><tr><td>TC</td><td>Radiação ionizante; cortes sem sobreposição</td><td>Método que mais define a etiologia do abdome agudo; trauma estável; sangue no crânio; cálculo urinário</td><td>Radiação; contraste iodado (alergia, função renal)</td></tr><tr><td>US</td><td>Ondas sonoras (sem radiação)</td><td>Vesícula, gestante, criança, FAST, partes moles</td><td>Operador-dependente; gás e obesidade atrapalham; vê mal o pâncreas</td></tr><tr><td>RM</td><td>Campo magnético e radiofrequência (sem radiação)</td><td>Neuro, partes moles, músculo, colangioRM, gestante após o US</td><td>Demorada, cara, menos disponível; quase não usada no abdome agudo</td></tr></tbody></table><h3>Densidades na TC (Unidades Hounsfield)</h3><table><thead><tr><th>Estrutura</th><th>UH aproximada</th><th>Aspecto</th></tr></thead><tbody><tr><td>Ar</td><td>−1000</td><td>Preto</td></tr><tr><td>Gordura</td><td>−100 a −50</td><td>Escuro</td></tr><tr><td>Água, urina, bile, LCR</td><td>0 (até ~15)</td><td>Cinza escuro</td></tr><tr><td>Tecidos moles</td><td>+20 a +60</td><td>Cinza</td></tr><tr><td>Sangue agudo</td><td>+50 a +80</td><td>Mais claro que o cérebro (hiperdenso)</td></tr><tr><td>Osso cortical</td><td>+400 a +1000</td><td>Branco</td></tr></tbody></table><p>Na TC fala-se em <strong>densidade</strong> (hipo/hiperdenso); no US, em <strong>ecogenicidade</strong> (anecoico, hiperecogênico, sombra acústica); no RX, em <strong>radiopaco</strong> (branco) e <strong>radiotransparente</strong> (preto); na RM, em <strong>sinal</strong> (hipo/hipersinal).</p><h3>Contraste endovenoso na TC</h3><ul><li>Com contraste, aorta, cava, veia porta e rins ficam brancos (realce).</li><li><strong>Sem contraste</strong>: sangue no crânio, cálculo urinário, pneumonia, vidro fosco.</li><li><strong>Contraste obrigatório</strong>: tromboembolismo pulmonar, dissecção e aneurisma de aorta, tumores, abdome agudo inflamatório e trauma estável.</li></ul><h3>Planos</h3><p>Axial (transversal, o corte “de baixo para cima”, o mais usado), coronal (de frente) e sagital (de lado).</p><h3>RM: como reconhecer a sequência</h3><p><strong>T1</strong>: líquido escuro, boa anatomia. <strong>T2</strong>: líquido branco. <strong>FLAIR</strong>: T2 com o líquor apagado, ótimo para edema e lesões perto dos ventrículos. <strong>Difusão (DWI)</strong>: restrição no AVC isquêmico agudo.</p>"
+  },
+  {
+   "id": "r2",
+   "grupo": "Resumo de referência",
+   "titulo": "2. Neuro: meninges, hemorragias e edema",
+   "html": "<h3>Meninges e espaços</h3><table><thead><tr><th>Espaço</th><th>Entre</th><th>Coleção típica</th></tr></thead><tbody><tr><td>Epidural</td><td>Osso e dura-máter</td><td>Hematoma epidural (arterial, lente)</td></tr><tr><td>Subdural</td><td>Dura-máter e aracnoide (virtual)</td><td>Hematoma subdural (venoso, crescente)</td></tr><tr><td>Subaracnoide</td><td>Aracnoide e pia-máter (tem LCR e artérias)</td><td>HSA (aneurisma, trauma)</td></tr></tbody></table><h3>Qual hemorragia é?</h3><table><thead><tr><th></th><th>Epidural</th><th>Subdural</th><th>Subaracnoide</th></tr></thead><tbody><tr><td>Forma na TC</td><td>Biconvexa (lente)</td><td>Crescente</td><td>Sangue nos sulcos, fissuras sylvianas e cisternas</td></tr><tr><td>Origem</td><td>Artéria meníngea média</td><td>Veias ponte</td><td>Aneurisma roto (não traumática)</td></tr><tr><td>Paciente</td><td>Jovem, trauma com fratura temporal</td><td>Idoso, anticoagulado, alcoólatra</td><td>Adulto com cefaleia súbita “a pior da vida”</td></tr><tr><td>Pista clínica</td><td>Intervalo lúcido</td><td>Piora lenta, confusão, imita demência</td><td>Rigidez de nuca, náuseas</td></tr></tbody></table><p><strong>Exame inicial em qualquer suspeita de sangramento intracraniano agudo: TC de crânio sem contraste.</strong> Depois, angio-TC ou arteriografia para procurar o aneurisma.</p><h3>Edema</h3><p><strong>Citotóxico</strong>: célula incha por falência da bomba Na⁺/K⁺, cinzenta e branca, território arterial, AVC isquêmico, restringe na difusão, geralmente irreversível. <strong>Vasogênico</strong>: barreira hematoencefálica rota, substância branca, ao redor de tumor/metástase/abscesso, reversível.</p>"
+  },
+  {
+   "id": "r3",
+   "grupo": "Resumo de referência",
+   "titulo": "3. Abdome agudo (Aula 8)",
+   "html": "<p>Abdome agudo é a situação de dor abdominal de início abrupto que precisa de intervenção clínica ou cirúrgica de urgência. Jovens: mais apendicite. Idosos: obstrução, isquemia mesentérica, diverticulite.</p><h3>O papel de cada exame (slide da aula)</h3><ul><li><strong>RX</strong>: pneumoperitônio, obstrução, calcificações (apendicolito, íleo biliar, cálculos), corpos estranhos.</li><li><strong>US</strong>: investigação inicial das dores abdominais, <strong>exceto obstrução</strong>; método de escolha para vesícula.</li><li><strong>TC</strong>: o que mais define a etiologia; usada quando faltam informações, em paciente <strong>estável</strong>.</li><li><strong>RM</strong>: não se aplica ao abdome agudo (demora, custo, disponibilidade).</li></ul><table><thead><tr><th>Tipo</th><th>Quadro</th><th>Causas</th><th>Imagem</th></tr></thead><tbody><tr><td>Inflamatório (o mais comum)</td><td>Dor insidiosa progressiva, febre, peritonite</td><td>Apendicite, colecistite, diverticulite, pancreatite, pielonefrite, urolitíase</td><td>Depende do órgão (abaixo)</td></tr><tr><td>Obstrutivo</td><td>Distensão, parada de gases e fezes, vômitos</td><td>Bridas, hérnia, neoplasia, fecaloma, volvo, áscaris</td><td>RX inicial; TC para nível e causa</td></tr><tr><td>Perfurativo (3º mais comum)</td><td>Dor súbita intensa, peritonite, pode chocar</td><td>Úlcera péptica, diverticulite, trauma, corpo estranho</td><td>RX: ar fora de alça; TC localiza melhor</td></tr><tr><td>Vascular</td><td>Dor intensa, súbita, desproporcional ao exame físico</td><td>Isquemia mesentérica (arterial, venosa, não oclusiva)</td><td>Angio-TC arterial e venosa</td></tr><tr><td>Hemorrágico</td><td>Dor súbita e choque</td><td>Aneurisma roto, gineco-obstétrico, tumor</td><td>FAST inicial; TC se estável</td></tr></tbody></table><h3>Achados que caem</h3><ul><li><strong>Pancreatite</strong> (TC com contraste): pâncreas aumentado, gordura peripancreática densificada, realce heterogêneo, líquido livre.</li><li><strong>Colecistite</strong> (US): parede &gt; 3 mm, líquido perivesicular, <strong>Murphy ultrassonográfico</strong>. RX não está indicado.</li><li><strong>Apendicite</strong> (US inicial na FID): apêndice <strong>não compressível &gt; 6 mm</strong>; apendicolito. Limites do US: obesos, dor intensa, apêndice retrocecal. TC: apêndice &gt; 6 mm com inflamação ao redor.</li><li><strong>Diverticulite</strong> (TC é a escolha): parede &gt; 5 mm, densificação da gordura pericólica, abscessos e líquido nos graves.</li><li><strong>Obstrução no RX</strong>: alças dilatadas, níveis hidroaéreos, sem gás no reto. Alta: “empilhamento de moedas”. Volvo: “grão de café”. Diferencial principal: <strong>íleo paralítico</strong> (pós-operatório, distúrbio hidroeletrolítico, autolimitado).</li><li><strong>Isquemia mesentérica</strong> (angio-TC): falha de enchimento, parede espessada, pneumatose intestinal, gás no sistema porta.</li></ul>"
+  },
+  {
+   "id": "r4",
+   "grupo": "Resumo de referência",
+   "titulo": "4. Trauma, urinário e musculoesquelético",
+   "html": "<h3>Trauma abdominal</h3><ul><li><strong>Instável</strong>: FAST na sala de emergência. FAST positivo (líquido nos espaços hepatorrenal, esplenorrenal, pelve) → <strong>laparotomia exploradora</strong>.</li><li><strong>Estável</strong>: <strong>TC com contraste</strong>, mesmo com FAST negativo se mantém dor ou o mecanismo é suspeito.</li></ul><h3>Urinário</h3><ul><li>Padrão-ouro para cálculo: <strong>TC sem contraste</strong>. Cálculo hiperdenso + hidronefrose acima.</li><li>Localização: pelve renal, ureter proximal, médio, distal (junção ureterovesical) e bexiga.</li><li>Coraliforme: cálculo grande que molda os cálices e a pelve.</li></ul><h3>Osso e músculo</h3><ul><li>Suspeita de fratura → <strong>RX</strong> primeiro (em duas incidências). Fratura = linha radiolucente atravessando a cortical.</li><li>Sinais de agressividade: <strong>destruição cortical</strong>, margens mal definidas, reação periosteal exuberante (ex.: osteossarcoma). Benignidade: margens escleróticas bem definidas, lesão geográfica (ex.: cisto ósseo).</li><li>Lesão lítica escurece o osso; lesão blástica embranquece.</li><li>Lesão muscular ou tendínea → <strong>US</strong> inicial; RM para detalhar.</li></ul>"
+  },
+  {
+   "id": "r5",
+   "grupo": "Resumo de referência",
+   "titulo": "5. RX de tórax: leitura sistemática (Aula 2)",
+   "html": "<p>Caiu no Kahoot da turma anterior e vale saber.</p><ul><li>Projeção padrão: <strong>PA em pé</strong>, inspiração adequada, a 1,8 m (menos ampliação do coração).</li><li><strong>Inspiração adequada</strong>: hemidiafragma na altura ou abaixo da <strong>6ª costela anterior</strong> ou <strong>8ª–10ª posterior</strong>.</li><li><strong>Rotação</strong>: processos espinhosos no meio das extremidades mediais das clavículas.</li></ul><h3>ABCDE</h3><table><thead><tr><th>Letra</th><th>O que olhar</th></tr></thead><tbody><tr><td>A · Vias aéreas</td><td>Traqueia centrada, brônquios principais</td></tr><tr><td>B · Respiração</td><td>Pulmões expandidos e simétricos</td></tr><tr><td>C · Circulação</td><td>Tamanho do coração, vasos, mediastino e hilos</td></tr><tr><td>D · Ossos</td><td>Fraturas, costelas, cintura escapular</td></tr><tr><td>E · Todo o resto</td><td>Pneumoperitônio, enfisema subcutâneo, sombra de mama, corpos estranhos, sondas</td></tr></tbody></table>"
+  }
+ ],
+ "cards": [
+  {
+   "id": "img00",
+   "secao": "k1",
+   "tag": "Bases da TC",
+   "frente": "Na TC, qual a densidade da água em UH?",
+   "verso": "<b>0 UH</b> (por definição). Ar = −1000; osso cortical ≈ +1000."
+  },
+  {
+   "id": "img01",
+   "secao": "k1",
+   "tag": "Bases da TC",
+   "frente": "Na TC, gordura tem UH positivo ou negativo?",
+   "verso": "<b>Negativo</b> (≈ −100 a −50)."
+  },
+  {
+   "id": "img02",
+   "secao": "k1",
+   "tag": "Bases da TC",
+   "frente": "Como saber se uma TC de abdome foi feita com contraste EV?",
+   "verso": "Com contraste, <b>aorta, cava, porta e rins ficam brancos</b> (realçam). Sem contraste, os vasos têm densidade de músculo."
+  },
+  {
+   "id": "img03",
+   "secao": "k1",
+   "tag": "Bases da TC",
+   "frente": "Vantagem da TC sobre o US no abdome?",
+   "verso": "<b>Melhor avaliação global do abdome</b>, sem depender do operador, do gás ou da obesidade."
+  },
+  {
+   "id": "img04",
+   "secao": "k1",
+   "tag": "Bases da TC",
+   "frente": "Vantagens do US sobre a TC?",
+   "verso": "Sem radiação, mais barato, portátil, dinâmico."
+  },
+  {
+   "id": "img05",
+   "secao": "k1",
+   "tag": "Anatomia seccional",
+   "frente": "No corte axial do abdome, qual vaso fica colado à frente da coluna, à esquerda?",
+   "verso": "<b>Aorta</b>."
+  },
+  {
+   "id": "img06",
+   "secao": "k1",
+   "tag": "Anatomia seccional",
+   "frente": "No corte axial, qual vaso fica à direita da aorta, junto ao fígado?",
+   "verso": "<b>Veia cava inferior</b>."
+  },
+  {
+   "id": "img07",
+   "secao": "k1",
+   "tag": "Anatomia seccional",
+   "frente": "Vaso que entra no hilo hepático, oblíquo, à frente da cava?",
+   "verso": "<b>Veia porta</b>."
+  },
+  {
+   "id": "img08",
+   "secao": "k1",
+   "tag": "Anatomia seccional",
+   "frente": "Órgão alongado retroperitoneal que cruza a coluna atrás do estômago?",
+   "verso": "<b>Pâncreas</b> (cabeça à direita junto ao duodeno, cauda perto do baço)."
+  },
+  {
+   "id": "img09",
+   "secao": "k1",
+   "tag": "Anatomia seccional",
+   "frente": "Intestino delgado × grosso na imagem?",
+   "verso": "Delgado: <b>centro</b>, calibre menor, pregas “em penas”. Grosso: <b>periferia (moldura)</b>, fezes com gás."
+  },
+  {
+   "id": "img10",
+   "secao": "k1",
+   "tag": "Anatomia seccional",
+   "frente": "Qual a densidade da urina na bexiga?",
+   "verso": "≈ <b>0 UH</b> (água)."
+  },
+  {
+   "id": "img11",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Hematoma biconvexo (lentiforme) na TC?",
+   "verso": "<b>Epidural</b>: arterial (artéria meníngea média), não cruza suturas."
+  },
+  {
+   "id": "img12",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Hematoma em crescente que cruza suturas?",
+   "verso": "<b>Subdural</b>: venoso (veias ponte)."
+  },
+  {
+   "id": "img13",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Por que o hematoma epidural não cruza as suturas?",
+   "verso": "A <b>dura-máter é muito aderida às suturas</b> e impede o sangue de passar."
+  },
+  {
+   "id": "img14",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "O que é o intervalo lúcido e em qual hematoma aparece?",
+   "verso": "Perda de consciência → período de lucidez → piora rápida. Típico do <b>hematoma epidural</b>."
+  },
+  {
+   "id": "img15",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Perfil do paciente com hematoma subdural crônico?",
+   "verso": "<b>Idoso</b>, anticoagulado ou alcoólatra, queda leve, piora em <b>semanas</b> (pode imitar demência)."
+  },
+  {
+   "id": "img16",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Por que o idoso tem mais hematoma subdural?",
+   "verso": "A <b>atrofia cerebral</b> estira as veias ponte, que rompem com traumas leves."
+  },
+  {
+   "id": "img17",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Qual hematoma tem fratura associada em 80–90% dos casos?",
+   "verso": "<b>Epidural</b> (fratura temporal)."
+  },
+  {
+   "id": "img18",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Exame inicial na suspeita de HSA ou hemorragia intracraniana aguda?",
+   "verso": "<b>TC de crânio sem contraste</b>."
+  },
+  {
+   "id": "img19",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Cefaleia súbita intensa + rigidez de nuca + sangue nas fissuras sylvianas e cisternas?",
+   "verso": "<b>Hemorragia subaracnoide aneurismática</b>."
+  },
+  {
+   "id": "img20",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Ordem das meninges de fora para dentro?",
+   "verso": "<b>Dura-máter → aracnoide → pia-máter</b>."
+  },
+  {
+   "id": "img21",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Qual meninge acompanha sulcos e giros?",
+   "verso": "<b>Pia-máter</b> (a mais interna)."
+  },
+  {
+   "id": "img22",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "O que há no espaço subaracnoide e onde ele fica?",
+   "verso": "<b>LCR</b> (e artérias). Entre a aracnoide e a pia-máter."
+  },
+  {
+   "id": "img23",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Edema na substância cinzenta e branca, território arterial, AVC isquêmico?",
+   "verso": "<b>Edema citotóxico</b> (falência da bomba Na⁺/K⁺-ATPase)."
+  },
+  {
+   "id": "img24",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Edema principalmente na substância branca, ao redor de tumor?",
+   "verso": "<b>Edema vasogênico</b> (ruptura da barreira hematoencefálica)."
+  },
+  {
+   "id": "img25",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Qual edema restringe na difusão (DWI)?",
+   "verso": "<b>Citotóxico</b>. É geralmente irreversível; o vasogênico é potencialmente reversível."
+  },
+  {
+   "id": "img26",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "Na RM, em qual sequência o líquido fica branco?",
+   "verso": "<b>T2</b>. Em T1 e FLAIR o LCR é escuro."
+  },
+  {
+   "id": "img27",
+   "secao": "k2",
+   "tag": "Neuro",
+   "frente": "O que o FLAIR faz?",
+   "verso": "É um T2 que <b>suprime o sinal do LCR</b>; edema e lesões ficam brancos."
+  },
+  {
+   "id": "img28",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Imagem hiperecogênica aderida à parede da vesícula, fixa e sem sombra acústica?",
+   "verso": "<b>Pólipo da vesícula</b>."
+  },
+  {
+   "id": "img29",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Como diferenciar cálculo de pólipo no US?",
+   "verso": "Cálculo <b>mexe com o decúbito e faz sombra acústica</b>; pólipo é fixo e sem sombra."
+  },
+  {
+   "id": "img30",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Achados de colecistite aguda no US?",
+   "verso": "Parede <b>&gt; 3 mm</b>, líquido perivesicular, <b>Murphy ultrassonográfico</b>."
+  },
+  {
+   "id": "img31",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Trauma instável com FAST positivo. Conduta?",
+   "verso": "<b>Laparotomia exploradora imediata</b> (instável não vai para a TC)."
+  },
+  {
+   "id": "img32",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Trauma estável, FAST negativo, mantém dor. Conduta?",
+   "verso": "<b>TC de abdome com contraste</b>."
+  },
+  {
+   "id": "img33",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Exame para complicações de pancreatite e quando?",
+   "verso": "<b>TC com contraste após 48–72 h</b>."
+  },
+  {
+   "id": "img34",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Por que o US é ruim para pâncreas?",
+   "verso": "Órgão <b>retroperitoneal, atrás do estômago</b> com gás."
+  },
+  {
+   "id": "img35",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Exame inicial e exame para nível/causa na obstrução intestinal?",
+   "verso": "Inicial: <b>RX</b>. Nível e causa: <b>TC de abdome e pelve com contraste</b>."
+  },
+  {
+   "id": "img36",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Sinais de obstrução no RX?",
+   "verso": "Alças dilatadas, <b>níveis hidroaéreos</b>, sem gás no reto. Volvo: “grão de café”."
+  },
+  {
+   "id": "img37",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Principal diagnóstico diferencial da obstrução?",
+   "verso": "<b>Íleo paralítico</b> (pós-operatório, distúrbio hidroeletrolítico)."
+  },
+  {
+   "id": "img38",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Gestante com suspeita de apendicite: exame inicial?",
+   "verso": "<b>Ultrassonografia</b> (se inconclusivo, RM)."
+  },
+  {
+   "id": "img39",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Critério de apendicite no US?",
+   "verso": "Apêndice <b>não compressível com mais de 6 mm</b>."
+  },
+  {
+   "id": "img40",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Exame de escolha na diverticulite?",
+   "verso": "<b>TC de abdome e pelve com contraste</b>."
+  },
+  {
+   "id": "img41",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "AINE + dispepsia crônica + dor súbita + pneumoperitônio?",
+   "verso": "<b>Úlcera péptica perfurada</b> (duodenal ou gástrica)."
+  },
+  {
+   "id": "img42",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Como aparece o pneumoperitônio no RX?",
+   "verso": "Ar livre (faixa escura) <b>sob o diafragma</b> no RX em pé ou de tórax."
+  },
+  {
+   "id": "img43",
+   "secao": "k3",
+   "tag": "Abdome",
+   "frente": "Dor abdominal intensa desproporcional ao exame físico. Suspeita e exame?",
+   "verso": "<b>Isquemia mesentérica</b> → angio-TC."
+  },
+  {
+   "id": "img44",
+   "secao": "k4",
+   "tag": "Urinário",
+   "frente": "Padrão-ouro para cálculo urinário?",
+   "verso": "<b>TC sem contraste</b> (sensibilidade e especificidade &gt; 95%)."
+  },
+  {
+   "id": "img45",
+   "secao": "k4",
+   "tag": "Urinário",
+   "frente": "Cálculo na junção ureterovesical é…?",
+   "verso": "<b>Ureterolitíase distal</b>."
+  },
+  {
+   "id": "img46",
+   "secao": "k4",
+   "tag": "Urinário",
+   "frente": "Achados indiretos de obstrução por cálculo na TC?",
+   "verso": "Hidronefrose, hidroureter, estriação da gordura perirrenal, edema periureteral."
+  },
+  {
+   "id": "img47",
+   "secao": "k5",
+   "tag": "Osso e músculo",
+   "frente": "Sinal radiológico de maior agressividade em lesão óssea?",
+   "verso": "<b>Destruição cortical</b> (também margens mal definidas e reação periosteal exuberante)."
+  },
+  {
+   "id": "img48",
+   "secao": "k5",
+   "tag": "Osso e músculo",
+   "frente": "Linha radiolucente atravessando a cortical com desvio?",
+   "verso": "<b>Fratura</b>."
+  },
+  {
+   "id": "img49",
+   "secao": "k5",
+   "tag": "Osso e músculo",
+   "frente": "Idoso com queda e dor no quadril: exame inicial?",
+   "verso": "<b>Raio X</b>."
+  },
+  {
+   "id": "img50",
+   "secao": "k5",
+   "tag": "Osso e músculo",
+   "frente": "Suspeita de rotura muscular: exame inicial?",
+   "verso": "<b>Ultrassonografia</b> (RM para detalhar). Atenção: na foto do Kahoot a TC estava circulada; confirme o gabarito."
+  },
+  {
+   "id": "img51",
+   "secao": "k5",
+   "tag": "Osso e músculo",
+   "frente": "Lesão lítica × blástica no RX?",
+   "verso": "Lítica: <b>destrói osso, fica escura</b> (ex.: cisto ósseo). Blástica: <b>forma osso, fica branca</b> (ex.: osteossarcoma)."
+  },
+  {
+   "id": "img52",
+   "secao": "r5",
+   "tag": "RX de tórax",
+   "frente": "Critério de inspiração adequada no RX de tórax?",
+   "verso": "Hemidiafragma na altura ou abaixo da <b>6ª costela anterior</b> (ou 8ª–10ª posterior)."
+  },
+  {
+   "id": "img53",
+   "secao": "r5",
+   "tag": "RX de tórax",
+   "frente": "ABCDE do RX de tórax?",
+   "verso": "Vias aéreas, respiração (pulmões), circulação (coração, mediastino), ossos, todo o resto (ar livre, enfisema, corpos estranhos)."
+  },
+  {
+   "id": "img54",
+   "secao": "r1",
+   "tag": "Bases",
+   "frente": "Em quais casos a TC é feita SEM contraste?",
+   "verso": "Sangue no crânio, cálculo urinário, pneumonia/vidro fosco."
+  },
+  {
+   "id": "img55",
+   "secao": "r1",
+   "tag": "Bases",
+   "frente": "Em qual caso o contraste EV é obrigatório na TC de tórax?",
+   "verso": "<b>Tromboembolismo pulmonar</b> (também dissecção e aneurisma de aorta)."
+  }
+ ],
+ "kahoot": [
+  {
+   "id": "mk01",
+   "pergunta": "Qual vaso está circundado?",
+   "opcoes": [
+    "Veia cava inferior",
+    "Aorta",
+    "Veia porta",
+    "Artéria mesentérica"
+   ],
+   "certa": 1,
+   "explica": "Redonda, colada à frente da coluna, à esquerda: aorta.",
+   "tempo": 20,
+   "img": "content/img/imagem/q04.jpg"
+  },
+  {
+   "id": "mk02",
+   "pergunta": "Qual vaso está circundado?",
+   "opcoes": [
+    "Aorta",
+    "Veia porta",
+    "Veia cava inferior",
+    "Veia renal"
+   ],
+   "certa": 2,
+   "explica": "À direita da aorta, encostada no fígado: veia cava inferior.",
+   "tempo": 20,
+   "img": "content/img/imagem/q05.jpg"
+  },
+  {
+   "id": "mk03",
+   "pergunta": "Este exame foi feito…",
+   "opcoes": [
+    "Com contraste EV",
+    "Sem contraste EV",
+    "Com contraste oral só",
+    "Impossível saber"
+   ],
+   "certa": 1,
+   "explica": "Vasos com densidade de músculo e rins homogêneos: sem contraste.",
+   "tempo": 20,
+   "img": "content/img/imagem/q03.jpg"
+  },
+  {
+   "id": "mk04",
+   "pergunta": "A bexiga cheia de urina mede quantas UH?",
+   "opcoes": [
+    "−1000",
+    "−100",
+    "0",
+    "+1000"
+   ],
+   "certa": 2,
+   "explica": "Urina ≈ água = 0 UH.",
+   "tempo": 15,
+   "img": "content/img/imagem/q10.jpg"
+  },
+  {
+   "id": "mk05",
+   "pergunta": "Jovem, moto, coleção biconvexa que não cruza suturas. Origem do sangue?",
+   "opcoes": [
+    "Veias ponte",
+    "Artéria meníngea média",
+    "Aneurisma do polígono",
+    "Seio sagital"
+   ],
+   "certa": 1,
+   "explica": "Lente = epidural = arterial (meníngea média), com intervalo lúcido.",
+   "tempo": 20
+  },
+  {
+   "id": "mk06",
+   "pergunta": "Idoso anticoagulado, queda há 2 semanas, coleção em crescente. Qual é?",
+   "opcoes": [
+    "Epidural agudo",
+    "Subdural crônico",
+    "HSA",
+    "Hemorragia intraparenquimatosa"
+   ],
+   "certa": 1,
+   "explica": "Crescente + idoso + semanas = subdural crônico (veias ponte).",
+   "tempo": 20
+  },
+  {
+   "id": "mk07",
+   "pergunta": "Cefaleia súbita, rigidez de nuca. Primeiro exame?",
+   "opcoes": [
+    "RM de crânio",
+    "Angiografia",
+    "TC de crânio sem contraste",
+    "TC com contraste"
+   ],
+   "certa": 2,
+   "explica": "Sangue agudo é hiperdenso na TC sem contraste.",
+   "tempo": 20
+  },
+  {
+   "id": "mk08",
+   "pergunta": "AVC isquêmico com hipodensidade da cinzenta e da branca. Edema…",
+   "opcoes": [
+    "Vasogênico",
+    "Citotóxico",
+    "Intersticial",
+    "Osmótico"
+   ],
+   "certa": 1,
+   "explica": "Falência da bomba Na⁺/K⁺: citotóxico, segue território arterial.",
+   "tempo": 20
+  },
+  {
+   "id": "mk09",
+   "pergunta": "Nesta sequência de RM o líquor fica branco:",
+   "opcoes": [
+    "T1",
+    "FLAIR",
+    "T2",
+    "Difusão"
+   ],
+   "certa": 2,
+   "explica": "T2 = água branca. No FLAIR o líquor é apagado.",
+   "tempo": 20
+  },
+  {
+   "id": "mk10",
+   "pergunta": "Lesão na vesícula, fixa, aderida à parede, sem sombra acústica:",
+   "opcoes": [
+    "Cálculo",
+    "Pólipo",
+    "Colecistite",
+    "Lama biliar"
+   ],
+   "certa": 1,
+   "explica": "Cálculo mexe e faz sombra; pólipo não.",
+   "tempo": 20
+  },
+  {
+   "id": "mk11",
+   "pergunta": "Trauma, PA 80×50, FAST positivo, segue instável:",
+   "opcoes": [
+    "TC com contraste",
+    "US seriado",
+    "Laparotomia imediata",
+    "Lavado peritoneal"
+   ],
+   "certa": 2,
+   "explica": "Instável não vai para a TC.",
+   "tempo": 20
+  },
+  {
+   "id": "mk12",
+   "pergunta": "Facada em flanco, estável, FAST negativo, mantém dor:",
+   "opcoes": [
+    "Alta",
+    "TC com contraste",
+    "Laparotomia obrigatória",
+    "Angio-RM"
+   ],
+   "certa": 1,
+   "explica": "Estável → TC com contraste.",
+   "tempo": 20
+  },
+  {
+   "id": "mk13",
+   "pergunta": "Pancreatite: exame para complicações após 48–72 h",
+   "opcoes": [
+    "RX de abdome",
+    "US",
+    "TC com contraste",
+    "RM"
+   ],
+   "certa": 2,
+   "explica": "TC contrastada mostra necrose e coleções.",
+   "tempo": 20
+  },
+  {
+   "id": "mk14",
+   "pergunta": "Cálculo urinário: padrão-ouro",
+   "opcoes": [
+    "US",
+    "Urografia",
+    "TC sem contraste",
+    "TC com contraste"
+   ],
+   "certa": 2,
+   "explica": "TC sem contraste: o cálculo já é branco.",
+   "tempo": 20
+  },
+  {
+   "id": "mk15",
+   "pergunta": "Gestante de 24 semanas, dor em FID: exame inicial",
+   "opcoes": [
+    "TC",
+    "RM",
+    "US",
+    "RX"
+   ],
+   "certa": 2,
+   "explica": "Sem radiação: US primeiro, RM se inconclusivo.",
+   "tempo": 20
+  },
+  {
+   "id": "mk16",
+   "pergunta": "Sinal de maior agressividade em lesão óssea:",
+   "opcoes": [
+    "Margem esclerótica",
+    "Lesão geográfica",
+    "Destruição cortical",
+    "Lesão bem delimitada"
+   ],
+   "certa": 2,
+   "explica": "Romper a cortical indica lesão agressiva (ex.: osteossarcoma).",
+   "tempo": 20
+  },
+  {
+   "id": "mk17",
+   "pergunta": "Idosa caiu e tem dor no quadril. Exame inicial:",
+   "opcoes": [
+    "RX",
+    "US",
+    "TC",
+    "RM"
+   ],
+   "certa": 0,
+   "explica": "Suspeita de fratura começa pelo RX.",
+   "tempo": 20
+  },
+  {
+   "id": "mk18",
+   "pergunta": "Qual estrutura está circundada?",
+   "opcoes": [
+    "Pâncreas",
+    "Estômago",
+    "Intestino delgado",
+    "Intestino grosso"
+   ],
+   "certa": 3,
+   "explica": "Na periferia, com fezes e gás: cólon.",
+   "tempo": 20,
+   "img": "content/img/imagem/q09.jpg"
+  }
+ ]
+}
