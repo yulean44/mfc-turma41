@@ -173,6 +173,11 @@ label.lb{display:block;font-size:11px;letter-spacing:.2em;text-transform:upperca
 .painel-mundo .efeitos{gap:6px}.painel-mundo .efe{padding:4px 10px 4px 6px;font-size:11.5px}
 .painel-mundo .h-sec{margin:0}
 .painel-mundo .colecao{margin-top:10px}
+/* textos sobre o planeta somem enquanto você gira ou dá zoom, e voltam sozinhos */
+.some-ao-girar{transition:opacity .45s ease, transform .45s ease}
+body.explorando .some-ao-girar{opacity:0;transform:translateY(-6px);pointer-events:none}
+body.explorando #view-mundo .painel-mundo{opacity:.15}
+#view-mundo .painel-mundo{transition:opacity .45s}
 /* ---------- foco ---------- */
 .foco-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding-top:4vh}
 .tempo-big{font-weight:200;font-size:clamp(70px,13vw,150px);letter-spacing:.06em;line-height:1;font-variant-numeric:tabular-nums}

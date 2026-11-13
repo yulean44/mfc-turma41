@@ -425,7 +425,7 @@ export function criaMundo(host) {
     /* modo: "centro" (início), "mundo" (interativo), "lado" (atrás das páginas), "fundo" (leitura) */
     layout(modo) {
       const estreito = host.clientWidth < 900;
-      const cfg = { centro: [estreito ? 0 : -.14, 1, estreito ? 6.4 : 6], mundo: [0, 1, 5], lado: [estreito ? 0 : -.3, estreito ? .25 : .55, 6.4], fundo: [estreito ? 0 : -.32, estreito ? .15 : .3, 7] }[modo] || [0, 1, 4.4];
+      const cfg = { centro: [estreito ? 0 : -.14, 1, estreito ? 6.4 : 6], mundo: [estreito ? 0 : .12, 1, 5], lado: [estreito ? 0 : -.3, estreito ? .25 : .55, 6.4], fundo: [estreito ? 0 : -.32, estreito ? .15 : .3, 7] }[modo] || [0, 1, 4.4];
       deslAlvo = cfg[0]; dimAlvo = cfg[1]; distAlvo = cfg[2]; controls.enabled = modo === "mundo" || modo === "centro"; controls.enableZoom = modo === "mundo"; leve = modo === "fundo";
     },
     tema(t) {

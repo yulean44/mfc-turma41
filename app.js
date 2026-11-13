@@ -396,9 +396,16 @@ async function garanteMod() {
   try { mundoMod = await import("./world.js"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
+let tExplora = null;
+function explorando() {
+  if (atual !== "inicio" && atual !== "mundo") return;
+  document.body.classList.add("explorando");
+  clearTimeout(tExplora); tExplora = setTimeout(() => document.body.classList.remove("explorando"), 2500);
+}
 async function iniciaMundo() {
   const m = await garanteMod(); if (!m) return;
   mundo = m.criaMundo($("#espaco"));
+  ["pointerdown", "pointermove", "wheel", "touchmove"].forEach(ev => $("#espaco").addEventListener(ev, e => { if (ev === "pointermove" && !e.buttons) return; explorando(); }, { passive: true }));
   // reposiciona itens antigos que estavam sem lugar
   S.decos.forEach(d => { if (d.d[0] === 0 && d.d[1] === 1 && d.d[2] === 0) d.d = sorteioP(!!S.efeitos.agua); });
   layoutMundo(); aplicaTema(); aplicaMundo();
@@ -416,11 +423,11 @@ function renderInicio() {
   $("#view-inicio").innerHTML = `
     <div class="home">
       <div class="esq">
-        <div>
+        <div class="some-ao-girar">
           <h1 class="titulo">${saudacao()}</h1>
           <p class="sub">${new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })} · ${fase}</p>
         </div>
-        <div>
+        <div class="some-ao-girar">
           <div class="stats">
             <div class="stat"><b>${fmtMin(h.min)}</b><span>hoje</span></div>
             <div class="stat"><b>${h.cards}</b><span>cards hoje</span></div>
@@ -465,10 +472,10 @@ function renderMundo() {
   const ks = Object.keys(CRIATURAS).sort((a, b) => (S.criaturas.includes(b) - S.criaturas.includes(a)) || RARO_ORDEM.indexOf(CRIATURAS[a].r) - RARO_ORDEM.indexOf(CRIATURAS[b].r));
   $("#view-mundo").innerHTML = `
     <div class="mundo-ui">
-      <div>
+      <div class="some-ao-girar">
         <h1 class="titulo p">Meu mundo</h1>
         <p class="sub">Nível ${S.nivel} · ${Math.round(verdor() * 100)}% de vida · ${plural(S.criaturas.length, "criatura", "criaturas")} · ${S.decos.length} elementos</p>
-        <p class="intro" style="max-width:520px">Tudo aqui surgiu do seu estudo. A cada 12 XP algo novo brota; subir de nível e cumprir as missões do dia faz nascer criaturas. Gire e aproxime com o mouse ou os dedos.</p>
+        <p class="intro" style="max-width:420px">Tudo aqui surgiu do seu estudo. Gire e aproxime com o mouse ou os dedos.</p>
       </div>
       <div class="vidro painel-mundo">
         <div class="efeitos">${Object.entries(EFEITOS).map(([k, e]) => `<span class="efe ${S.efeitos[k] ? "on" : ""}" title="${S.efeitos[k] ? "Ativo" : esc((JORNADA.find(x => x.premio.efeitos?.includes(k)) || {}).titulo || "")}">${S.efeitos[k] ? fig(ICONE_EFEITO[k]) : ic("cadeado", "s")}${e.nome}</span>`).join("")}</div>
@@ -477,7 +484,7 @@ function renderMundo() {
           return `<div class="cria ${tem ? "" : "lock"}" ${tem ? `data-foco="${k}"` : ""} title="${esc(tem ? c.nome : comoGanhar(k))}"><div class="im" data-mini="${tem ? k : ""}">${ic(tem ? "ovo" : "cadeado")}</div><div class="nm">${tem ? esc(c.nome) : "???"}</div><div class="rr">${tem ? RARIDADE[c.r].nome : esc(comoGanhar(k).split(" · ")[0])}</div></div>`; }).join("")}</div>
       </div>
     </div>`;
-  $$("[data-foco]").forEach(b => b.addEventListener("click", () => mundo?.foco(b.dataset.foco)));
+  $$("[data-foco]").forEach(b => b.addEventListener("click", () => { mundo?.foco(b.dataset.foco); explorando(); }));
   $("#togCol").addEventListener("click", () => { colAberta = !colAberta; LS.set("colAberta", colAberta); renderMundo(); });
   garanteMod().then(mod => { if (!mod) return; $$("[data-mini]").forEach(async el => { const k = el.dataset.mini; if (!k) return; const u = await mod.miniatura(k); if (u && el.isConnected) el.innerHTML = `<img src="${u}" alt="">`; }); });
 }
