@@ -69,6 +69,7 @@ export const DECOS = {
   cogumelos:  { nome: "Cogumelos",         emoji: "🍄", proc: 1, preco: 18 },
   cristal:    { nome: "Cristal",           emoji: "💎", proc: 1, preco: 70 },
   cabana:     { nome: "Cabana de estudos", emoji: "🛖", proc: 1, preco: 200 },
+  fogueira:   { nome: "Fogueira",          emoji: "🔥", proc: 1 },
   lanterna:   { nome: "Lanterna",          emoji: "🏮", proc: 1, preco: 45 },
   bau:        { nome: "Baú",               emoji: "🧰", glb: "bau",          tam: .06, preco: 90 },
   bambu:      { nome: "Bambu",             emoji: "🎋", proc: 1, preco: 30 },

@@ -36,7 +36,7 @@ export function sorteiaPonto(agua, querLago = false, seed = Math.random() * 1e9)
 
 const C = {
   cristal: new THREE.Color("#a9cbe0"), cristal2: new THREE.Color("#7aa6c6"), cristal3: new THREE.Color("#d2e6f1"),
-  terra: new THREE.Color("#a9b47c"), rocha: new THREE.Color("#9aa3ad"), rocha2: new THREE.Color("#7f8894"), areia: new THREE.Color("#e9e1c4"),
+  terra: new THREE.Color("#93a866"), rocha: new THREE.Color("#9aa3ad"), rocha2: new THREE.Color("#7f8894"), areia: new THREE.Color("#e9e1c4"),
   grama: new THREE.Color("#7fbf5e"), grama2: new THREE.Color("#9fd27a"), floresta: new THREE.Color("#4f9a5c"),
   agua: new THREE.Color("#6cc3e0"), agua2: new THREE.Color("#3f97c4"), neve: new THREE.Color("#f2f7fa"),
 };
@@ -87,6 +87,13 @@ function fazDeco(k, seed) {
     const b = new THREE.Mesh(new THREE.BoxGeometry(.06, .04, .05), M("#efe4cc")); b.position.y = .02; b.castShadow = true; g.add(b);
     const t = new THREE.Mesh(new THREE.ConeGeometry(.05, .04, 4), M("#b8684e")); t.rotation.y = Math.PI / 4; t.position.y = .06; t.castShadow = true; g.add(t);
     const w = new THREE.Mesh(new THREE.BoxGeometry(.012, .01, .002), M("#ffe7a3", { emissive: "#ffcf66", emissiveIntensity: .9 })); w.position.set(.016, .024, .026); g.add(w);
+  } else if (k === "fogueira") {
+    for (let i = 0; i < 7; i++) { const a = i / 7 * 6.28, p = new THREE.Mesh(new THREE.DodecahedronGeometry(.006, 0), M("#9aa0aa")); p.position.set(Math.cos(a) * .02, .004, Math.sin(a) * .02); g.add(p); }
+    [0, 1.2, 2.4].forEach(r => { const l = cyl(.003, .003, .03, "#7a5a3c", 0, 5); l.rotation.z = Math.PI / 2; l.rotation.y = r; l.position.y = .005; g.add(l); });
+    const fogo = new THREE.Group(); fogo.position.y = .008;
+    [["#ffd27a", .009, .03, 0], ["#ff9a3c", .007, .022, .004], ["#ff6a2c", .005, .016, -.004]].forEach(([c, r, h, x]) => { const f = new THREE.Mesh(new THREE.ConeGeometry(r, h, 5), M(c, { emissive: c, emissiveIntensity: 1.4, roughness: 1 })); f.position.set(x, h / 2, x * .5); fogo.add(f); });
+    fogo.userData.chama = true; g.add(fogo);
+    const brilho = new THREE.Sprite(new THREE.SpriteMaterial({ color: "#ffb35c", transparent: true, opacity: .35, depthWrite: false, blending: THREE.AdditiveBlending })); brilho.scale.set(.09, .09, 1); brilho.position.y = .02; brilho.userData.chama = true; g.add(brilho);
   } else if (k === "lanterna") {
     g.add(cyl(.0025, .003, .055, "#5b4a3a", .0275, 4));
     const l = new THREE.Mesh(new THREE.OctahedronGeometry(.01, 0), M("#ffd88a", { emissive: "#ffb347", emissiveIntensity: 1.2 })); l.position.y = .06; g.add(l);
@@ -200,15 +207,15 @@ export function criaMundo(host) {
       if (t.lago) cor.copy(C.agua).lerp(C.agua2, sm(-.1, -.4, t.h));
       else if (t.monte) {
         cor.copy(verdor > 0 ? C.rocha : C.cristal2).lerp(verdor > 0 ? C.rocha2 : C.cristal, sm(-.3, .4, v));
-        if (verdor > 0) cor.lerp(C.floresta, sm(MONTE + .1, MONTE, t.h) * .9);
-        cor.lerp(C.neve, sm(.47, .52, t.h) * .9);
+        if (verdor > 0) cor.lerp(C.floresta, sm(MONTE + .15, MONTE + .02, t.h) * .95);
+        cor.lerp(C.neve, sm(.5, .56, t.h) * .9);
       } else {
         cor.copy(C.cristal).lerp(C.cristal2, sm(-.2, .5, v)).lerp(C.cristal3, sm(.3, .7, -v) * .6);
         if (verdor > 0) {
-          cor.lerp(C.terra, .55);
+          cor.copy(C.terra).lerp(C.floresta, .2);
           const lim = -1 + 2.4 * verdor, gr = sm(lim + .06, lim - .06, g);
           if (gr > 0) cor.lerp(C.grama.clone().lerp(C.grama2, sm(-.1, .5, v)).lerp(C.floresta, sm(.2, .55, t.h)), gr);
-          if (ag) cor.lerp(C.areia, sm(.02, -.03, t.h) * .9);
+          if (ag) cor.lerp(C.areia, sm(-.01, -.035, t.h) * .85);
         }
       }
       for (let j = 0; j < 3; j++) col.setXYZ(f + j, cor.r, cor.g, cor.b);
@@ -402,6 +409,7 @@ export function criaMundo(host) {
     }
     estrelas.rotation.y += dt * .003;
     texCach.offset.y -= dt * 1.4;
+    decoGrupo.traverse(o => { if (o.userData.chama) { const f = 1 + Math.sin(t * 13 + o.id) * .12 + Math.sin(t * 7.3 + o.id * 2) * .08; o.scale.y = (o.isSprite ? .09 : 1) * f; if (o.isSprite) o.material.opacity = .28 + Math.sin(t * 9 + o.id) * .08; } });
     for (const e of cachoeiras.children) if (e.userData.f !== undefined) e.scale.setScalar(.8 + Math.sin(t * 6 + e.userData.f) * .3);
     renderer.render(scene, camera);
   }

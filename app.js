@@ -130,7 +130,7 @@ function metricas() {
   return { min: S.totMin, cards: S.totCards, ok: S.totOk, lidas: Object.keys(S.lidas).length, streak: sequencia(),
     dominados: Object.values(S.cards).filter(c => c.b >= 3).length, criados: S.criados, maxSess: S.maxSess };
 }
-const verdor = () => S.efeitos.broto ? Math.min(1, .45 + S.verde + S.totMin / 500 + S.xp / 4000) : 0;
+const verdor = () => S.efeitos.broto ? Math.min(1, .6 + S.verde + S.totMin / 400 + S.xp / 3000) : 0;
 const matStat = id => (S.mats[id] ||= { min: 0, cards: 0, ok: 0, err: 0 });
 let sorteioP = null;
 const novaDeco = k => ({ id: uid6(), k, d: sorteioP ? sorteioP(!!S.efeitos.agua) : [Math.random() - .5, Math.random(), Math.random() - .5], r: Math.random() * 6.28, s: Math.floor(Math.random() * 1e6) });
@@ -205,8 +205,34 @@ function diarias() {
   return S.diarias;
 }
 
+/* presente de boas-vindas: o planeta já começa vivo */
+function presenteInicial() {
+  if (S.presente) return false;
+  S.presente = 1;
+  S.efeitos.broto = true; S.efeitos.agua = true;
+  if (!S.criaturas.includes("pintinho")) S.criaturas.push("pintinho");
+  ["fogueira", "arvore", "arvore", "pinheiro", "flores", "girassois", "arbusto", "pedra", "cogumelos"].forEach(k => S.decos.push(novaDeco(k)));
+  if (S.jornada === 0) S.jornada = 0;
+  toast("Presente de boas-vindas: vida, lagos, fogueira e um pintinho");
+  return true;
+}
+/* prêmio por entrar no dia: pequeno, sem enrolação */
+function premioDiario() {
+  const d = hoje(); if (S.ultLogin === d) return false;
+  const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
+  S.loginSeq = S.ultLogin === diaDe(ontem) ? (S.loginSeq || 0) + 1 : 1;
+  S.ultLogin = d;
+  const pool = ["arvore", "flores", "girassois", "arbusto", "pinheiro", "cogumelos", "fogueira", "lanterna", "cristal"];
+  const k1 = pool[Math.floor(Math.random() * pool.length)], k2 = pool[Math.floor(Math.random() * pool.length)];
+  S.decos.push(novaDeco(k1), novaDeco(k2)); ganhaXP(10);
+  if (S.loginSeq % 3 === 0) choca(`${S.loginSeq} dias seguidos entrando`);
+  else toast(`Prêmio do dia · +10 XP · ${DECOS[k1].nome} e ${DECOS[k2].nome} no planeta`);
+  return true;
+}
+
 function checaTudo() {
-  let mudou = false, m = metricas();
+  let mudou = presenteInicial(), m = metricas();
+  if (premioDiario()) mudou = true;
   while (S.jornada < JORNADA.length) {
     const j = JORNADA[S.jornada];
     if (j.meta(m) < j.alvo) break;
@@ -954,7 +980,7 @@ async function aoMudarConta(u) {
     LS.set("estado:" + u.uid, S);
     if (!remoto || base !== remoto) salvar();
     if (!antes) toast(`Olá, ${u.nome || "bem-vindo"}! Progresso sincronizado.`);
-    if (!base) festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Ele começa como uma rocha de cristal, sem vida. Cada minuto de foco, card respondido e seção concluída faz brotar algo novo: grama, lagos, árvores e criaturas. Comece com 3 minutos de foco." });
+    if (!base) festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 3 minutos de foco." });
     diarias(); checaTudo(); aplicaMundo(); render();
   } catch (e) { console.warn(e); nuvem = "erro"; toast("Não consegui carregar seu progresso da nuvem."); renderTopo(); }
 }
@@ -1005,7 +1031,7 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   await iniciaMundo();
   checaTudo(); atualiza();
   if (S.timer) tick();
-  if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Ele começa como uma rocha de cristal, sem vida. Cada minuto de foco, card respondido e seção concluída faz brotar algo novo: grama, lagos, árvores e criaturas. Comece com 5 minutos de foco." }), 900);
+  if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
     import("./conta.js").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
