@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=22";
-import { ic, ICONES_MATERIA } from "./icons.js?v=22";
-import { FIG } from "./figuras.js?v=22";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=23";
+import { ic, ICONES_MATERIA } from "./icons.js?v=23";
+import { FIG } from "./figuras.js?v=23";
 
 /* =========================================================
    utilidades
@@ -397,7 +397,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=22"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=23"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -439,26 +439,18 @@ function renderInicio() {
         <div class="some-ao-girar">
           <h1 class="titulo">${saudacao()}</h1>
           <p class="sub">${new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })} · ${fase}</p>
+
         </div>
         <div class="some-ao-girar">
-          <div class="stats">
-            <div class="stat"><b>${fmtMin(h.min)}</b><span>hoje</span></div>
-            <div class="stat"><b>${h.cards}</b><span>cards hoje</span></div>
-            <div class="stat"><b>${S.criaturas.length}</b><span>criaturas</span></div>
-            <div class="stat"><b>${S.decos.length}</b><span>elementos</span></div>
-          </div>
-          <p class="dica-mundo" style="margin-top:14px">Arraste para girar o planeta</p>
+<nav class="guia" aria-label="Como usar">${[
+            ["01", "Matéria", ult ? "continuar leitura" : "abra e leia", ult ? "cont" : "materias", !!(h.lidas || ult)],
+            ["02", "Foco", S.timer ? "rodando agora" : "o tempo vira XP", "foco", h.min > 0],
+            ["03", "Cards", "teste o que leu", "revisao", h.cards > 0],
+          ].map(([n, t, d, go, ok]) => `<a href="#" class="g-item ${ok ? "ok" : ""}" ${go === "cont" ? 'id="btCont"' : `data-go="${go}"`}><span class="g-n">${n}</span><span class="g-t">${t}</span><span class="g-d">${d}</span></a>`).join('<span class="g-sep"></span>')}</nav>
+          <p class="sub" style="margin-top:22px">${fmtMin(h.min)} hoje · ${plural(h.cards, "card", "cards")} · ${plural(S.criaturas.length, "criatura", "criaturas")} · arraste para girar</p>
         </div>
       </div>
       <div class="dir">
-        <div class="vidro card passos">
-          <h2 class="h-sec">Como usar<span class="grow"></span>3 passos</h2>
-          ${[
-            [1, "Abra a matéria", ult ? `Continuar: ${esc(ult.titulo)}` : "escolha o que estudar", ult ? "cont" : "materias", !!(h.lidas || ult)],
-            [2, "Ligue o foco", S.timer ? "cronômetro rodando" : "o tempo vira XP", "foco", h.min > 0],
-            [3, "Revise os cards", `${todosCards().filter(c => (S.cards[c.id]?.b || 0) < 3).length} para dominar`, "revisao", h.cards > 0],
-          ].map(([n, t, d, go, ok]) => `<button class="passo ${ok ? "ok" : ""}" ${go === "cont" ? 'id="btCont"' : `data-go="${go}"`}><span class="num">${ok ? ic("check", "s") : n}</span><span class="t"><b>${t}</b><small>${d}</small></span>${ic("setad", "s")}</button>`).join("")}
-        </div>
         <div class="vidro card">
           <h2 class="h-sec">Missões de hoje<span class="grow"></span>${D.bonus ? "completas" : "3 = criatura nova"}</h2>
           ${D.ids.map(id => { const q = DIARIAS.find(x => x.id === id); if (!q) return ""; const v = Math.min(q.alvo, q.meta(h)), ok = !!D.pegas[id];
@@ -469,7 +461,7 @@ function renderInicio() {
           <div class="premios">${descrevePremio(j.premio).map(c => `<span>${esc(c)}</span>`).join("")}</div></div></div></div>` : `<div class="vidro card">Você completou toda a jornada.</div>`}
       </div>
     </div>`;
-  $("#btCont")?.addEventListener("click", () => abreSecao(S.ultimo.mat, S.ultimo.sid));
+  $("#btCont")?.addEventListener("click", e => { e.preventDefault(); abreSecao(S.ultimo.mat, S.ultimo.sid); });
 }
 
 /* =========================================================
@@ -741,22 +733,6 @@ function renderConsulta() {
   $("#cnSec").addEventListener("change", e => abreConsulta(m.id, e.target.value));
   $$("[data-cg]", el).forEach(b => b.addEventListener("click", () => { const p = m.secoes.find(x => (x.grupo || "Seções") === b.dataset.cg); if (p) abreConsulta(m.id, p.id); }));
 }
-/* "Em poucas palavras": os destaques em negrito da seção viram atalhos no topo */
-function pontosChave(pane) {
-  const vistos = new Set(), itens = [];
-  $$("strong, b", pane).forEach(el => {
-    if (el.closest(".lbl") && el === el.closest(".lbl").firstElementChild) return;
-    if (el.closest("th")) return;
-    const t = el.textContent.replace(/\s+/g, " ").trim().replace(/[:.;,]$/, "");
-    if (t.length < 3 || t.length > 70 || vistos.has(t.toLowerCase())) return;
-    vistos.add(t.toLowerCase()); itens.push({ t, el });
-  });
-  if (itens.length < 3) return;
-  const box = document.createElement("div"); box.className = "chave";
-  box.innerHTML = `<div class="kicker">Em poucas palavras</div><div class="chips-chave">${itens.slice(0, 8).map((x, i) => `<button data-k="${i}">${esc(x.t)}</button>`).join("")}</div>`;
-  pane.prepend(box);
-  $$("[data-k]", box).forEach(b => b.addEventListener("click", () => { const el = itens[+b.dataset.k].el; el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.add("pisca"); setTimeout(() => el.classList.remove("pisca"), 1600); }));
-}
 function renderLeitura(v) {
   const m = materia(sub.mat), s = m.secoes.find(x => x.id === sub.sid);
   if (!s) { sub = { tela: "mat", mat: m.id }; return renderMateria(v); }
@@ -789,7 +765,7 @@ function renderLeitura(v) {
       </article>
       <aside class="toc vidro"><div class="kicker" style="padding:0 10px 8px">Nesta seção</div><ul id="tocL"></ul>${S.timer ? "" : `<button class="btn sm" style="margin:12px 6px 4px" data-go="foco">${ic("relogio", "s")}Estudar com foco</button>`}</aside>
     </div></div>`;
-  const pane = $("#pane"); melhoraDoc(pane, m.id); pontosChave(pane); aplicaGrifos(pane, k); ativaGrifos(pane, k, () => renderNotasSec(m, s));
+  const pane = $("#pane"); melhoraDoc(pane, m.id); aplicaGrifos(pane, k); ativaGrifos(pane, k, () => renderNotasSec(m, s));
   renderNotasSec(m, s);
   $$("[data-lg]", v).forEach(b => b.addEventListener("click", () => { const g = b.dataset.lg; if (g === gAt) return; const p = parDe(m.id, s.id); const alvo = (p && (m.secoes.find(x => x.id === p).grupo || "Seções") === g) ? p : m.secoes.find(x => (x.grupo || "Seções") === g).id; abreSecao(m.id, alvo); }));
   $("#lSec").addEventListener("change", e => abreSecao(m.id, e.target.value));
@@ -902,7 +878,7 @@ function renderNotasMat(corpo, m) {
 }
 /* ---------- Kahoot dentro da matéria ---------- */
 function renderKahootMat(corpo, m) {
-  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=22" title="Kahoot de ${esc(m.nome)}"></iframe>`;
+  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=23" title="Kahoot de ${esc(m.nome)}"></iframe>`;
 }
 function zoomImg(src) { const z = document.createElement("div"); z.className = "zoomP"; z.innerHTML = `<img src="${esc(src)}" alt="">`; z.addEventListener("click", () => z.remove()); document.body.append(z); }
 addEventListener("message", e => {
@@ -1237,7 +1213,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=22`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=23`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1278,6 +1254,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=22").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=23").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();

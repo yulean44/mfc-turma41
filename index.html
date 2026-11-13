@@ -178,21 +178,18 @@ label.lb{display:block;font-size:11px;letter-spacing:.2em;text-transform:upperca
 body.explorando .some-ao-girar{opacity:0;transform:translateY(-6px);pointer-events:none}
 body.explorando #view-mundo .painel-mundo{opacity:.15}
 #view-mundo .painel-mundo{transition:opacity .45s}
-/* passo a passo do início */
-.passos{padding:16px 16px 10px}
-.passo{display:flex;align-items:center;gap:14px;width:100%;border:0;background:transparent;color:var(--ink);text-align:left;padding:10px 6px;border-radius:14px;cursor:pointer;font:inherit;transition:background .15s}
-.passo:hover{background:var(--glass2)}
-.passo .num{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;border:1px solid var(--acc2);color:var(--acc2);font-size:14px}
-.passo.ok .num{background:var(--acc);border-color:var(--acc);color:var(--on-ink)}
-.passo .t{flex:1;min-width:0}.passo .t b{display:block;font-weight:500;font-size:15.5px}.passo .t small{color:var(--muted);font-size:12.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.passo > svg{color:var(--muted)}
-.intro b{color:var(--ink);font-weight:500}
-/* pontos-chave da leitura */
-.chave{border:1px solid var(--line2);border-radius:16px;padding:12px 14px;margin:0 0 22px;background:rgba(143,214,255,.05)}
-.chips-chave{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.chips-chave button{border:1px solid var(--line2);background:transparent;color:var(--ink);border-radius:99px;padding:5px 12px;font:400 13px var(--font);cursor:pointer;text-align:left}
-.chips-chave button:hover{border-color:var(--acc2);color:var(--acc2)}
-.pisca{background:rgba(242,196,110,.35);border-radius:4px;transition:background .3s}
+/* guia de uso: três passos em tipografia fina, no mesmo estilo do título */
+.guia{display:flex;align-items:flex-end;gap:18px;margin-top:0;flex-wrap:wrap}
+.g-item{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--muted);transition:color .2s}
+.g-item:hover{color:var(--ink)}
+.g-n{font-weight:200;font-size:30px;line-height:1;letter-spacing:.06em;color:var(--faint);transition:color .2s}
+.g-item:hover .g-n{color:var(--acc2)}
+.g-item.ok .g-n{color:var(--acc)}
+.g-t{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink);margin-top:6px}
+.g-d{font-size:11.5px;font-weight:300;letter-spacing:.06em}
+.g-sep{width:34px;height:1px;background:var(--line2);margin-bottom:22px}
+.intro{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:300}
+.intro b{color:var(--ink);font-weight:400}
 /* ---------- foco ---------- */
 .foco-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding-top:4vh}
 .tempo-big{font-weight:200;font-size:clamp(70px,13vw,150px);letter-spacing:.06em;line-height:1;font-variant-numeric:tabular-nums}
@@ -459,6 +456,6 @@ mark.grifo.pisca{outline:2px solid var(--ink);outline-offset:2px}
 <div id="timerPill" class="timerpill chipi" hidden></div>
 <aside class="consulta vidro" id="consulta" aria-label="Consulta lateral"></aside>
 <div id="modalRoot"></div>
-<script type="module" src="app.js?v=22"></script>
+<script type="module" src="app.js?v=23"></script>
 </body>
 </html>
