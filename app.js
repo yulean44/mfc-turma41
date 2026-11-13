@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=21";
-import { ic, ICONES_MATERIA } from "./icons.js?v=21";
-import { FIG } from "./figuras.js?v=21";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=22";
+import { ic, ICONES_MATERIA } from "./icons.js?v=22";
+import { FIG } from "./figuras.js?v=22";
 
 /* =========================================================
    utilidades
@@ -397,7 +397,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=21"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=22"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -451,12 +451,14 @@ function renderInicio() {
         </div>
       </div>
       <div class="dir">
-        <div class="vidro card acao">
-          <div class="ico">${ic(S.timer ? "relogio" : "play")}</div>
-          <div class="t"><b>${S.timer ? "Sessão em andamento" : "Começar a estudar"}</b><span>${S.timer ? "Continue de onde parou" : "Cada minuto faz seu planeta crescer"}</span></div>
-          <button class="btn pri" data-go="foco">${S.timer ? "Abrir" : "Foco"}</button>
+        <div class="vidro card passos">
+          <h2 class="h-sec">Como usar<span class="grow"></span>3 passos</h2>
+          ${[
+            [1, "Abra a matéria", ult ? `Continuar: ${esc(ult.titulo)}` : "escolha o que estudar", ult ? "cont" : "materias", !!(h.lidas || ult)],
+            [2, "Ligue o foco", S.timer ? "cronômetro rodando" : "o tempo vira XP", "foco", h.min > 0],
+            [3, "Revise os cards", `${todosCards().filter(c => (S.cards[c.id]?.b || 0) < 3).length} para dominar`, "revisao", h.cards > 0],
+          ].map(([n, t, d, go, ok]) => `<button class="passo ${ok ? "ok" : ""}" ${go === "cont" ? 'id="btCont"' : `data-go="${go}"`}><span class="num">${ok ? ic("check", "s") : n}</span><span class="t"><b>${t}</b><small>${d}</small></span>${ic("setad", "s")}</button>`).join("")}
         </div>
-        ${ult ? `<div class="vidro card acao">${icoBox(iconeMat(materia(S.ultimo.mat)))}<div class="t"><b>${esc(ult.titulo)}</b><span>Continuar lendo · ${esc(materia(S.ultimo.mat).sigla || materia(S.ultimo.mat).nome)}</span></div><button class="btn" id="btCont">${ic("setad", "s")}</button></div>` : ""}
         <div class="vidro card">
           <h2 class="h-sec">Missões de hoje<span class="grow"></span>${D.bonus ? "completas" : "3 = criatura nova"}</h2>
           ${D.ids.map(id => { const q = DIARIAS.find(x => x.id === id); if (!q) return ""; const v = Math.min(q.alvo, q.meta(h)), ok = !!D.pegas[id];
@@ -465,7 +467,6 @@ function renderInicio() {
         ${j ? `<div class="vidro card"><h2 class="h-sec">Próximo na jornada</h2>
           <div class="miss" style="border:0;padding:0">${icoBox("bau")}<div class="t"><b>${esc(j.titulo)}</b><small>${esc(j.desc)} · ${Math.min(j.alvo, j.meta(m))} de ${j.alvo}${j.un ? " " + j.un : ""}</small><div class="bar"><i style="width:${Math.min(100, j.meta(m) / j.alvo * 100)}%"></i></div>
           <div class="premios">${descrevePremio(j.premio).map(c => `<span>${esc(c)}</span>`).join("")}</div></div></div></div>` : `<div class="vidro card">Você completou toda a jornada.</div>`}
-        <div class="vidro card acao"><div class="ico">${ic("cards")}</div><div class="t"><b>Flashcards</b><span>${todosCards().filter(c => (S.cards[c.id]?.b || 0) < 3).length} para dominar</span></div><button class="btn" data-go="revisao">Revisar</button></div>
       </div>
     </div>`;
   $("#btCont")?.addEventListener("click", () => abreSecao(S.ultimo.mat, S.ultimo.sid));
@@ -488,7 +489,7 @@ function renderMundo() {
       <div class="some-ao-girar">
         <h1 class="titulo p">Meu mundo</h1>
         <p class="sub">Nível ${S.nivel} · ${Math.round(verdor() * 100)}% de vida · ${plural(S.criaturas.length, "criatura", "criaturas")} · ${S.decos.length} elementos</p>
-        <p class="intro" style="max-width:420px">Tudo aqui surgiu do seu estudo. Gire e aproxime com o mouse ou os dedos.</p>
+        <p class="intro" style="max-width:420px"><b>Estude</b> e ele cresce. <b>Arraste</b> para girar.</p>
       </div>
       <div class="vidro painel-mundo">
         <div class="efeitos">${Object.entries(EFEITOS).map(([k, e]) => `<span class="efe ${S.efeitos[k] ? "on" : ""}" title="${S.efeitos[k] ? "Ativo" : esc((JORNADA.find(x => x.premio.efeitos?.includes(k)) || {}).titulo || "")}">${S.efeitos[k] ? fig(ICONE_EFEITO[k]) : ic("cadeado", "s")}${e.nome}</span>`).join("")}</div>
@@ -544,7 +545,7 @@ function renderFoco() {
       : `<div class="durs">${[15, 25, 45, 60, 90, 0].map(d => `<button class="${focoDur === d ? "on" : ""}" data-dur="${d}">${d ? d + " min" : "Livre"}</button>`).join("")}</div>
          <select class="f" id="fMat" style="max-width:340px"><option value="">Estudo livre</option>${materias().map(m => `<option value="${esc(m.id)}" ${focoMat === m.id ? "selected" : ""}>${esc(m.nome)}</option>`).join("")}</select>
          <button class="btn pri" id="fIni" style="padding:14px 40px">${ic("play", "s")}Começar</button>
-         <p class="muted" style="font-weight:300;max-width:440px;margin:0">Cada minuto vale 2 XP. Sessões de 25 minutos ou mais dão +10 XP de bônus.</p>`}
+         <p class="muted" style="font-weight:300;max-width:440px;margin:0"><b style="color:var(--ink);font-weight:500">1 min = 2 XP</b> · 25 min ou mais = <b style="color:var(--ink);font-weight:500">+10 XP</b></p>`}
       <div class="vidro card" style="width:min(520px,100%);text-align:left;margin-top:10px">
         <h2 class="h-sec">Hoje<span class="grow"></span>${fmtMin(diaObj().min)} · ${plural(diaObj().sess, "sessão", "sessões")}</h2>
         ${hojeLog.length ? `<div class="secs">${hojeLog.map(l => `<div class="sec" style="cursor:default"><span class="t">${new Date(l.t).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} · ${l.mat && materia(l.mat) ? esc(materia(l.mat).sigla || materia(l.mat).nome) : "Livre"}</span><span class="n">${fmtMin(l.m)}</span></div>`).join("")}</div>` : `<p class="muted" style="margin:0;font-weight:300">Nenhuma sessão ainda hoje.</p>`}
@@ -574,7 +575,7 @@ function renderMaterias() {
   const ms = materias();
   v.innerHTML = `<div class="pagina">
     <h1 class="titulo p">Matérias</h1>
-    <p class="intro">Seus conteúdos, organizados em seções. Cada seção concluída vale 20 XP.</p>
+    <p class="intro"><b>Abra</b> uma seção · <b>leia</b> · <b>conclua</b> = +20 XP</p>
     <label class="f" style="display:flex;align-items:center;gap:10px;max-width:520px;margin-bottom:22px;color:var(--muted)">${ic("lupa", "s")}<input id="busca" style="border:0;background:none;outline:0;flex:1;font:400 14.5px var(--font);color:var(--ink)" placeholder="Buscar em todas as seções" value="${esc(buscaMat)}"></label>
     <div id="resBusca"></div>
     <div class="mats">${ms.map(m => { const tot = m.secoes.length, li = m.secoes.filter(s => S.lidas[`${m.id}--${s.id}`]).length, st = S.mats[m.id];
@@ -740,6 +741,22 @@ function renderConsulta() {
   $("#cnSec").addEventListener("change", e => abreConsulta(m.id, e.target.value));
   $$("[data-cg]", el).forEach(b => b.addEventListener("click", () => { const p = m.secoes.find(x => (x.grupo || "Seções") === b.dataset.cg); if (p) abreConsulta(m.id, p.id); }));
 }
+/* "Em poucas palavras": os destaques em negrito da seção viram atalhos no topo */
+function pontosChave(pane) {
+  const vistos = new Set(), itens = [];
+  $$("strong, b", pane).forEach(el => {
+    if (el.closest(".lbl") && el === el.closest(".lbl").firstElementChild) return;
+    if (el.closest("th")) return;
+    const t = el.textContent.replace(/\s+/g, " ").trim().replace(/[:.;,]$/, "");
+    if (t.length < 3 || t.length > 70 || vistos.has(t.toLowerCase())) return;
+    vistos.add(t.toLowerCase()); itens.push({ t, el });
+  });
+  if (itens.length < 3) return;
+  const box = document.createElement("div"); box.className = "chave";
+  box.innerHTML = `<div class="kicker">Em poucas palavras</div><div class="chips-chave">${itens.slice(0, 8).map((x, i) => `<button data-k="${i}">${esc(x.t)}</button>`).join("")}</div>`;
+  pane.prepend(box);
+  $$("[data-k]", box).forEach(b => b.addEventListener("click", () => { const el = itens[+b.dataset.k].el; el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.add("pisca"); setTimeout(() => el.classList.remove("pisca"), 1600); }));
+}
 function renderLeitura(v) {
   const m = materia(sub.mat), s = m.secoes.find(x => x.id === sub.sid);
   if (!s) { sub = { tela: "mat", mat: m.id }; return renderMateria(v); }
@@ -772,7 +789,7 @@ function renderLeitura(v) {
       </article>
       <aside class="toc vidro"><div class="kicker" style="padding:0 10px 8px">Nesta seção</div><ul id="tocL"></ul>${S.timer ? "" : `<button class="btn sm" style="margin:12px 6px 4px" data-go="foco">${ic("relogio", "s")}Estudar com foco</button>`}</aside>
     </div></div>`;
-  const pane = $("#pane"); melhoraDoc(pane, m.id); aplicaGrifos(pane, k); ativaGrifos(pane, k, () => renderNotasSec(m, s));
+  const pane = $("#pane"); melhoraDoc(pane, m.id); pontosChave(pane); aplicaGrifos(pane, k); ativaGrifos(pane, k, () => renderNotasSec(m, s));
   renderNotasSec(m, s);
   $$("[data-lg]", v).forEach(b => b.addEventListener("click", () => { const g = b.dataset.lg; if (g === gAt) return; const p = parDe(m.id, s.id); const alvo = (p && (m.secoes.find(x => x.id === p).grupo || "Seções") === g) ? p : m.secoes.find(x => (x.grupo || "Seções") === g).id; abreSecao(m.id, alvo); }));
   $("#lSec").addEventListener("change", e => abreSecao(m.id, e.target.value));
@@ -885,7 +902,7 @@ function renderNotasMat(corpo, m) {
 }
 /* ---------- Kahoot dentro da matéria ---------- */
 function renderKahootMat(corpo, m) {
-  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=21" title="Kahoot de ${esc(m.nome)}"></iframe>`;
+  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=22" title="Kahoot de ${esc(m.nome)}"></iframe>`;
 }
 function zoomImg(src) { const z = document.createElement("div"); z.className = "zoomP"; z.innerHTML = `<img src="${esc(src)}" alt="">`; z.addEventListener("click", () => z.remove()); document.body.append(z); }
 addEventListener("message", e => {
@@ -1010,7 +1027,7 @@ function renderRevisao() {
   }
   v.innerHTML = `<div class="fc-wrap">
     <h1 class="titulo p">Flashcards</h1>
-    <p class="intro">Responda de cabeça, vire e seja honesto. Acertar 3 vezes seguidas domina o card.</p>
+    <p class="intro"><b>Pense</b> na resposta · <b>vire</b> · marque <b>acertei</b> ou <b>errei</b></p>
     <div class="fc-top">
       <select class="f" id="rMat"><option value="todas">Todas as matérias</option>${ms.map(m => `<option value="${esc(m.id)}" ${revCfg.mat === m.id ? "selected" : ""}>${esc(m.nome)}</option>`).join("")}</select>
       <select class="f" id="rFil">${[["rec", "Para dominar"], ["err", "Só os que errei"], ["novos", "Nunca vistos"], ["todos", "Todos"]].map(([k, t]) => `<option value="${k}" ${revCfg.filtro === k ? "selected" : ""}>${t}</option>`).join("")}</select>
@@ -1047,7 +1064,7 @@ function renderMissoes() {
   const m = metricas(), D = diarias(), h = diaObj();
   $("#view-missoes").innerHTML = `<div class="pagina larga">
     <h1 class="titulo p">Missões</h1>
-    <p class="intro">A jornada transforma seu planeta de cristal num mundo vivo. As missões do dia e as conquistas trazem criaturas novas.</p>
+    <p class="intro"><b>Cumpra</b> missões · <b>ganhe</b> criaturas e efeitos</p>
     <div class="dois">
       <div class="vidro card"><h2 class="h-sec">Jornada do planeta<span class="grow"></span>${S.jornada} de ${JORNADA.length}</h2>
         ${JORNADA.map((j, i) => { const ok = i < S.jornada, at = i === S.jornada, v = Math.min(j.alvo, j.meta(m));
@@ -1082,7 +1099,7 @@ function renderProgresso() {
   const piores = todosCards().map(c => ({ c, s: S.cards[c.id] })).filter(x => x.s && x.s.err > 0).sort((a, b) => b.s.err - a.s.err || a.s.b - b.s.b).slice(0, 6);
   $("#view-progresso").innerHTML = `<div class="pagina larga">
     <h1 class="titulo p">Progresso</h1>
-    <p class="intro">O registro completo do seu estudo: tempo, acertos e erros.</p>
+    <p class="intro"><b>Tempo</b>, <b>acertos</b> e <b>erros</b> de tudo que você estudou</p>
     <div class="vidro card" style="margin-bottom:18px"><div class="stats" style="justify-content:space-between">
       <div class="stat"><b>${fmtMin(S.totMin)}</b><span>de estudo</span></div>
       <div class="stat"><b>${S.totCards}</b><span>cards respondidos</span></div>
@@ -1220,7 +1237,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=21`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=22`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1261,6 +1278,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=21").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=22").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();

@@ -214,12 +214,12 @@ const perguntas = () => DADOS.kahoot.filter(x => x.tipo !== "slide");
 
 async function carrega() {
   const mat = new URLSearchParams(location.search).get("mat") || "imagem";
-  try { const r = await fetch(`content/${mat}.json?v=21`); if (!r.ok) throw 0; DADOS = await r.json(); }
+  try { const r = await fetch(`content/${mat}.json?v=22`); if (!r.ok) throw 0; DADOS = await r.json(); }
   catch { DADOS = EMBUTIDO; }
   if (!DADOS || !DADOS.kahoot) { $("#capaSub").textContent = "Não encontrei perguntas para esta matéria."; $("#btJogar").disabled = true; return; }
   $("#capaSigla").textContent = (DADOS.kahootInfo && DADOS.kahootInfo.titulo) || DADOS.nome;
   $("#chipMat").innerHTML = `Kahoot · <b>${esc(DADOS.sigla || DADOS.nome)}</b>`;
-  try { FIGS = (await import("./figuras.js?v=21")).FIG; } catch {}
+  try { FIGS = (await import("./figuras.js?v=22")).FIG; } catch {}
   $("#planetaCapa").innerHTML = planetaFig(1);
   if (FIGS && FIGS.trofeu) { $("#capaIco").src = FIGS.trofeu; $("#capaIco").classList.remove("oculto"); }
   const n = perguntas().length, sl = DADOS.kahoot.length - n;
