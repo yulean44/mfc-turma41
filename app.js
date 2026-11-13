@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=20";
-import { ic, ICONES_MATERIA } from "./icons.js?v=20";
-import { FIG } from "./figuras.js?v=20";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=21";
+import { ic, ICONES_MATERIA } from "./icons.js?v=21";
+import { FIG } from "./figuras.js?v=21";
 
 /* =========================================================
    utilidades
@@ -397,7 +397,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=20"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=21"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -709,6 +709,8 @@ function melhoraDoc(pane, mat, naConsulta = false) {
   });
   const labels = [[/^Por que é essencial/, "lbl-why"], [/^Entenda primeiro/, "lbl-learn"], [/^Memorize\.?$/, "lbl-mem"], [/^Divergência entre aulas/, "lbl-div"], [/^Para aprofundar/, "lbl-ref"]];
   $$("p", pane).forEach(p => { const s = p.firstElementChild; if (!s || s.tagName !== "STRONG" || p.firstChild !== s) return; const t = s.textContent.trim(); for (const [re, c] of labels) if (re.test(t)) { p.classList.add("lbl", c); s.textContent = t.replace(/[.:]$/, ""); break; } });
+  $$("img", pane).forEach(im => { im.style.cursor = "zoom-in"; im.addEventListener("click", () => zoomImg(im.src)); });
+  $$("figure.ref a", pane).forEach(a => { a.target = "_blank"; a.rel = "noopener"; });
   $$(".xref", pane).forEach(x => { x.title = "Abrir ao lado, sem sair desta página"; x.addEventListener("click", () => { const M = materia(mat); if (M && M.secoes.find(s => s.id === x.dataset.sec)) abreConsulta(mat, x.dataset.sec); }); });
 }
 /* ---------- consulta lateral ---------- */
@@ -883,7 +885,7 @@ function renderNotasMat(corpo, m) {
 }
 /* ---------- Kahoot dentro da matéria ---------- */
 function renderKahootMat(corpo, m) {
-  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=16" title="Kahoot de ${esc(m.nome)}"></iframe>`;
+  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=21" title="Kahoot de ${esc(m.nome)}"></iframe>`;
 }
 function zoomImg(src) { const z = document.createElement("div"); z.className = "zoomP"; z.innerHTML = `<img src="${esc(src)}" alt="">`; z.addEventListener("click", () => z.remove()); document.body.append(z); }
 addEventListener("message", e => {
@@ -1218,7 +1220,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=20`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=21`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1259,6 +1261,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=20").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=21").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();
