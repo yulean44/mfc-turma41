@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=27";
-import { ic, ICONES_MATERIA } from "./icons.js?v=27";
-import { FIG } from "./figuras.js?v=27";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=28";
+import { ic, ICONES_MATERIA } from "./icons.js?v=28";
+import { FIG } from "./figuras.js?v=28";
 
 /* =========================================================
    utilidades
@@ -455,7 +455,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=27"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=28"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -651,7 +651,7 @@ function trilha(partes, ferramentas = "") {
 }
 const fechaArvore = () => document.body.classList.remove("arv-aberta");
 document.addEventListener("click", e => {
-  const h = e.target.closest(".trilha [data-hash]"); if (h) { location.hash = h.dataset.hash; return; }
+  const h = e.target.closest(".trilha [data-hash]"); if (h) { const d = h.dataset.hash; if (d.split("/").length === 2) { abaMat = "secoes"; LS.set("abaMat", abaMat); } if (location.hash === "#" + d) render(); else location.hash = d; return; }
   if (e.target.closest("#btArv")) {
     if (matchMedia("(max-width:900px)").matches) document.body.classList.toggle("arv-aberta");
     else { const o = !document.body.classList.contains("arv-oculta"); document.body.classList.toggle("arv-oculta", o); LS.set("arvOculta", o); }
@@ -734,14 +734,13 @@ function renderMateria(v) {
   const grupos = []; m.secoes.forEach(s => { const g = s.grupo || ""; let G = grupos.find(x => x.g === g); if (!G) grupos.push(G = { g, l: [] }); G.l.push(s); });
   const nCards = cardsCompartilhados(m.id).length + (S.meus[m.id] || []).length;
   v.innerHTML = `<div class="pagina">
-    ${trilha([{ t: "Matérias", h: "materias" }, { t: m.nome }])}
+    ${trilha([{ t: "Matérias", h: "materias" }, ...(abaMat !== "secoes" && abasMat(m, nCards).some(a => a[0] === abaMat) ? [{ t: m.nome, h: "materias/" + m.id }, { t: abasMat(m, nCards).find(a => a[0] === abaMat)[1].split(" · ")[0] }] : [{ t: m.nome }])])}
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
       ${icoBox(iconeMat(m))}
       <div style="flex:1;min-width:200px"><h1 class="doc-tit" style="margin:0">${esc(m.nome)}</h1><p class="sub" style="margin-top:6px">${esc(m.sub || "")}</p></div>
       ${souDono ? `<button class="btn sm" id="edMat">${ic("lapis", "s")}Editar</button><button class="btn sm bad" id="apMat">${ic("lixo", "s")}</button>` : ""}
     </div>
-    <div class="barraTopo"><div class="tabs grande">${abasMat(m, nCards).map(([k, t, i]) => `<button class="${abaMat === k ? "on" : ""}" data-am="${k}">${k === "kahoot" && estiloIcone === "3d" && FIG.trofeu ? `<img class="tabfig" src="${FIG.trofeu}" alt="">` : ic(i, "s")}<span>${t}</span></button>`).join("")}</div></div>
-    <div class="${abaMat === "kahoot" ? "" : "vidro card"}" id="matCorpo"></div></div>`;
+    <div class="${abaMat === "kahoot" ? "" : "vidro card"}" id="matCorpo" style="margin-top:22px"></div></div>`;
   renderArvore();
   $$("[data-am]", v).forEach(b => b.addEventListener("click", () => { abaMat = b.dataset.am; LS.set("abaMat", abaMat); renderMateria(v); sincronizaHash(); }));
   $("#edMat", v)?.addEventListener("click", () => editaMateria(m));
@@ -1339,7 +1338,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=27`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=28`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1380,6 +1379,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=27").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=28").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();
