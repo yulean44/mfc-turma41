@@ -113,9 +113,14 @@ function carregaGLB(id) {
     return new Promise((res, rej) => loader.parse(buf.buffer, "", res, rej));
   }));
 }
-function ajusta(obj, alt) {
+/* caixa real do modelo: em modelos com esqueleto, mede os vértices já deformados pelos ossos */
+function caixa(obj) {
   obj.updateMatrixWorld(true);
-  const b = new THREE.Box3().setFromObject(obj), s = b.getSize(new THREE.Vector3());
+  obj.traverse(o => { if (o.isSkinnedMesh) o.skeleton.update(); });
+  return new THREE.Box3().setFromObject(obj, true);
+}
+function ajusta(obj, alt) {
+  const b = caixa(obj), s = b.getSize(new THREE.Vector3());
   const k = alt / Math.max(s.y, s.x * .6, s.z * .6, 1e-6);
   obj.scale.multiplyScalar(k); obj.position.y -= b.min.y * k;
   obj.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false;
@@ -124,7 +129,7 @@ function ajusta(obj, alt) {
 const clip = (anims, ...nomes) => { for (const n of nomes) { const a = anims.find(x => x.name.split("|").pop().toLowerCase() === n.toLowerCase()); if (a) return a; } return null; };
 function preparaModelo(g, def) {
   const modelo = SkeletonUtils.clone(g.scene);
-  if (def.modo === "nada" || def.modo === "ceu") { const sz = new THREE.Box3().setFromObject(modelo).getSize(new THREE.Vector3()); if (sz.y > sz.z * 1.3 && sz.y > sz.x) modelo.rotation.x = Math.PI / 2; }
+  if (def.modo === "nada" || def.modo === "ceu") { const sz = caixa(modelo).getSize(new THREE.Vector3()); if (sz.y > sz.z * 1.3 && sz.y > sz.x) modelo.rotation.x = Math.PI / 2; }
   return modelo;
 }
 
@@ -142,7 +147,7 @@ export function miniatura(k) {
     const m = preparaModelo(g, def); ajusta(m, 1); sc.add(m);
     const A = g.animations, a = clip(A, "Idle", "Flying_Idle", "Swim", "Swim.001") || A[0];
     if (a) { const mx = new THREE.AnimationMixer(m); mx.clipAction(a).play(); mx.update(.3); }
-    const box = new THREE.Box3().setFromObject(m), c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3()).length();
+    const box = caixa(m), c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3()).length();
     const cam = new THREE.PerspectiveCamera(30, 1, .01, 100);
     cam.position.copy(c).add(new THREE.Vector3(.9, .55, 1.4).normalize().multiplyScalar(s * 1.75)); cam.lookAt(c);
     miniR.render(sc, cam);
