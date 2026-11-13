@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
-import { CRIATURAS, DECOS } from "./data.js?v=23";
+import { CRIATURAS, DECOS } from "./data.js?v=24";
 
 /* ---------- ruído ---------- */
 function hash(x, y, z) { let h = x * 374761393 + y * 668265263 + z * 2147483647; h = (h ^ (h >>> 13)) * 1274126177; return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
@@ -200,7 +200,7 @@ export function criaMundo(host) {
     fragmentShader: "uniform vec3 cor; uniform float forca; varying vec3 vN; varying vec3 vV; void main(){ float f = pow(1. - max(dot(vN, vV), 0.), 3.); gl_FragColor = vec4(cor*f*forca, f*forca); }",
   })); raiz.add(casca);
 
-  let st = { verdor: -1, efeitos: {} }, corCasca = "#8fd6ff";
+  let st = { verdor: -1, efeitos: {} }, corCasca = "#8fd6ff", fatorCasca = 1;
   const tmp = new THREE.Vector3(), cen = new THREE.Vector3(), cor = new THREE.Color();
   function pintaPlaneta() {
     const pos = geo.attributes.position, col = geo.attributes.color, ag = !!st.efeitos.agua, verdor = st.verdor;
@@ -335,7 +335,7 @@ export function criaMundo(host) {
     if (mudouCor || mudouTerreno) { pintaPlaneta(); montaCachoeiras(); }
     const f = st.efeitos;
     nuvens.visible = !!f.nuvens; lua.visible = !!f.lua; anel.visible = !!f.anel; borboletas.visible = !!f.borboletas;
-    casca.material.uniforms.forca.value = f.nuvens ? .95 : .6;
+    casca.material.uniforms.forca.value = (f.nuvens ? .95 : .6) * fatorCasca;
     casca.material.uniforms.cor.value.set(f.aurora ? "#a8f0c8" : corCasca);
     const anim = carregou;
     const ids = new Set(e.decos.map(x => x.id));
@@ -387,7 +387,7 @@ export function criaMundo(host) {
   }
 
   /* layout: o planeta pode ficar no centro, de lado ou ao fundo */
-  let deslAlvo = 0, desl = 0, dimAlvo = 1, distAlvo = null, parado = 0, vivo = true, quadro = 0, leve = false;
+  let deslAlvo = 0, desl = 0, deslYAlvo = 0, deslY = 0, dimAlvo = 1, distAlvo = null, parado = 0, vivo = true, quadro = 0, leve = false;
   controls.addEventListener("start", () => { controls.autoRotate = false; parado = 0; distAlvo = null; });
   function frame(now) {
     if (!vivo) return; requestAnimationFrame(frame);
@@ -395,10 +395,10 @@ export function criaMundo(host) {
     quadro++; if (leve && quadro % 2) return;
     const dt = Math.min(.05, (now - (frame.u || now)) / 1000) * (leve ? 2 : 1); frame.u = now; const t = now / 1000;
     parado += dt; if (parado > 5) controls.autoRotate = true;
-    desl += (deslAlvo - desl) * Math.min(1, dt * 4);
+    desl += (deslAlvo - desl) * Math.min(1, dt * 4); deslY += (deslYAlvo - deslY) * Math.min(1, dt * 4);
     if (distAlvo) { const l = camera.position.length(); camera.position.setLength(l + (distAlvo - l) * Math.min(1, dt * 3)); }
     const w = host.clientWidth, h = host.clientHeight;
-    if (Math.abs(desl) > .001) camera.setViewOffset(w, h, -desl * w, 0, w, h); else camera.clearViewOffset();
+    if (Math.abs(desl) > .001 || Math.abs(deslY) > .001) camera.setViewOffset(w, h, -desl * w, deslY * h, w, h); else camera.clearViewOffset();
     controls.update();
     sol.position.copy(camera.position).applyAxisAngle(UP, .8).add(new THREE.Vector3(0, 1.6, 0)).normalize().multiplyScalar(5);
     contra.position.copy(camera.position).multiplyScalar(-1).add(new THREE.Vector3(0, .6, 0));
@@ -430,12 +430,17 @@ export function criaMundo(host) {
     /* modo: "centro" (início), "mundo" (interativo), "lado" (atrás das páginas), "fundo" (leitura) */
     layout(modo) {
       const estreito = host.clientWidth < 900;
-      const cfg = { centro: [estreito ? 0 : -.14, 1, estreito ? 6.4 : 6], mundo: [estreito ? 0 : .12, 1, 5], lado: [estreito ? 0 : -.3, estreito ? .25 : .55, 6.4], fundo: [estreito ? 0 : -.32, estreito ? .15 : .3, 7] }[modo] || [0, 1, 4.4];
+      const cfg = { centro: [estreito ? 0 : -.14, 1, estreito ? 7.4 : 6], mundo: [estreito ? 0 : .12, 1, 5], lado: [estreito ? 0 : -.3, estreito ? .25 : .55, 6.4], fundo: [estreito ? 0 : -.32, estreito ? .15 : .3, 7] }[modo] || [0, 1, 4.4];
+      const celular = host.clientWidth < 1100 && host.clientHeight > host.clientWidth * .9;
+      deslYAlvo = celular ? ({ centro: .12, mundo: .1 }[modo] || 0) : 0;
       deslAlvo = cfg[0]; dimAlvo = cfg[1]; distAlvo = cfg[2]; controls.enabled = modo === "mundo" || modo === "centro"; controls.enableZoom = modo === "mundo"; leve = modo === "fundo";
     },
     tema(t) {
-      const c = { meianoite: "#7fa8e0", noite: "#a0d7ff", cristal: "#9ff0ff", aurora: "#c9b3f0", floresta: "#b5e48c", amanhecer: "#ffffff" }[t] || "#a0d7ff";
-      halo.material.color.set(c); estrelas.visible = t !== "amanhecer"; halo.material.opacity = t === "amanhecer" ? .6 : t === "meianoite" ? .55 : 1;
+      const claro = t === "amanhecer" || t === "claro";
+      const c = { meianoite: "#7fa8e0", noite: "#a0d7ff", cristal: "#9ff0ff", aurora: "#c9b3f0", floresta: "#b5e48c", amanhecer: "#ffffff", claro: "#cfe6f5" }[t] || "#a0d7ff";
+      halo.material.color.set(c); estrelas.visible = !claro; halo.material.opacity = claro ? .55 : t === "meianoite" ? .55 : 1;
+      halo.material.blending = claro ? THREE.NormalBlending : THREE.AdditiveBlending; halo.material.needsUpdate = true;
+      fatorCasca = claro ? .5 : 1; casca.material.uniforms.forca.value = (st.efeitos.nuvens ? .95 : .6) * fatorCasca;
       corCasca = t === "aurora" ? "#c9b3f0" : t === "floresta" ? "#b5e48c" : t === "cristal" ? "#9ff0ff" : "#8fd6ff"; if (!st.efeitos.aurora) casca.material.uniforms.cor.value.set(corCasca);
     },
     foco(k) { const o = bichoObjs.get(k); if (!o) return; const p = o.getWorldPosition(new THREE.Vector3()).normalize(); camera.position.copy(p.multiplyScalar(2.1)); distAlvo = null; controls.autoRotate = false; parado = 0; },

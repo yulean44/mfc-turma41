@@ -2,7 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eef4f9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Planeta de Estudos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
@@ -188,8 +191,6 @@ body.explorando #view-mundo .painel-mundo{opacity:.15}
 .g-t{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink);margin-top:6px}
 .g-d{font-size:11.5px;font-weight:300;letter-spacing:.06em}
 .g-sep{width:34px;height:1px;background:var(--line2);margin-bottom:22px}
-.intro{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:300}
-.intro b{color:var(--ink);font-weight:400}
 /* ---------- foco ---------- */
 .foco-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding-top:4vh}
 .tempo-big{font-weight:200;font-size:clamp(70px,13vw,150px);letter-spacing:.06em;line-height:1;font-variant-numeric:tabular-nums}
@@ -436,6 +437,117 @@ mark.grifo.pisca{outline:2px solid var(--ink);outline-offset:2px}
 .doc figure.ref .fonte{display:block;margin-top:6px;font-size:12px;color:var(--muted)}
 .doc figure.ref .fonte a{color:var(--acc2)}
 .fimcaso .relac{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+
+/* ================= tema claro (padrão) ================= */
+:root{--nav-bg:rgba(18,27,45,.45);--modal-bg:rgba(20,30,50,.88);--veu:rgba(6,10,20,.55)}
+:root[data-tema="claro"],:root[data-tema="amanhecer"]{--nav-bg:rgba(255,255,255,.7);--modal-bg:rgba(255,255,255,.96);--veu:rgba(210,222,234,.55)}
+:root[data-tema="claro"]{
+  --ink:#1b2733; --muted:#5b6b7c; --faint:#a3afbc; --line:rgba(20,40,70,.10); --line2:rgba(20,40,70,.18);
+  --glass:rgba(255,255,255,.74); --glass2:rgba(20,40,70,.04); --glass3:rgba(20,40,70,.08); --solid:rgba(255,255,255,.95);
+  --acc:#3f9a6a; --acc2:#2f86c0; --acc-soft:rgba(63,154,106,.12); --ok:#3f9a6a; --bad:#c0574b; --gold:#a8790a;
+  --on-ink:#ffffff; --doc:#2a3644; --forte:#0d1824; --opt:#ffffff;
+  --fundo:radial-gradient(60% 55% at 35% 45%,#ffffff 0%,rgba(255,255,255,0) 70%),radial-gradient(45% 40% at 90% 10%,rgba(200,230,215,.55),transparent 70%),radial-gradient(45% 40% at 85% 95%,rgba(205,222,242,.7),transparent 70%),linear-gradient(180deg,#f5f8fb 0%,#e7eef5 100%);
+  color-scheme:light;
+}
+:root[data-tema="claro"] .vidro{box-shadow:0 14px 40px rgba(40,70,110,.10),inset 0 1px 0 rgba(255,255,255,.9)}
+.nav{background:var(--nav-bg)}
+.modal{background:var(--modal-bg)}
+.modal-bg{background:var(--veu)}
+.toast{background:var(--modal-bg);color:var(--ink)}
+:root[data-tema="claro"] .searchhit,:root[data-tema="amanhecer"] .searchhit{color:var(--forte)}
+
+/* ================= iPhone, iPad e computador ================= */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{min-height:100dvh;overscroll-behavior-y:none}
+.main{min-height:100dvh;padding-top:calc(26px + env(safe-area-inset-top))}
+.marca{top:calc(26px + env(safe-area-inset-top))}
+button,a,.sec,.mat,.passo{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+@media (hover:none){.navbtn .tip{display:none}.sec:hover{padding-left:4px}.mat:hover{transform:none}}
+/* iPad em pé e computadores pequenos */
+@media (min-width:761px) and (max-width:1100px){
+  .main{padding-left:96px;padding-right:22px}
+  .nav{left:14px}
+  .home{gap:20px}
+  .home .esq{min-height:64vh}
+  .dois{grid-template-columns:1fr}
+  .topo{margin-top:30px}
+}
+/* celular */
+@media (max-width:760px){
+  .nav{bottom:calc(10px + env(safe-area-inset-bottom));left:calc(10px + env(safe-area-inset-left));right:calc(10px + env(safe-area-inset-right))}
+  .main{padding:calc(54px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(100px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left))}
+  .marca{top:calc(18px + env(safe-area-inset-top))}
+  input.f,select.f,textarea.f,.editavel{font-size:16px}
+  .topo{gap:6px;margin-bottom:12px}
+  .chipi .rot{display:none}
+  .titulo{font-size:30px}
+  .guia{gap:12px}.g-sep{width:16px}.g-n{font-size:24px}
+  .home .esq{min-height:66vh}
+  .timerpill{bottom:calc(84px + env(safe-area-inset-bottom))}
+  .modal{padding:22px 18px;max-height:calc(100dvh - 40px)}
+  .consulta{bottom:calc(84px + env(safe-area-inset-bottom))}
+}
+/* telas grandes: conteúdo não estica demais */
+@media (min-width:1600px){.view{max-width:1360px}}
+
+/* ================= manual rápido ================= */
+.manual h4{font-size:11px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:20px 0 8px}
+.manual h4:first-of-type{margin-top:6px}
+.manual .linhas{display:flex;flex-direction:column;gap:2px}
+.manual .ln{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px;font-weight:300}
+.manual .ln:last-child{border-bottom:0}
+.manual .ln svg{color:var(--acc2)}
+.manual .ln b{font-weight:500;min-width:92px}
+.manual .num{width:22px;height:22px;border-radius:50%;border:1px solid var(--acc2);color:var(--acc2);display:grid;place-items:center;font-size:11.5px;flex:none}
+
+/* ================= refinamento (taste + web interface guidelines) ================= */
+/* ritmo: escala única de espaçamento 4·8·12·16·24·32·48 */
+:root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--raio:18px;--raio-p:12px}
+.vidro{border-radius:var(--raio)}
+.card{padding:var(--s5)}
+/* texto que se lê: 16px, contraste alto; cinza só para rótulos */
+.intro{font-size:15.5px;line-height:1.55;font-weight:300;color:var(--muted);margin:var(--s3) 0 var(--s6);max-width:560px;letter-spacing:0;text-transform:none}
+.intro b{color:var(--ink);font-weight:500}
+.doc p,.doc li{font-size:16px;line-height:1.7}
+.titulo,.h-sec,.page-h,h1,h2,h3{text-wrap:balance}
+/* rótulos: nunca abaixo de 12px */
+.h-sec,.kicker,.sub,.g-t,.tabs button,.btn,.lb,label.lb,.premios span,.rr,.n,.fc-tag,.fc-hint,.roundbar{font-size:max(12px,1em)}
+.h-sec{font-size:12px;letter-spacing:.22em}
+.kicker{font-size:12px;letter-spacing:.22em}
+.sub{font-size:12.5px;letter-spacing:.16em}
+.btn{font-size:12.5px;letter-spacing:.1em}
+.tabs button{font-size:12px;letter-spacing:.12em}
+.miss .t small,.acao .t span,.mat small{font-size:13px}
+/* números alinhados */
+.stat b,.tempo-big,.chipi,.g-n,table.tb td,.rw{font-variant-numeric:tabular-nums}
+/* um só estilo de foco, visível no teclado */
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--acc2);outline-offset:3px;border-radius:10px}
+input.f:focus-visible,select.f:focus-visible,textarea.f:focus-visible{outline:none;border-color:var(--acc2);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc2) 22%,transparent)}
+/* selects nativos legíveis em qualquer tema */
+select.f{background-color:var(--solid);color:var(--ink)}
+/* respostas ao toque e ao ponteiro: só transform/opacity/cores */
+.btn,.chipi,.navbtn,.tema,.cria,.mat,.sec,.g-item{transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .18s ease,opacity .18s ease}
+.btn:active,.chipi:active,.navbtn:active{transform:scale(.97)}
+.mat:hover{transform:translateY(-2px)}
+/* modais e painéis não arrastam a página por trás */
+.modal,.consulta .corpo{overscroll-behavior:contain}
+/* alvos de toque de 44px em telas de toque */
+@media (pointer:coarse){
+  .btn{min-height:44px}.btn.sm{min-height:40px}.btn.ic{min-width:40px;min-height:40px}
+  .chipi{min-height:40px}.navbtn{width:44px;height:44px}
+  .tabs button{min-height:40px}
+  .sec{min-height:48px}
+}
+/* meta à direita dos títulos de seção */
+.hs-meta{letter-spacing:.06em;text-transform:none;font-size:12.5px;color:var(--faint);white-space:nowrap}
+.h-sec{flex-wrap:wrap;row-gap:4px}
+/* chamada discreta para o manual na primeira visita */
+#btAjuda.novo{border-color:var(--acc2);color:var(--acc2)}
+/* menos movimento para quem pede */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
 </style>
 </head>
 <body>
@@ -452,10 +564,10 @@ mark.grifo.pisca{outline:2px solid var(--ink);outline-offset:2px}
   <section class="view" id="view-missoes" hidden></section>
   <section class="view" id="view-progresso" hidden></section>
 </main>
-<div class="toasts" id="toasts"></div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 <div id="timerPill" class="timerpill chipi" hidden></div>
 <aside class="consulta vidro" id="consulta" aria-label="Consulta lateral"></aside>
 <div id="modalRoot"></div>
-<script type="module" src="app.js?v=23"></script>
+<script type="module" src="app.js?v=24"></script>
 </body>
 </html>

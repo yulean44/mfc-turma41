@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=23";
-import { ic, ICONES_MATERIA } from "./icons.js?v=23";
-import { FIG } from "./figuras.js?v=23";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=24";
+import { ic, ICONES_MATERIA } from "./icons.js?v=24";
+import { FIG } from "./figuras.js?v=24";
 
 /* =========================================================
    utilidades
@@ -21,9 +21,12 @@ const LS = {
   del(k) { try { localStorage.removeItem("pe:" + k); } catch {} },
 };
 const ICONE_EFEITO = { broto: "broto", agua: "gota", nuvens: "nuvem", borboletas: "borboleta", lua: "lua", anel: "anel", aurora: "aurora" };
-const TEMAS = [["noite", "Noite estelar", "linear-gradient(160deg,#1e2d48,#0c1220)"], ["meianoite", "Meia-noite", "linear-gradient(160deg,#121a2c,#000)"], ["cristal", "Cristal", "linear-gradient(160deg,#1d4357,#08141f)"], ["aurora", "Aurora", "linear-gradient(160deg,#3a8f6a,#2a2350 55%,#5a3f9a)"], ["floresta", "Floresta", "linear-gradient(160deg,#1f4a33,#07120c)"], ["amanhecer", "Amanhecer", "linear-gradient(160deg,#ffffff,#cfe2ef)"]];
-let tema = LS.get("tema2", "noite"), estiloIcone = LS.get("icones", "3d");
+const TEMAS = [["claro", "Claro", "linear-gradient(160deg,#ffffff,#e7eef5)"], ["amanhecer", "Amanhecer", "linear-gradient(160deg,#ffffff,#cfe2ef)"], ["noite", "Noite estelar", "linear-gradient(160deg,#1e2d48,#0c1220)"], ["meianoite", "Meia-noite", "linear-gradient(160deg,#121a2c,#000)"], ["cristal", "Cristal", "linear-gradient(160deg,#1d4357,#08141f)"], ["aurora", "Aurora", "linear-gradient(160deg,#3a8f6a,#2a2350 55%,#5a3f9a)"], ["floresta", "Floresta", "linear-gradient(160deg,#1f4a33,#07120c)"]];
+if (!LS.get("temaV3", false)) { LS.set("tema2", "claro"); LS.set("temaV3", true); }
+let tema = LS.get("tema2", "claro"), estiloIcone = LS.get("icones", "3d");
 function aplicaTema() {
+  const tc = { claro: "#eef4f9", amanhecer: "#e4eef6" }[tema] || "#10182a";
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", tc);
   if (tema === "noite") document.documentElement.removeAttribute("data-tema"); else document.documentElement.setAttribute("data-tema", tema);
   temaMundo();
 }
@@ -32,9 +35,43 @@ aplicaTema();
 /* ícone 3D (imagem) quando o estilo permite; senão, traço fino */
 const fig = (n, cls = "s") => estiloIcone === "3d" && FIG[n] ? `<img class="fig" src="${FIG[n]}" alt="">` : ic(n, cls);
 const icoBox = (n, extra = "") => `<div class="ico ${estiloIcone === "3d" && FIG[n] ? "fig-on" : ""} ${extra}">${fig(n, "")}</div>`;
+/* manual rápido: o essencial, sem repetição */
+function manual() {
+  const ln = (i, t, d) => `<div class="ln">${ic(i, "s")}<b>${t}</b><span>${d}</span></div>`;
+  const m = modal(`<h3>Como usar</h3><div class="manual">
+    <h4>Para começar</h4>
+    <div class="linhas">
+      <div class="ln"><span class="num">1</span><span><b style="min-width:0">Matérias</b> › escolha uma › abra uma seção</span></div>
+      <div class="ln"><span class="num">2</span><span>Leia e toque em <b style="min-width:0">Concluir seção</b></span></div>
+      <div class="ln"><span class="num">3</span><span>Teste o que leu em <b style="min-width:0">Flashcards</b></span></div>
+    </div>
+    <h4>Onde fica cada coisa</h4>
+    <div class="linhas">
+      ${ln("casa", "Início", "o dia de hoje e as missões")}
+      ${ln("planeta", "Meu mundo", "seu planeta e as criaturas")}
+      ${ln("relogio", "Foco", "cronômetro de estudo")}
+      ${ln("livro", "Matérias", "o conteúdo, por seções")}
+      ${ln("cards", "Flashcards", "pergunta e resposta")}
+      ${ln("bandeira", "Missões", "metas e conquistas")}
+      ${ln("grafico", "Progresso", "tempo, acertos e erros")}
+    </div>
+    <h4>Como o planeta cresce</h4>
+    <div class="linhas">
+      ${ln("relogio", "1 min de foco", "2 XP")}
+      ${ln("check", "Card certo", "2 XP")}
+      ${ln("livro", "Seção concluída", "20 XP")}
+      ${ln("ovo", "Nível novo", "nasce uma criatura")}
+    </div>
+    <h4>Atalhos</h4>
+    <div class="linhas">
+      ${ln("livro", "Resumo ao lado", "consulte sem sair da página")}
+      ${ln("cards", "Espaço · 1 · 2", "virar · errei · acertei")}
+    </div></div>
+    <div class="acts"><button class="btn pri" data-fecha>Entendi</button></div>`);
+}
 function escolheTema() {
   const m = modal(`<h3>Aparência</h3><p class="muted" style="font-weight:300;margin:0 0 14px">Escolha o tema e o estilo dos ícones.</p>
-    <div class="temas">${TEMAS.map(([k, n, g]) => `<button class="tema ${tema === k ? "on" : ""}" data-t="${k}"><i style="background:${g}"></i>${n}</button>`).join("")}</div>
+    <label class="lb">Claros</label><div class="temas">${TEMAS.slice(0, 2).map(([k, n, g]) => `<button class="tema ${tema === k ? "on" : ""}" data-t="${k}"><i style="background:${g}"></i>${n}</button>`).join("")}</div><label class="lb">Escuros</label><div class="temas">${TEMAS.slice(2).map(([k, n, g]) => `<button class="tema ${tema === k ? "on" : ""}" data-t="${k}"><i style="background:${g}"></i>${n}</button>`).join("")}</div>
     <label class="lb">Ícones</label><div class="tabs"><button class="${estiloIcone === "3d" ? "on" : ""}" data-e="3d">3D low-poly</button><button class="${estiloIcone === "linha" ? "on" : ""}" data-e="linha">Traço fino</button></div>
     <div class="acts"><button class="btn pri" data-fecha>Pronto</button></div>`);
   $$("[data-t]", m.el).forEach(b => b.addEventListener("click", () => { tema = b.dataset.t; LS.set("tema2", tema); aplicaTema(); $$("[data-t]", m.el).forEach(x => x.classList.toggle("on", x === b)); }));
@@ -381,11 +418,13 @@ function renderTopo() {
     ${modoTeste() ? `<span class="chipi" style="border-color:rgba(242,196,110,.5);color:var(--gold)">Modo teste</span>` : ""}
     <span class="chipi" title="${S.xp} XP no total">${fig("estrela")} Nível ${n}<span class="lbar"><i style="width:${pct}%"></i></span></span>
     <span class="chipi" title="Dias seguidos estudando">${fig("chama")} ${sequencia()}</span>
-    <button class="chipi" style="cursor:pointer" id="btTema" title="Aparência">${ic("brilho", "s")} Tema</button>
-    ${modoConta ? `<button class="chipi" style="cursor:pointer" id="btConta" title="${esc(st[2])}">${conta?.foto ? `<img src="${esc(conta.foto)}" alt="" style="width:20px;height:20px;border-radius:50%;margin:-3px 0" referrerpolicy="no-referrer">` : `<span class="dot ${st[0]}"></span>`}${conta ? st[1] : "Entrar"}</button>` : `<span class="chipi" title="${esc(st[2])}"><span class="dot ${st[0]}"></span>${st[1]}</span>`}
-    ${souDono || modoTeste() ? `<button class="chipi" style="cursor:pointer" id="btAdmin" title="Painel de administrador">${ic("lapis", "s")} Admin</button>` : ""}`;
+    <button class="chipi ${LS.get("viuManual", false) ? "" : "novo"}" style="cursor:pointer" id="btAjuda" title="Como usar" aria-label="Como usar">?<span class="rot"> Como usar</span></button>
+    <button class="chipi" style="cursor:pointer" id="btTema" title="Aparência">${ic("brilho", "s")}<span class="rot"> Tema</span></button>
+    ${modoConta ? `<button class="chipi" style="cursor:pointer" id="btConta" title="${esc(st[2])}">${conta?.foto ? `<img src="${esc(conta.foto)}" alt="" style="width:20px;height:20px;border-radius:50%;margin:-3px 0" referrerpolicy="no-referrer">` : `<span class="dot ${st[0]}"></span>`}<span class="rot">${conta ? st[1] : "Entrar"}</span></button>` : `<span class="chipi" title="${esc(st[2])}"><span class="dot ${st[0]}"></span>${st[1]}</span>`}
+    ${souDono || modoTeste() ? `<button class="chipi" style="cursor:pointer" id="btAdmin" title="Painel de administrador">${ic("lapis", "s")}<span class="rot"> Admin</span></button>` : ""}`;
   $("#btAdmin")?.addEventListener("click", painelAdmin);
   $("#btTema")?.addEventListener("click", escolheTema);
+  $("#btAjuda")?.addEventListener("click", () => { LS.set("viuManual", true); $("#btAjuda")?.classList.remove("novo"); manual(); });
   $("#btConta")?.addEventListener("click", () => conta ? menuConta() : telaLogin(true));
 }
 
@@ -397,7 +436,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=23"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=24"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -452,7 +491,7 @@ function renderInicio() {
       </div>
       <div class="dir">
         <div class="vidro card">
-          <h2 class="h-sec">Missões de hoje<span class="grow"></span>${D.bonus ? "completas" : "3 = criatura nova"}</h2>
+          <h2 class="h-sec">Missões de hoje<span class="grow"></span><span class="hs-meta">${D.bonus ? "completas" : "3 = criatura nova"}</span></h2>
           ${D.ids.map(id => { const q = DIARIAS.find(x => x.id === id); if (!q) return ""; const v = Math.min(q.alvo, q.meta(h)), ok = !!D.pegas[id];
             return `<div class="miss ${ok ? "done" : ""}"><div class="ico ${ok ? "ok" : ""}">${ic(ok ? "check" : "alvo", "s")}</div><div class="t"><b>${esc(q.txt)}</b><small>${v} de ${q.alvo}</small><div class="bar"><i style="width:${v / q.alvo * 100}%"></i></div></div><span class="rw">+${q.sem} XP</span></div>`; }).join("")}
         </div>
@@ -485,7 +524,7 @@ function renderMundo() {
       </div>
       <div class="vidro painel-mundo">
         <div class="efeitos">${Object.entries(EFEITOS).map(([k, e]) => `<span class="efe ${S.efeitos[k] ? "on" : ""}" title="${S.efeitos[k] ? "Ativo" : esc((JORNADA.find(x => x.premio.efeitos?.includes(k)) || {}).titulo || "")}">${S.efeitos[k] ? fig(ICONE_EFEITO[k]) : ic("cadeado", "s")}${e.nome}</span>`).join("")}</div>
-        <h2 class="h-sec" style="margin-top:10px;cursor:pointer" id="togCol">Coleção · ${S.criaturas.length} de ${ks.length}<span class="grow"></span>${ic(colAberta ? "baixo" : "cima", "s")}</h2>
+        <h2 class="h-sec" style="margin-top:10px;cursor:pointer" id="togCol">Coleção · ${S.criaturas.length} de ${ks.length}<span class="grow"></span><span class="hs-meta">${ic(colAberta ? "baixo" : "cima", "s")}</span></h2>
         <div class="colecao" ${colAberta ? "" : "hidden"}>${ks.map(k => { const c = CRIATURAS[k], tem = S.criaturas.includes(k);
           return `<div class="cria ${tem ? "" : "lock"}" ${tem ? `data-foco="${k}"` : ""} title="${esc(tem ? c.nome : comoGanhar(k))}"><div class="im" data-mini="${tem ? k : ""}">${ic(tem ? "ovo" : "cadeado")}</div><div class="nm">${tem ? esc(c.nome) : "???"}</div><div class="rr">${tem ? RARIDADE[c.r].nome : esc(comoGanhar(k).split(" · ")[0])}</div></div>`; }).join("")}</div>
       </div>
@@ -539,7 +578,7 @@ function renderFoco() {
          <button class="btn pri" id="fIni" style="padding:14px 40px">${ic("play", "s")}Começar</button>
          <p class="muted" style="font-weight:300;max-width:440px;margin:0"><b style="color:var(--ink);font-weight:500">1 min = 2 XP</b> · 25 min ou mais = <b style="color:var(--ink);font-weight:500">+10 XP</b></p>`}
       <div class="vidro card" style="width:min(520px,100%);text-align:left;margin-top:10px">
-        <h2 class="h-sec">Hoje<span class="grow"></span>${fmtMin(diaObj().min)} · ${plural(diaObj().sess, "sessão", "sessões")}</h2>
+        <h2 class="h-sec">Hoje<span class="grow"></span><span class="hs-meta">${fmtMin(diaObj().min)} · ${plural(diaObj().sess, "sessão", "sessões")}</span></h2>
         ${hojeLog.length ? `<div class="secs">${hojeLog.map(l => `<div class="sec" style="cursor:default"><span class="t">${new Date(l.t).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} · ${l.mat && materia(l.mat) ? esc(materia(l.mat).sigla || materia(l.mat).nome) : "Livre"}</span><span class="n">${fmtMin(l.m)}</span></div>`).join("")}</div>` : `<p class="muted" style="margin:0;font-weight:300">Nenhuma sessão ainda hoje.</p>`}
       </div>
     </div>`;
@@ -878,7 +917,7 @@ function renderNotasMat(corpo, m) {
 }
 /* ---------- Kahoot dentro da matéria ---------- */
 function renderKahootMat(corpo, m) {
-  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=23" title="Kahoot de ${esc(m.nome)}"></iframe>`;
+  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=24" title="Kahoot de ${esc(m.nome)}"></iframe>`;
 }
 function zoomImg(src) { const z = document.createElement("div"); z.className = "zoomP"; z.innerHTML = `<img src="${esc(src)}" alt="">`; z.addEventListener("click", () => z.remove()); document.body.append(z); }
 addEventListener("message", e => {
@@ -1042,7 +1081,7 @@ function renderMissoes() {
     <h1 class="titulo p">Missões</h1>
     <p class="intro"><b>Cumpra</b> missões · <b>ganhe</b> criaturas e efeitos</p>
     <div class="dois">
-      <div class="vidro card"><h2 class="h-sec">Jornada do planeta<span class="grow"></span>${S.jornada} de ${JORNADA.length}</h2>
+      <div class="vidro card"><h2 class="h-sec">Jornada do planeta<span class="grow"></span><span class="hs-meta">${S.jornada} de ${JORNADA.length}</span></h2>
         ${JORNADA.map((j, i) => { const ok = i < S.jornada, at = i === S.jornada, v = Math.min(j.alvo, j.meta(m));
           return `<div class="jstep ${ok ? "ok" : at ? "atual" : "lock"}"><div class="n">${ok ? ic("check", "s") : i + 1}</div><div class="t"><b>${esc(j.titulo)}</b><small>${esc(j.desc)}</small>
             ${at ? `<div class="bar" style="margin-top:8px"><i style="width:${v / j.alvo * 100}%"></i></div><small>${v} de ${j.alvo}${j.un ? " " + j.un : ""}</small>` : ""}
@@ -1052,7 +1091,7 @@ function renderMissoes() {
           ${D.ids.map(id => { const q = DIARIAS.find(x => x.id === id); const v = Math.min(q.alvo, q.meta(h)), ok = !!D.pegas[id];
             return `<div class="miss ${ok ? "done" : ""}"><div class="ico ${ok ? "ok" : ""}">${ic(ok ? "check" : "alvo", "s")}</div><div class="t"><b>${esc(q.txt)}</b><small>${v} de ${q.alvo}</small><div class="bar"><i style="width:${v / q.alvo * 100}%"></i></div></div><span class="rw">+${q.sem} XP</span></div>`; }).join("")}
           <div class="miss ${D.bonus ? "done" : ""}">${icoBox("ovo")}<div class="t"><b>Complete as três</b><small>${D.bonus ? "Criatura conquistada hoje" : "Uma criatura nova nasce no planeta"}</small></div></div></div>
-        <div class="vidro card"><h2 class="h-sec">Conquistas<span class="grow"></span>${Object.keys(S.conq).length} de ${CONQUISTAS.length}</h2>
+        <div class="vidro card"><h2 class="h-sec">Conquistas<span class="grow"></span><span class="hs-meta">${Object.keys(S.conq).length} de ${CONQUISTAS.length}</span></h2>
           ${CONQUISTAS.map(c => { const ok = !!S.conq[c.id];
             return `<div class="miss" style="${ok ? "" : "opacity:.6"}">${ok ? icoBox("trofeu") : `<div class="ico">${ic("cadeado", "s")}</div>`}<div class="t"><b>${esc(c.titulo)}</b><small>${esc(c.desc)}</small>${ok ? `<div class="premios">${descrevePremio(c.premio).map(x => `<span>${esc(x)}</span>`).join("")}</div>` : ""}</div></div>`; }).join("")}</div>
       </div>
@@ -1204,6 +1243,10 @@ async function aoMudarConta(u) {
   } catch (e) { console.warn(e); nuvem = "erro"; toast("Não consegui carregar seu progresso da nuvem."); renderTopo(); }
 }
 
+/* acessibilidade: botões só com ícone ganham nome a partir do título */
+new MutationObserver(() => { document.querySelectorAll("button[title]:not([aria-label])").forEach(b => b.setAttribute("aria-label", b.title)); })
+  .observe(document.body, { childList: true, subtree: true });
+
 /* atalho escondido: 5 cliques no nome do site abrem o painel de administrador */
 { let n = 0, t = null; document.querySelector(".marca").addEventListener("click", () => { n++; clearTimeout(t); t = setTimeout(() => n = 0, 1500); if (n >= 5) { n = 0; painelAdmin(); } }); }
 document.querySelector(".marca").style.cursor = "default";
@@ -1213,7 +1256,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=23`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=24`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1254,6 +1297,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=23").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=24").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();
