@@ -18,14 +18,14 @@
    "id": "k1",
    "grupo": "Kahoot destrinchado",
    "titulo": "Bloco 1 · Bases da TC e anatomia seccional (K1–K10)",
-   "html": "<p>Perguntas de anatomia seccional (cortes axiais de TC do abdome) e de princípios da TC.</p><h3>K1 · Método de imagem e estrutura apontada com “X”</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Corte axial de TC do abdome superior, com osso branco e ar preto. O “X” marca uma grande víscera no quadrante superior esquerdo, à frente do baço.</p><p><strong>Resposta:</strong> <strong>Tomografia computadorizada; estômago distendido.</strong></p><p>É TC (corte axial com osso branco e ar preto, não é RM). O X está dentro de uma grande estrutura no quadrante superior esquerdo, à frente do baço: o estômago cheio.</p><blockquote><strong>Pegadinha:</strong> As alternativas de RM aparecem para confundir. Na TC o osso cortical é bem branco e a gordura é escura; na RM o aspecto depende da sequência.</blockquote><h3>K2 · Vantagem da TC em relação ao ultrassom</h3><p><strong>Resposta:</strong> <strong>Melhor avaliação global do abdome.</strong></p><p>A TC mostra o abdome inteiro sem depender do operador e sem ser atrapalhada por gás ou obesidade. As outras alternativas são vantagens do US: não usa radiação, é mais barato e é portátil.</p><h3>K3 · O que afirmar sobre o contraste endovenoso</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Corte axial de TC na altura dos rins. Repare na densidade da aorta, da veia cava e dos rins.</p><p><strong>Resposta:</strong> <strong>Exame sem contraste endovenoso.</strong></p><p>Sem contraste, aorta, veia cava e veias renais têm a mesma densidade dos músculos e os rins ficam homogêneos e acinzentados. Com contraste, os vasos ficam brancos e os rins realçam (córtex e medula).</p><blockquote><strong>Pegadinha:</strong> “Impossível saber” é a armadilha: dá para saber olhando os vasos.</blockquote><h3>K4 · Vaso circundado (à frente e à esquerda da coluna)</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Corte axial de TC do abdome superior. A linha vermelha circunda um vaso redondo, colado à frente do corpo vertebral, levemente à esquerda.</p><p><strong>Resposta:</strong> <strong>Aorta.</strong></p><p>A aorta abdominal fica colada à frente do corpo vertebral, um pouco à esquerda, e é redonda.</p><h3>K5 · Vaso circundado (à direita da aorta, atrás do fígado)</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Mesmo corte. A linha vermelha circunda um vaso à direita do anterior, encostado no fígado.</p><p><strong>Resposta:</strong> <strong>Veia cava inferior.</strong></p><p>A VCI fica à direita da aorta, mais anterior e encostada no fígado. Regra: <em>aorta à esquerda, cava à direita</em>.</p><blockquote><strong>Pegadinha:</strong> A veia cava superior não aparece em corte de abdome.</blockquote><h3>K6 · Vaso circundado (estrutura alongada entrando no fígado)</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Mesmo corte. A linha vermelha marca um vaso alongado e oblíquo que entra no hilo do fígado.</p><p><strong>Resposta:</strong> <strong>Veia porta.</strong></p><p>A veia porta entra no hilo hepático, em direção oblíqua, à frente da cava.</p><h3>K7 · Estrutura alongada atrás do estômago</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Corte axial de TC. A linha vermelha contorna um órgão alongado que cruza a frente da coluna, atrás do estômago, do duodeno até perto do baço.</p><p><strong>Resposta:</strong> <strong>Pâncreas.</strong></p><p>Órgão alongado e retroperitoneal que cruza a frente da coluna, da cabeça (à direita, junto ao duodeno) à cauda (perto do baço). A veia esplênica corre logo atrás dele.</p><h3>K8 · Alça central com padrão “em penas”</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Corte axial do abdome médio. A linha vermelha contorna alças no centro do abdome, de calibre pequeno e com pregas finas.</p><p><strong>Resposta:</strong> <strong>Intestino delgado.</strong></p><p>Alças no centro do abdome, de calibre menor, com pregas (válvulas coniventes) que dão o aspecto de penas.</p><h3>K9 · Estrutura na periferia com fezes e gás</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Mesmo nível. A linha vermelha contorna uma alça na periferia direita, com conteúdo mosqueado de fezes e gás.</p><p><strong>Resposta:</strong> <strong>Intestino grosso.</strong></p><p>O cólon fica na periferia (moldura) e tem conteúdo fecal com gás misturado, de aspecto “bolhoso”. Aqui é o cólon ascendente/ceco à direita.</p><blockquote><strong>Pegadinha:</strong> Regra do RX de abdome: cólon = <strong>moldura</strong>, delgado = <strong>tela</strong> (centro).</blockquote><h3>K10 · Densidade em UH da estrutura circundada (bexiga)</h3><p class=\"imgdesc\"><strong>Imagem:</strong> Corte axial da pelve. A linha vermelha contorna a estrutura cheia de líquido logo à frente do reto.</p><p><strong>Resposta:</strong> <strong>0 UH.</strong></p><p>A bexiga contém urina, que é praticamente água, e água vale 0 UH por definição. Ar = −1000 UH; osso cortical ≈ +1000 UH.</p><blockquote><strong>Pegadinha:</strong> Gordura é negativa (≈ −100), não zero.</blockquote>",
+   "html": "<p>Perguntas de anatomia seccional (cortes axiais de TC do abdome) e de princípios da TC.</p><h3>K1 · Método de imagem e estrutura apontada com “X”</h3><p><img src=\"content/img/imagem/k01.jpg\" alt=\"Imagem da questão K1\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Tomografia computadorizada; estômago distendido.</strong></p><p>É TC (corte axial com osso branco e ar preto, não é RM). O X está dentro de uma grande estrutura no quadrante superior esquerdo, à frente do baço: o estômago cheio.</p><blockquote><strong>Pegadinha:</strong> As alternativas de RM aparecem para confundir. Na TC o osso cortical é bem branco e a gordura é escura; na RM o aspecto depende da sequência.</blockquote><h3>K2 · Vantagem da TC em relação ao ultrassom</h3><p><img src=\"content/img/imagem/k02.jpg\" alt=\"Imagem da questão K2\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Melhor avaliação global do abdome.</strong></p><p>A TC mostra o abdome inteiro sem depender do operador e sem ser atrapalhada por gás ou obesidade. As outras alternativas são vantagens do US: não usa radiação, é mais barato e é portátil.</p><h3>K3 · O que afirmar sobre o contraste endovenoso</h3><p><img src=\"content/img/imagem/k03.jpg\" alt=\"Imagem da questão K3\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Exame sem contraste endovenoso.</strong></p><p>Sem contraste, aorta, veia cava e veias renais têm a mesma densidade dos músculos e os rins ficam homogêneos e acinzentados. Com contraste, os vasos ficam brancos e os rins realçam (córtex e medula).</p><blockquote><strong>Pegadinha:</strong> “Impossível saber” é a armadilha: dá para saber olhando os vasos.</blockquote><h3>K4 · Vaso circundado (à frente e à esquerda da coluna)</h3><p><img src=\"content/img/imagem/k04.jpg\" alt=\"Imagem da questão K4\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Aorta.</strong></p><p>A aorta abdominal fica colada à frente do corpo vertebral, um pouco à esquerda, e é redonda.</p><h3>K5 · Vaso circundado (à direita da aorta, atrás do fígado)</h3><p><img src=\"content/img/imagem/k05.jpg\" alt=\"Imagem da questão K5\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Veia cava inferior.</strong></p><p>A VCI fica à direita da aorta, mais anterior e encostada no fígado. Regra: <em>aorta à esquerda, cava à direita</em>.</p><blockquote><strong>Pegadinha:</strong> A veia cava superior não aparece em corte de abdome.</blockquote><h3>K6 · Vaso circundado (estrutura alongada entrando no fígado)</h3><p><img src=\"content/img/imagem/k06.jpg\" alt=\"Imagem da questão K6\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Veia porta.</strong></p><p>A veia porta entra no hilo hepático, em direção oblíqua, à frente da cava.</p><h3>K7 · Estrutura alongada atrás do estômago</h3><p><img src=\"content/img/imagem/k07.jpg\" alt=\"Imagem da questão K7\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Pâncreas.</strong></p><p>Órgão alongado e retroperitoneal que cruza a frente da coluna, da cabeça (à direita, junto ao duodeno) à cauda (perto do baço). A veia esplênica corre logo atrás dele.</p><h3>K8 · Alça central com padrão “em penas”</h3><p><img src=\"content/img/imagem/k08.jpg\" alt=\"Imagem da questão K8\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Intestino delgado.</strong></p><p>Alças no centro do abdome, de calibre menor, com pregas (válvulas coniventes) que dão o aspecto de penas.</p><h3>K9 · Estrutura na periferia com fezes e gás</h3><p><img src=\"content/img/imagem/k09.jpg\" alt=\"Imagem da questão K9\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Intestino grosso.</strong></p><p>O cólon fica na periferia (moldura) e tem conteúdo fecal com gás misturado, de aspecto “bolhoso”. Aqui é o cólon ascendente/ceco à direita.</p><blockquote><strong>Pegadinha:</strong> Regra do RX de abdome: cólon = <strong>moldura</strong>, delgado = <strong>tela</strong> (centro).</blockquote><h3>K10 · Densidade em UH da estrutura circundada (bexiga)</h3><p><img src=\"content/img/imagem/k10.jpg\" alt=\"Imagem da questão K10\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>0 UH.</strong></p><p>A bexiga contém urina, que é praticamente água, e água vale 0 UH por definição. Ar = −1000 UH; osso cortical ≈ +1000 UH.</p><blockquote><strong>Pegadinha:</strong> Gordura é negativa (≈ −100), não zero.</blockquote>",
    "par": "r1"
   },
   {
    "id": "k2",
    "grupo": "Kahoot destrinchado",
    "titulo": "Bloco 2 · Neuro: TCE, HSA, meninges e edema",
-   "html": "<p>TCE, hemorragias, meninges e edema cerebral. É o bloco com mais slides de explicação: as tabelas abaixo são as da aula.</p><h3>K11 · Moto, 23 anos: coleção extra-axial hiperdensa biconvexa (lentiforme), temporoparietal, com efeito de massa</h3><p><strong>Resposta:</strong> <strong>Pode cursar com rotura da artéria meníngea média e “intervalo lúcido”.</strong></p><p>Formato biconvexo = <strong>hematoma epidural (extradural)</strong>. Típico de jovem com trauma e fratura temporal que lacera a artéria meníngea média.</p><blockquote><strong>Pegadinha:</strong> As outras alternativas descrevem o subdural (veias ponte) ou a HSA (aneurisma).</blockquote><h3>K12 · Sobre TCE e achados tomográficos (correta)</h3><p><strong>Resposta:</strong> <strong>Hematoma epidural tem aspecto lentiforme e é limitado pelas suturas.</strong></p><p>A dura-máter é muito aderida às suturas, então o sangue epidural não as ultrapassa e forma uma lente. O subdural cruza suturas e tem forma de crescente.</p><blockquote><strong>Pegadinha:</strong> “Epidural crescente que cruza suturas” troca as características dos dois.</blockquote><h3>K13 · 78 anos, anticoagulado, queda há 2 semanas, coleção em crescente na convexidade</h3><p><strong>Resposta:</strong> <strong>O sangramento decorre tipicamente da ruptura de veias.</strong></p><p>Idoso + anticoagulante + queda leve + evolução em semanas + crescente = <strong>hematoma subdural crônico</strong>, por ruptura das <strong>veias ponte</strong> (estiradas pela atrofia cerebral).</p><blockquote><strong>Pegadinha:</strong> O HSD cruza suturas, então “não ultrapassa as suturas” está errado.</blockquote><h3>Tabela da aula · Hematoma epidural × subdural</h3><table><thead><tr><th>Característica</th><th>Epidural (HED)</th><th>Subdural (HSD)</th></tr></thead><tbody><tr><td>Localização</td><td>Entre a tábua interna e a dura-máter</td><td>Entre a dura-máter e a aracnoide</td></tr><tr><td>Origem do sangue</td><td><strong>Arterial</strong> (artéria meníngea média)</td><td><strong>Venosa</strong> (veias ponte)</td></tr><tr><td>Aspecto na TC</td><td><strong>Biconvexo (lentiforme)</strong></td><td><strong>Crescente</strong> (côncavo-convexo)</td></tr><tr><td>Cruza suturas?</td><td>Não</td><td>Sim</td></tr><tr><td>Cruza a linha média?</td><td>Não</td><td>Não (limitado pela foice e pela tenda)</td></tr><tr><td>Fratura associada</td><td>Muito frequente (80–90%)</td><td>Menos frequente</td></tr><tr><td>Quem</td><td>Jovem, acidente de carro ou moto</td><td>Idoso, alcoólatra, anticoagulado, queda simples</td></tr><tr><td>Evolução</td><td>Rápida (horas), risco de herniação</td><td>Lenta (dias a semanas), piora progressiva</td></tr><tr><td>Clínica</td><td>Perda de consciência → <strong>intervalo lúcido</strong> → piora rápida; anisocoria ipsilateral</td><td>Cefaleia, confusão, sonolência, quedas; o crônico pode imitar demência ou AVC</td></tr></tbody></table><p>Os dois podem precisar de cirurgia. O HED é emergência neurocirúrgica imediata; o HSD pode ser conservador ou cirúrgico conforme volume e clínica.</p><h3>K14 · Exame inicial para hemorragia subaracnoide aguda</h3><p><strong>Resposta:</strong> <strong>TC de encéfalo sem contraste.</strong></p><p>Sangue agudo é hiperdenso na TC sem contraste; o contraste atrapalharia, porque também fica branco. A TC é rápida e disponível.</p><blockquote><strong>Pegadinha:</strong> Angiografia serve para achar o aneurisma depois, não para o diagnóstico inicial.</blockquote><h3>K27 · Exame inicial para hemorragia intracraniana aguda</h3><p><strong>Resposta:</strong> <strong>TC de crânio sem contraste.</strong></p><p>Mesma lógica do K14: qualquer sangramento intracraniano agudo começa pela TC sem contraste.</p><blockquote><strong>Pegadinha:</strong> RM e arteriografia não são o primeiro exame na emergência.</blockquote><h3>K28 · 48 anos, cefaleia súbita intensa, náuseas, rigidez de nuca; hiperdensidade nas fissuras sylvianas e na cisterna suprasselar</h3><p><strong>Resposta:</strong> <strong>Hemorragia subaracnoide aneurismática.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Grifado na foto: “fissuras sylvianas” e “cisterna”. Na imagem seguinte: <strong>hemorragia subaracnoide</strong>.</p><p>“Pior dor de cabeça da vida”, súbita, com meningismo, e sangue nas cisternas e sulcos (espaço subaracnoide). A causa mais comum de HSA não traumática é a ruptura de aneurisma.</p><blockquote><strong>Pegadinha:</strong> Hematoma subdural e epidural são coleções junto à calota, não sangue nas cisternas.</blockquote><h3>K31 · Meninges cranianas (correta)</h3><p><strong>Resposta:</strong> <strong>A pia-máter é a meninge mais interna e acompanha os sulcos e giros.</strong></p><p>De fora para dentro: <strong>dura-máter → aracnoide → pia-máter</strong>. A pia fica colada no cérebro.</p><blockquote><strong>Pegadinha:</strong> A dura não fica entre a aracnoide e a pia; o espaço subaracnoide é entre aracnoide e pia, não entre dura e osso.</blockquote><h3>K32 · Espaço subaracnoide (correta)</h3><p><strong>Resposta:</strong> <strong>Contém líquido cefalorraquidiano (LCR).</strong></p><p>Fica entre a aracnoide e a pia-máter, tem LCR e as artérias do polígono de Willis (por isso o aneurisma sangra ali).</p><blockquote><strong>Pegadinha:</strong> “Espaço virtual entre dura e aracnoide” é o subdural; “entre osso e dura” é o epidural.</blockquote><h3>K29 · Área hipodensa predominando na substância branca, com efeito expansivo e apagamento dos sulcos</h3><p><strong>Resposta:</strong> <strong>Edema vasogênico.</strong></p><p>Ruptura da barreira hematoencefálica: líquido sai do vaso para o interstício e espalha pela substância branca, em “dedos de luva”, ao redor de tumor, metástase ou abscesso.</p><h3>K30 · AVC isquêmico agudo: hipodensidade da substância cinzenta e branca, perda da diferenciação córtico-subcortical</h3><p><strong>Resposta:</strong> <strong>Edema citotóxico.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> No slide seguinte, circulado: <strong>substância cinzenta e branca</strong> (citotóxico).</p><p>A falta de sangue para a bomba Na⁺/K⁺-ATPase, a célula incha. Pega cinzenta e branca no território de uma artéria.</p><blockquote><strong>Pegadinha:</strong> “Ruptura da barreira hematoencefálica” é o mecanismo do vasogênico.</blockquote><h3>Tabela da aula · Edema citotóxico × vasogênico</h3><table><thead><tr><th>Característica</th><th>Citotóxico</th><th>Vasogênico</th></tr></thead><tbody><tr><td>Mecanismo</td><td>Falência da bomba Na⁺/K⁺-ATPase</td><td>Ruptura da barreira hematoencefálica</td></tr><tr><td>Onde</td><td><strong>Substância cinzenta e branca</strong></td><td><strong>Principalmente substância branca</strong></td></tr><tr><td>Causa clássica</td><td>AVC isquêmico agudo</td><td>Tumores, metástases, abscessos</td></tr><tr><td>Distribuição</td><td>Segue território vascular</td><td>Ao redor da lesão (perilesional)</td></tr><tr><td>TC</td><td>Hipodensidade de córtex e substância branca (perde a diferenciação córtico-subcortical)</td><td>Hipodensidade na substância branca</td></tr><tr><td>RM difusão (DWI)</td><td>Restrição à difusão</td><td>Geralmente sem restrição</td></tr><tr><td>Reversibilidade</td><td>Frequentemente irreversível</td><td>Potencialmente reversível</td></tr></tbody></table><h3>Slide do vídeo · TC × RM</h3><p>A aula mostrou o mesmo cérebro em 4 exames: <strong>1 TC, 2 RM T1, 3 RM T2, 4 RM FLAIR</strong>. Como reconhecer:</p><table><thead><tr><th>Exame</th><th>Líquido (LCR nos ventrículos)</th><th>Dica</th></tr></thead><tbody><tr><td>TC</td><td>Escuro (hipodenso)</td><td>Osso da calota bem branco</td></tr><tr><td>RM T1</td><td>Escuro</td><td>Boa para anatomia; substância branca mais clara que a cinzenta</td></tr><tr><td>RM T2</td><td><strong>Branco</strong></td><td>“T2 = água branca”</td></tr><tr><td>RM FLAIR</td><td>Escuro (o LCR é suprimido)</td><td>É um T2 que apaga o líquor: lesões e edema ficam brancos</td></tr></tbody></table>",
+   "html": "<p>TCE, hemorragias, meninges e edema cerebral. É o bloco com mais slides de explicação: as tabelas abaixo são as da aula.</p><h3>K11 · Moto, 23 anos: coleção extra-axial hiperdensa biconvexa (lentiforme), temporoparietal, com efeito de massa</h3><p><strong>Resposta:</strong> <strong>Pode cursar com rotura da artéria meníngea média e “intervalo lúcido”.</strong></p><p>Formato biconvexo = <strong>hematoma epidural (extradural)</strong>. Típico de jovem com trauma e fratura temporal que lacera a artéria meníngea média.</p><blockquote><strong>Pegadinha:</strong> As outras alternativas descrevem o subdural (veias ponte) ou a HSA (aneurisma).</blockquote><h3>K12 · Sobre TCE e achados tomográficos (correta)</h3><p><img src=\"content/img/imagem/k12.jpg\" alt=\"Imagem da questão K12\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Hematoma epidural tem aspecto lentiforme e é limitado pelas suturas.</strong></p><p>A dura-máter é muito aderida às suturas, então o sangue epidural não as ultrapassa e forma uma lente. O subdural cruza suturas e tem forma de crescente.</p><blockquote><strong>Pegadinha:</strong> “Epidural crescente que cruza suturas” troca as características dos dois.</blockquote><h3>K13 · 78 anos, anticoagulado, queda há 2 semanas, coleção em crescente na convexidade</h3><p><strong>Resposta:</strong> <strong>O sangramento decorre tipicamente da ruptura de veias.</strong></p><p>Idoso + anticoagulante + queda leve + evolução em semanas + crescente = <strong>hematoma subdural crônico</strong>, por ruptura das <strong>veias ponte</strong> (estiradas pela atrofia cerebral).</p><blockquote><strong>Pegadinha:</strong> O HSD cruza suturas, então “não ultrapassa as suturas” está errado.</blockquote><h3>Tabela da aula · Hematoma epidural × subdural</h3><table><thead><tr><th>Característica</th><th>Epidural (HED)</th><th>Subdural (HSD)</th></tr></thead><tbody><tr><td>Localização</td><td>Entre a tábua interna e a dura-máter</td><td>Entre a dura-máter e a aracnoide</td></tr><tr><td>Origem do sangue</td><td><strong>Arterial</strong> (artéria meníngea média)</td><td><strong>Venosa</strong> (veias ponte)</td></tr><tr><td>Aspecto na TC</td><td><strong>Biconvexo (lentiforme)</strong></td><td><strong>Crescente</strong> (côncavo-convexo)</td></tr><tr><td>Cruza suturas?</td><td>Não</td><td>Sim</td></tr><tr><td>Cruza a linha média?</td><td>Não</td><td>Não (limitado pela foice e pela tenda)</td></tr><tr><td>Fratura associada</td><td>Muito frequente (80–90%)</td><td>Menos frequente</td></tr><tr><td>Quem</td><td>Jovem, acidente de carro ou moto</td><td>Idoso, alcoólatra, anticoagulado, queda simples</td></tr><tr><td>Evolução</td><td>Rápida (horas), risco de herniação</td><td>Lenta (dias a semanas), piora progressiva</td></tr><tr><td>Clínica</td><td>Perda de consciência → <strong>intervalo lúcido</strong> → piora rápida; anisocoria ipsilateral</td><td>Cefaleia, confusão, sonolência, quedas; o crônico pode imitar demência ou AVC</td></tr></tbody></table><p>Os dois podem precisar de cirurgia. O HED é emergência neurocirúrgica imediata; o HSD pode ser conservador ou cirúrgico conforme volume e clínica.</p><h3>K14 · Exame inicial para hemorragia subaracnoide aguda</h3><p><img src=\"content/img/imagem/k14.jpg\" alt=\"Imagem da questão K14\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>TC de encéfalo sem contraste.</strong></p><p>Sangue agudo é hiperdenso na TC sem contraste; o contraste atrapalharia, porque também fica branco. A TC é rápida e disponível.</p><blockquote><strong>Pegadinha:</strong> Angiografia serve para achar o aneurisma depois, não para o diagnóstico inicial.</blockquote><h3>K27 · Exame inicial para hemorragia intracraniana aguda</h3><p><img src=\"content/img/imagem/k27.jpg\" alt=\"Imagem da questão K27\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>TC de crânio sem contraste.</strong></p><p>Mesma lógica do K14: qualquer sangramento intracraniano agudo começa pela TC sem contraste.</p><blockquote><strong>Pegadinha:</strong> RM e arteriografia não são o primeiro exame na emergência.</blockquote><h3>K28 · 48 anos, cefaleia súbita intensa, náuseas, rigidez de nuca; hiperdensidade nas fissuras sylvianas e na cisterna suprasselar</h3><p><strong>Resposta:</strong> <strong>Hemorragia subaracnoide aneurismática.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Grifado na foto: “fissuras sylvianas” e “cisterna”. Na imagem seguinte: <strong>hemorragia subaracnoide</strong>.</p><p>“Pior dor de cabeça da vida”, súbita, com meningismo, e sangue nas cisternas e sulcos (espaço subaracnoide). A causa mais comum de HSA não traumática é a ruptura de aneurisma.</p><blockquote><strong>Pegadinha:</strong> Hematoma subdural e epidural são coleções junto à calota, não sangue nas cisternas.</blockquote><h3>K31 · Meninges cranianas (correta)</h3><p><img src=\"content/img/imagem/k31.jpg\" alt=\"Imagem da questão K31\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>A pia-máter é a meninge mais interna e acompanha os sulcos e giros.</strong></p><p>De fora para dentro: <strong>dura-máter → aracnoide → pia-máter</strong>. A pia fica colada no cérebro.</p><blockquote><strong>Pegadinha:</strong> A dura não fica entre a aracnoide e a pia; o espaço subaracnoide é entre aracnoide e pia, não entre dura e osso.</blockquote><h3>K32 · Espaço subaracnoide (correta)</h3><p><img src=\"content/img/imagem/k32.jpg\" alt=\"Imagem da questão K32\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Contém líquido cefalorraquidiano (LCR).</strong></p><p>Fica entre a aracnoide e a pia-máter, tem LCR e as artérias do polígono de Willis (por isso o aneurisma sangra ali).</p><blockquote><strong>Pegadinha:</strong> “Espaço virtual entre dura e aracnoide” é o subdural; “entre osso e dura” é o epidural.</blockquote><h3>K29 · Área hipodensa predominando na substância branca, com efeito expansivo e apagamento dos sulcos</h3><p><strong>Resposta:</strong> <strong>Edema vasogênico.</strong></p><p>Ruptura da barreira hematoencefálica: líquido sai do vaso para o interstício e espalha pela substância branca, em “dedos de luva”, ao redor de tumor, metástase ou abscesso.</p><h3>K30 · AVC isquêmico agudo: hipodensidade da substância cinzenta e branca, perda da diferenciação córtico-subcortical</h3><p><strong>Resposta:</strong> <strong>Edema citotóxico.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> No slide seguinte, circulado: <strong>substância cinzenta e branca</strong> (citotóxico).</p><p>A falta de sangue para a bomba Na⁺/K⁺-ATPase, a célula incha. Pega cinzenta e branca no território de uma artéria.</p><blockquote><strong>Pegadinha:</strong> “Ruptura da barreira hematoencefálica” é o mecanismo do vasogênico.</blockquote><h3>Tabela da aula · Edema citotóxico × vasogênico</h3><table><thead><tr><th>Característica</th><th>Citotóxico</th><th>Vasogênico</th></tr></thead><tbody><tr><td>Mecanismo</td><td>Falência da bomba Na⁺/K⁺-ATPase</td><td>Ruptura da barreira hematoencefálica</td></tr><tr><td>Onde</td><td><strong>Substância cinzenta e branca</strong></td><td><strong>Principalmente substância branca</strong></td></tr><tr><td>Causa clássica</td><td>AVC isquêmico agudo</td><td>Tumores, metástases, abscessos</td></tr><tr><td>Distribuição</td><td>Segue território vascular</td><td>Ao redor da lesão (perilesional)</td></tr><tr><td>TC</td><td>Hipodensidade de córtex e substância branca (perde a diferenciação córtico-subcortical)</td><td>Hipodensidade na substância branca</td></tr><tr><td>RM difusão (DWI)</td><td>Restrição à difusão</td><td>Geralmente sem restrição</td></tr><tr><td>Reversibilidade</td><td>Frequentemente irreversível</td><td>Potencialmente reversível</td></tr></tbody></table><h3>Slide do vídeo · TC × RM</h3><p>A aula mostrou o mesmo cérebro em 4 exames: <strong>1 TC, 2 RM T1, 3 RM T2, 4 RM FLAIR</strong>. Como reconhecer:</p><table><thead><tr><th>Exame</th><th>Líquido (LCR nos ventrículos)</th><th>Dica</th></tr></thead><tbody><tr><td>TC</td><td>Escuro (hipodenso)</td><td>Osso da calota bem branco</td></tr><tr><td>RM T1</td><td>Escuro</td><td>Boa para anatomia; substância branca mais clara que a cinzenta</td></tr><tr><td>RM T2</td><td><strong>Branco</strong></td><td>“T2 = água branca”</td></tr><tr><td>RM FLAIR</td><td>Escuro (o LCR é suprimido)</td><td>É um T2 que apaga o líquor: lesões e edema ficam brancos</td></tr></tbody></table>",
    "par": "r2"
   },
   {
@@ -46,7 +46,7 @@
    "id": "k5",
    "grupo": "Kahoot destrinchado",
    "titulo": "Bloco 5 · Osso e músculo (K25, K26, K33, K34)",
-   "html": "<h3>K25 · 15 anos, dor óssea progressiva há 2 meses; RX com margens mal definidas, destruição cortical e reação periosteal exuberante. Qual sinal sugere mais agressividade?</h3><p><strong>Resposta:</strong> <strong>Destruição cortical.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Escrito na foto: <strong>TC é padrão-ouro</strong>, com “destruição cortical” destacada no enunciado.</p><p>Uma lesão que rompe a cortical está invadindo, sinal de malignidade (ex.: osteossarcoma). Margens escleróticas bem definidas e lesão geográfica sugerem lesão benigna, de crescimento lento.</p><blockquote><strong>Pegadinha:</strong> “Margens mal definidas” também é sinal de agressividade, mas a resposta marcada foi destruição cortical, que é o sinal mais forte.</blockquote><h3>K26 · RX de joelho: linha radiolucente atravessando a cortical tibial com discreto desvio</h3><p><strong>Resposta:</strong> <strong>Fratura.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Escrito na foto: <strong>linha radiolucente = linha preta</strong>.</p><p>Linha radiolucente (escura, “linha preta”) que cruza a cortical, com desvio dos fragmentos = traço de fratura.</p><h3>Slide da aula · Lesão osteolítica × osteoblástica</h3><p>A professora mostrou dois RX de criança: um <strong>cisto ósseo</strong> (lesão lítica, escura, bem delimitada, benigna) e um <strong>osteossarcoma</strong> (lesão densa/esclerótica, mal delimitada, com reação periosteal). Lítica = destrói osso (fica mais escuro). Blástica = forma osso (fica mais branco).</p><h3>K33 · 68 anos, queda e dor no quadril: exame inicial para lesão do colo do fêmur</h3><p><strong>Resposta:</strong> <strong>Raio X.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Escrito na foto: <strong>RX</strong> para fratura; a TC/RM ficaria para depois, ou “se fosse muscular” (ver K34).</p><p>Suspeita de fratura começa pelo RX: rápido, barato, disponível. Se o RX for normal e a suspeita continuar, segue com TC ou RM.</p><blockquote><strong>Pegadinha:</strong> A anotação da aula: TC/RM ficam para depois, ou se a suspeita fosse de lesão muscular.</blockquote><h3>K34 · Dor na panturrilha com suspeita de rotura muscular: exame inicial</h3><p><strong>Resposta:</strong> <strong>Ultrassonografia</strong> (na foto está circulada a TC — confirme o gabarito).</p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Na foto, a alternativa circulada foi a TC. A literatura indica US como exame inicial na lesão muscular; aqui as duas contam como certas.</p><p>Músculo e tendão são partes moles: o US vê bem, é dinâmico, barato e sem radiação, e é o exame inicial na lesão muscular. A RM é a melhor para detalhar. A TC tem pouca resolução para partes moles.</p><blockquote><strong>Pegadinha:</strong> Se a professora mantiver a TC como gabarito, decore o gabarito dela para a prova, mas saiba que a literatura indica US.</blockquote>",
+   "html": "<h3>K25 · 15 anos, dor óssea progressiva há 2 meses; RX com margens mal definidas, destruição cortical e reação periosteal exuberante. Qual sinal sugere mais agressividade?</h3><p><strong>Resposta:</strong> <strong>Destruição cortical.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Escrito na foto: <strong>TC é padrão-ouro</strong>, com “destruição cortical” destacada no enunciado.</p><p>Uma lesão que rompe a cortical está invadindo, sinal de malignidade (ex.: osteossarcoma). Margens escleróticas bem definidas e lesão geográfica sugerem lesão benigna, de crescimento lento.</p><blockquote><strong>Pegadinha:</strong> “Margens mal definidas” também é sinal de agressividade, mas a resposta marcada foi destruição cortical, que é o sinal mais forte.</blockquote><h3>K26 · RX de joelho: linha radiolucente atravessando a cortical tibial com discreto desvio</h3><p><strong>Resposta:</strong> <strong>Fratura.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Escrito na foto: <strong>linha radiolucente = linha preta</strong>.</p><p>Linha radiolucente (escura, “linha preta”) que cruza a cortical, com desvio dos fragmentos = traço de fratura.</p><h3>Slide da aula · Lesão osteolítica × osteoblástica</h3><p>A professora mostrou dois RX de criança: um <strong>cisto ósseo</strong> (lesão lítica, escura, bem delimitada, benigna) e um <strong>osteossarcoma</strong> (lesão densa/esclerótica, mal delimitada, com reação periosteal). Lítica = destrói osso (fica mais escuro). Blástica = forma osso (fica mais branco).</p><h3>K33 · 68 anos, queda e dor no quadril: exame inicial para lesão do colo do fêmur</h3><p><img src=\"content/img/imagem/k33.jpg\" alt=\"Imagem da questão K33\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Raio X.</strong></p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Escrito na foto: <strong>RX</strong> para fratura; a TC/RM ficaria para depois, ou “se fosse muscular” (ver K34).</p><p>Suspeita de fratura começa pelo RX: rápido, barato, disponível. Se o RX for normal e a suspeita continuar, segue com TC ou RM.</p><blockquote><strong>Pegadinha:</strong> A anotação da aula: TC/RM ficam para depois, ou se a suspeita fosse de lesão muscular.</blockquote><h3>K34 · Dor na panturrilha com suspeita de rotura muscular: exame inicial</h3><p><img src=\"content/img/imagem/k34.jpg\" alt=\"Imagem da questão K34\" loading=\"lazy\"></p><p><strong>Resposta:</strong> <strong>Ultrassonografia</strong> (na foto está circulada a TC — confirme o gabarito).</p><p class=\"anotaula\"><strong>Anotação da aula:</strong> Na foto, a alternativa circulada foi a TC. A literatura indica US como exame inicial na lesão muscular; aqui as duas contam como certas.</p><p>Músculo e tendão são partes moles: o US vê bem, é dinâmico, barato e sem radiação, e é o exame inicial na lesão muscular. A RM é a melhor para detalhar. A TC tem pouca resolução para partes moles.</p><blockquote><strong>Pegadinha:</strong> Se a professora mantiver a TC como gabarito, decore o gabarito dela para a prova, mas saiba que a literatura indica US.</blockquote>",
    "par": "r4"
   },
   {
@@ -507,8 +507,8 @@
    "certa": 1,
    "explica": "É TC (osso branco, ar preto). O X está dentro do estômago cheio, no quadrante superior esquerdo.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k01.jpg",
-   "desc": "Corte axial de TC do abdome superior, com osso branco e ar preto. O “X” marca uma grande víscera no quadrante superior esquerdo, à frente do baço."
+   "desc": "Corte axial de TC do abdome superior, com osso branco e ar preto. O “X” marca uma grande víscera no quadrante superior esquerdo, à frente do baço.",
+   "img": "content/img/imagem/k01.jpg"
   },
   {
    "tipo": "q",
@@ -523,7 +523,7 @@
    "certa": 0,
    "explica": "A TC mostra o abdome inteiro sem depender do operador, do gás ou da obesidade. As outras são vantagens do US.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k02.jpg"
+   "img": "content/img/imagem/k02.jpg"
   },
   {
    "tipo": "q",
@@ -537,8 +537,8 @@
    "certa": 2,
    "explica": "Vasos com a densidade do músculo e rins homogêneos: exame sem contraste.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k03.jpg",
-   "desc": "Corte axial de TC na altura dos rins. Repare na densidade da aorta, da veia cava e dos rins."
+   "desc": "Corte axial de TC na altura dos rins. Repare na densidade da aorta, da veia cava e dos rins.",
+   "img": "content/img/imagem/k03.jpg"
   },
   {
    "tipo": "q",
@@ -553,8 +553,8 @@
    "certa": 3,
    "explica": "Redonda, colada à frente da coluna, à esquerda: aorta.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k04.jpg",
-   "desc": "Corte axial de TC do abdome superior. A linha vermelha circunda um vaso redondo, colado à frente do corpo vertebral, levemente à esquerda."
+   "desc": "Corte axial de TC do abdome superior. A linha vermelha circunda um vaso redondo, colado à frente do corpo vertebral, levemente à esquerda.",
+   "img": "content/img/imagem/k04.jpg"
   },
   {
    "tipo": "q",
@@ -569,8 +569,8 @@
    "certa": 1,
    "explica": "À direita da aorta, encostada no fígado: veia cava inferior.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k05.jpg",
-   "desc": "Mesmo corte. A linha vermelha circunda um vaso à direita do anterior, encostado no fígado."
+   "desc": "Mesmo corte. A linha vermelha circunda um vaso à direita do anterior, encostado no fígado.",
+   "img": "content/img/imagem/k05.jpg"
   },
   {
    "tipo": "q",
@@ -585,8 +585,8 @@
    "certa": 2,
    "explica": "Entrando no hilo hepático, oblíqua: veia porta.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k06.jpg",
-   "desc": "Mesmo corte. A linha vermelha marca um vaso alongado e oblíquo que entra no hilo do fígado."
+   "desc": "Mesmo corte. A linha vermelha marca um vaso alongado e oblíquo que entra no hilo do fígado.",
+   "img": "content/img/imagem/k06.jpg"
   },
   {
    "tipo": "q",
@@ -601,8 +601,8 @@
    "certa": 0,
    "explica": "Alongado, retroperitoneal, atrás do estômago, cruzando a coluna: pâncreas.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k07.jpg",
-   "desc": "Corte axial de TC. A linha vermelha contorna um órgão alongado que cruza a frente da coluna, atrás do estômago, do duodeno até perto do baço."
+   "desc": "Corte axial de TC. A linha vermelha contorna um órgão alongado que cruza a frente da coluna, atrás do estômago, do duodeno até perto do baço.",
+   "img": "content/img/imagem/k07.jpg"
   },
   {
    "tipo": "q",
@@ -617,8 +617,8 @@
    "certa": 3,
    "explica": "Alça central com pregas em penas: intestino delgado.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k08.jpg",
-   "desc": "Corte axial do abdome médio. A linha vermelha contorna alças no centro do abdome, de calibre pequeno e com pregas finas."
+   "desc": "Corte axial do abdome médio. A linha vermelha contorna alças no centro do abdome, de calibre pequeno e com pregas finas.",
+   "img": "content/img/imagem/k08.jpg"
   },
   {
    "tipo": "q",
@@ -633,8 +633,8 @@
    "certa": 2,
    "explica": "Na periferia, com fezes e gás: intestino grosso.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k09.jpg",
-   "desc": "Mesmo nível. A linha vermelha contorna uma alça na periferia direita, com conteúdo mosqueado de fezes e gás."
+   "desc": "Mesmo nível. A linha vermelha contorna uma alça na periferia direita, com conteúdo mosqueado de fezes e gás.",
+   "img": "content/img/imagem/k09.jpg"
   },
   {
    "tipo": "q",
@@ -649,8 +649,8 @@
    "certa": 3,
    "explica": "Bexiga com urina ≈ água = 0 UH. Ar = −1000; osso ≈ +1000.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k10.jpg",
-   "desc": "Corte axial da pelve. A linha vermelha contorna a estrutura cheia de líquido logo à frente do reto."
+   "desc": "Corte axial da pelve. A linha vermelha contorna a estrutura cheia de líquido logo à frente do reto.",
+   "img": "content/img/imagem/k10.jpg"
   },
   {
    "tipo": "q",
@@ -679,7 +679,7 @@
    "certa": 1,
    "explica": "A dura é aderida às suturas: o epidural forma uma lente e não as cruza.",
    "tempo": 40,
-   "imgFutura": "content/img/imagem/k12.jpg"
+   "img": "content/img/imagem/k12.jpg"
   },
   {
    "tipo": "q",
@@ -698,20 +698,17 @@
   {
    "tipo": "slide",
    "titulo": "Hematomas epidural × subdural · características comparativas",
-   "html": "<table><thead><tr><th>Característica</th><th>Epidural (HED)</th><th>Subdural (HSD)</th></tr></thead><tbody><tr><td>Localização</td><td>Entre a tábua interna e a dura-máter</td><td>Entre a dura-máter e a aracnoide</td></tr><tr><td>Origem do sangue</td><td><strong>Arterial</strong> (artéria meníngea média)</td><td><strong>Venosa</strong> (veias ponte)</td></tr><tr><td>Aspecto na TC</td><td><strong>Biconvexo (lentiforme)</strong></td><td><strong>Crescente</strong> (côncavo-convexo)</td></tr><tr><td>Cruza suturas?</td><td>Não</td><td>Sim</td></tr><tr><td>Cruza a linha média?</td><td>Não</td><td>Não (limitado pela foice e pela tenda)</td></tr><tr><td>Fratura associada</td><td>Muito frequente (80–90%)</td><td>Menos frequente</td></tr><tr><td>Quem</td><td>Jovem, acidente de carro ou moto</td><td>Idoso, alcoólatra, anticoagulado, queda simples</td></tr><tr><td>Evolução</td><td>Rápida (horas), risco de herniação</td><td>Lenta (dias a semanas), piora progressiva</td></tr><tr><td>Clínica</td><td>Perda de consciência → <strong>intervalo lúcido</strong> → piora rápida; anisocoria ipsilateral</td><td>Cefaleia, confusão, sonolência, quedas; o crônico pode imitar demência ou AVC</td></tr></tbody></table><p>Os dois podem precisar de cirurgia. O HED é emergência neurocirúrgica imediata; o HSD pode ser conservador ou cirúrgico conforme volume e clínica.</p>",
-   "imgFutura": "content/img/imagem/s14.jpg"
+   "html": "<table><thead><tr><th>Característica</th><th>Epidural (HED)</th><th>Subdural (HSD)</th></tr></thead><tbody><tr><td>Localização</td><td>Entre a tábua interna e a dura-máter</td><td>Entre a dura-máter e a aracnoide</td></tr><tr><td>Origem do sangue</td><td><strong>Arterial</strong> (artéria meníngea média)</td><td><strong>Venosa</strong> (veias ponte)</td></tr><tr><td>Aspecto na TC</td><td><strong>Biconvexo (lentiforme)</strong></td><td><strong>Crescente</strong> (côncavo-convexo)</td></tr><tr><td>Cruza suturas?</td><td>Não</td><td>Sim</td></tr><tr><td>Cruza a linha média?</td><td>Não</td><td>Não (limitado pela foice e pela tenda)</td></tr><tr><td>Fratura associada</td><td>Muito frequente (80–90%)</td><td>Menos frequente</td></tr><tr><td>Quem</td><td>Jovem, acidente de carro ou moto</td><td>Idoso, alcoólatra, anticoagulado, queda simples</td></tr><tr><td>Evolução</td><td>Rápida (horas), risco de herniação</td><td>Lenta (dias a semanas), piora progressiva</td></tr><tr><td>Clínica</td><td>Perda de consciência → <strong>intervalo lúcido</strong> → piora rápida; anisocoria ipsilateral</td><td>Cefaleia, confusão, sonolência, quedas; o crônico pode imitar demência ou AVC</td></tr></tbody></table><p>Os dois podem precisar de cirurgia. O HED é emergência neurocirúrgica imediata; o HSD pode ser conservador ou cirúrgico conforme volume e clínica.</p>"
   },
   {
    "tipo": "slide",
    "titulo": "Fisiopatologia e epidemiologia",
-   "html": "<table><thead><tr><th>Fisiopatologia · HED</th><th>Fisiopatologia · HSD</th></tr></thead><tbody><tr><td>Mecanismo clássico: fratura temporal com laceração da artéria meníngea média. O sangramento arterial, de alta pressão, faz a coleção crescer rápido, aumenta a pressão intracraniana e traz risco de herniação em horas.</td><td>Ruptura das veias ponte, que ligam a superfície do cérebro aos seios venosos durais. O sangramento venoso é mais lento e permite evolução gradual, sobretudo nos casos subagudos e crônicos.</td></tr></tbody></table><table><thead><tr><th>Epidemiologia · HED</th><th>Epidemiologia · HSD</th></tr></thead><tbody><tr><td>Mais comum em adultos jovens, ligado a acidentes de carro e moto. Raro em idosos, porque a dura-máter fica mais aderida ao crânio e limita a formação do espaço epidural.</td><td>Mais frequente em idosos, alcoólatras e em quem usa anticoagulante. A atrofia cerebral aumenta a tensão sobre as veias ponte, que rompem mesmo com traumas leves ou quedas simples.</td></tr></tbody></table>",
-   "imgFutura": "content/img/imagem/s16.jpg"
+   "html": "<table><thead><tr><th>Fisiopatologia · HED</th><th>Fisiopatologia · HSD</th></tr></thead><tbody><tr><td>Mecanismo clássico: fratura temporal com laceração da artéria meníngea média. O sangramento arterial, de alta pressão, faz a coleção crescer rápido, aumenta a pressão intracraniana e traz risco de herniação em horas.</td><td>Ruptura das veias ponte, que ligam a superfície do cérebro aos seios venosos durais. O sangramento venoso é mais lento e permite evolução gradual, sobretudo nos casos subagudos e crônicos.</td></tr></tbody></table><table><thead><tr><th>Epidemiologia · HED</th><th>Epidemiologia · HSD</th></tr></thead><tbody><tr><td>Mais comum em adultos jovens, ligado a acidentes de carro e moto. Raro em idosos, porque a dura-máter fica mais aderida ao crânio e limita a formação do espaço epidural.</td><td>Mais frequente em idosos, alcoólatras e em quem usa anticoagulante. A atrofia cerebral aumenta a tensão sobre as veias ponte, que rompem mesmo com traumas leves ou quedas simples.</td></tr></tbody></table>"
   },
   {
    "tipo": "slide",
    "titulo": "Apresentação clínica e conduta",
-   "html": "<table><thead><tr><th>Hematoma epidural · clínica</th><th>Hematoma subdural · clínica</th></tr></thead><tbody><tr><td>Três fases: 1) perda inicial da consciência (impacto); 2) <strong>intervalo lúcido</strong>, com lucidez aparente; 3) deterioração neurológica rápida e progressiva. Sinais de alerta: cefaleia intensa, vômitos, anisocoria ipsilateral, hemiparesia e queda rápida do nível de consciência. <strong>Emergência neurocirúrgica</strong>: intervir já pode salvar a vida.</td><td>Sintomas mais insidiosos e graduais: cefaleia progressiva, confusão, sonolência, alterações cognitivas, déficits focais variáveis, quedas recorrentes em idosos. No crônico, os sintomas podem surgir semanas depois do trauma e imitar demência, AVC ou tumor. <strong>Diagnóstico diferencial importante</strong>: HSD crônico pode imitar demência ou AVC em idosos.</td></tr></tbody></table><p><strong>HED (rápido):</strong> evolução em horas, risco de herniação. <strong>HSD (lento):</strong> evolução em dias a semanas, deterioração progressiva. <strong>Em comum:</strong> déficit focal e necessidade cirúrgica. A distinção na TC define a urgência: o HED exige cirurgia imediata; o HSD pode ser conservador ou cirúrgico conforme volume, evolução e clínica.</p>",
-   "imgFutura": "content/img/imagem/s17.jpg"
+   "html": "<table><thead><tr><th>Hematoma epidural · clínica</th><th>Hematoma subdural · clínica</th></tr></thead><tbody><tr><td>Três fases: 1) perda inicial da consciência (impacto); 2) <strong>intervalo lúcido</strong>, com lucidez aparente; 3) deterioração neurológica rápida e progressiva. Sinais de alerta: cefaleia intensa, vômitos, anisocoria ipsilateral, hemiparesia e queda rápida do nível de consciência. <strong>Emergência neurocirúrgica</strong>: intervir já pode salvar a vida.</td><td>Sintomas mais insidiosos e graduais: cefaleia progressiva, confusão, sonolência, alterações cognitivas, déficits focais variáveis, quedas recorrentes em idosos. No crônico, os sintomas podem surgir semanas depois do trauma e imitar demência, AVC ou tumor. <strong>Diagnóstico diferencial importante</strong>: HSD crônico pode imitar demência ou AVC em idosos.</td></tr></tbody></table><p><strong>HED (rápido):</strong> evolução em horas, risco de herniação. <strong>HSD (lento):</strong> evolução em dias a semanas, deterioração progressiva. <strong>Em comum:</strong> déficit focal e necessidade cirúrgica. A distinção na TC define a urgência: o HED exige cirurgia imediata; o HSD pode ser conservador ou cirúrgico conforme volume, evolução e clínica.</p>"
   },
   {
    "tipo": "q",
@@ -726,7 +723,7 @@
    "certa": 0,
    "explica": "Sangue agudo é hiperdenso na TC sem contraste.",
    "tempo": 40,
-   "imgFutura": "content/img/imagem/k14.jpg"
+   "img": "content/img/imagem/k14.jpg"
   },
   {
    "tipo": "q",
@@ -746,8 +743,7 @@
   {
    "tipo": "slide",
    "titulo": "Vesícula normal × colelitíase × coledocolitíase",
-   "html": "<table><thead><tr><th></th><th>Vesícula normal</th><th>Colelitíase</th><th>Coledocolitíase</th></tr></thead><tbody><tr><td>Conteúdo</td><td>Anecoico homogêneo</td><td>Cálculos hiperecogênicos</td><td>Pode haver ou não cálculo na vesícula</td></tr><tr><td>Sombra acústica</td><td>Ausente</td><td>Presente</td><td>Presente se o cálculo do colédoco aparece</td></tr><tr><td>Mobilidade</td><td>–</td><td>Cálculo geralmente móvel</td><td>Cálculo geralmente fixo no colédoco</td></tr><tr><td>Parede</td><td>Fina (≤ 3 mm)</td><td>Normal ou espessada se colecistite</td><td>Geralmente normal</td></tr><tr><td>Murphy US</td><td>Negativo</td><td>Positivo se colecistite</td><td>Geralmente negativo</td></tr><tr><td>Colédoco</td><td>Normal (até 6 mm)</td><td>Normal</td><td>Dilatado (> 6–7 mm; varia com idade)</td></tr><tr><td>Icterícia</td><td>Ausente</td><td>Incomum</td><td>Frequente</td></tr></tbody></table>",
-   "imgFutura": "content/img/imagem/s19.jpg"
+   "html": "<table><thead><tr><th></th><th>Vesícula normal</th><th>Colelitíase</th><th>Coledocolitíase</th></tr></thead><tbody><tr><td>Conteúdo</td><td>Anecoico homogêneo</td><td>Cálculos hiperecogênicos</td><td>Pode haver ou não cálculo na vesícula</td></tr><tr><td>Sombra acústica</td><td>Ausente</td><td>Presente</td><td>Presente se o cálculo do colédoco aparece</td></tr><tr><td>Mobilidade</td><td>–</td><td>Cálculo geralmente móvel</td><td>Cálculo geralmente fixo no colédoco</td></tr><tr><td>Parede</td><td>Fina (≤ 3 mm)</td><td>Normal ou espessada se colecistite</td><td>Geralmente normal</td></tr><tr><td>Murphy US</td><td>Negativo</td><td>Positivo se colecistite</td><td>Geralmente negativo</td></tr><tr><td>Colédoco</td><td>Normal (até 6 mm)</td><td>Normal</td><td>Dilatado (> 6–7 mm; varia com idade)</td></tr><tr><td>Icterícia</td><td>Ausente</td><td>Incomum</td><td>Frequente</td></tr></tbody></table>"
   },
   {
    "tipo": "q",
@@ -812,8 +808,7 @@
   {
    "tipo": "slide",
    "titulo": "Suspeita clínica → exame de escolha",
-   "html": "<table><thead><tr><th>Suspeita</th><th>Exame de escolha</th></tr></thead><tbody><tr><td>Diverticulite aguda</td><td>TC de abdome e pelve com contraste</td></tr><tr><td>Apendicite aguda</td><td>US (jovens, magros, gestantes, crianças) ou TC</td></tr><tr><td>Pancreatite complicada</td><td>TC contrastada</td></tr><tr><td>Obstrução intestinal</td><td>TC contrastada (RX como inicial)</td></tr><tr><td>Colecistite, colelitíase, coledocolitíase</td><td>US inicial → TC ou colangioRM</td></tr><tr><td>Trauma abdominal estável</td><td>TC contrastada</td></tr><tr><td>Trauma abdominal instável</td><td>FAST na sala; se positivo → laparotomia</td></tr></tbody></table>",
-   "imgFutura": "content/img/imagem/s24.jpg"
+   "html": "<table><thead><tr><th>Suspeita</th><th>Exame de escolha</th></tr></thead><tbody><tr><td>Diverticulite aguda</td><td>TC de abdome e pelve com contraste</td></tr><tr><td>Apendicite aguda</td><td>US (jovens, magros, gestantes, crianças) ou TC</td></tr><tr><td>Pancreatite complicada</td><td>TC contrastada</td></tr><tr><td>Obstrução intestinal</td><td>TC contrastada (RX como inicial)</td></tr><tr><td>Colecistite, colelitíase, coledocolitíase</td><td>US inicial → TC ou colangioRM</td></tr><tr><td>Trauma abdominal estável</td><td>TC contrastada</td></tr><tr><td>Trauma abdominal instável</td><td>FAST na sala; se positivo → laparotomia</td></tr></tbody></table>"
   },
   {
    "tipo": "q",
@@ -847,8 +842,7 @@
   {
    "tipo": "slide",
    "titulo": "Tomografia computadorizada: exame de escolha na litíase urinária",
-   "html": "<table><thead><tr><th>Achados diretos</th><th>Achados indiretos</th></tr></thead><tbody><tr><td>Cálculo hiperdenso no trato urinário</td><td>Hidronefrose e hidroureter</td></tr><tr><td>Localização exata (rim, ureter, bexiga)</td><td>Estriações da gordura perirrenal</td></tr><tr><td>Tamanho em mm e densidade em UH</td><td>Nefrograma retardado (fase contrastada)</td></tr><tr><td></td><td>Edema ureteral perilesional</td></tr></tbody></table><p><strong>Vantagens:</strong> detecta quase todos os tipos de cálculo, sensibilidade e especificidade acima de 95%, avalia complicações obstrutivas e infecciosas e não depende do biotipo. É feita <strong>sem contraste</strong> (o contraste esconderia o cálculo, que já é branco).</p>",
-   "imgFutura": "content/img/imagem/s27.jpg"
+   "html": "<table><thead><tr><th>Achados diretos</th><th>Achados indiretos</th></tr></thead><tbody><tr><td>Cálculo hiperdenso no trato urinário</td><td>Hidronefrose e hidroureter</td></tr><tr><td>Localização exata (rim, ureter, bexiga)</td><td>Estriações da gordura perirrenal</td></tr><tr><td>Tamanho em mm e densidade em UH</td><td>Nefrograma retardado (fase contrastada)</td></tr><tr><td></td><td>Edema ureteral perilesional</td></tr></tbody></table><p><strong>Vantagens:</strong> detecta quase todos os tipos de cálculo, sensibilidade e especificidade acima de 95%, avalia complicações obstrutivas e infecciosas e não depende do biotipo. É feita <strong>sem contraste</strong> (o contraste esconderia o cálculo, que já é branco).</p>"
   },
   {
    "tipo": "q",
@@ -928,8 +922,7 @@
    "tipo": "slide",
    "titulo": "Lesão osteolítica × lesão osteoblástica (cisto ósseo × osteossarcoma)",
    "html": "<p>Dois RX de membro inferior de crianças, lado a lado.</p><ul><li><strong>Cisto ósseo</strong>: lesão <strong>osteolítica</strong>, escura (o osso foi destruído), bem delimitada, típica de criança, benigna.</li><li><strong>Osteossarcoma</strong>: lesão <strong>osteoblástica</strong>, densa e branca (forma osso), mal delimitada, com reação periosteal: maligna e agressiva.</li></ul>",
-   "anot": "Escrito na foto: <strong>criança · cisto ósseo · osteossarcoma · lesão osteolítica × lesão osteoblástica</strong>.",
-   "imgFutura": "content/img/imagem/s33.jpg"
+   "anot": "Escrito na foto: <strong>criança · cisto ósseo · osteossarcoma · lesão osteolítica × lesão osteoblástica</strong>."
   },
   {
    "tipo": "q",
@@ -944,7 +937,7 @@
    "certa": 3,
    "explica": "Qualquer sangramento intracraniano agudo começa pela TC sem contraste.",
    "tempo": 40,
-   "imgFutura": "content/img/imagem/k27.jpg"
+   "img": "content/img/imagem/k27.jpg"
   },
   {
    "tipo": "q",
@@ -965,8 +958,7 @@
    "tipo": "slide",
    "titulo": "Hemorragia subaracnoide na TC",
    "html": "<p>TC de crânio sem contraste, corte axial na base do crânio: sangue hiperdenso (branco) preenchendo as <strong>cisternas da base</strong> e as <strong>fissuras sylvianas</strong>, desenhando o espaço subaracnoide. Diagnóstico: <strong>hemorragia subaracnoide</strong>.</p>",
-   "anot": "Escrito na foto: <strong>hemorragia subaracnoide</strong>.",
-   "imgFutura": "content/img/imagem/s36.jpg"
+   "anot": "Escrito na foto: <strong>hemorragia subaracnoide</strong>."
   },
   {
    "tipo": "q",
@@ -1000,20 +992,17 @@
   {
    "tipo": "slide",
    "titulo": "Edema citotóxico × edema vasogênico",
-   "html": "<table><thead><tr><th>Característica</th><th>Citotóxico</th><th>Vasogênico</th></tr></thead><tbody><tr><td>Mecanismo</td><td>Falência da bomba Na⁺/K⁺-ATPase</td><td>Ruptura da barreira hematoencefálica</td></tr><tr><td>Onde</td><td><strong>Substância cinzenta e branca</strong></td><td><strong>Principalmente substância branca</strong></td></tr><tr><td>Causa clássica</td><td>AVC isquêmico agudo</td><td>Tumores, metástases, abscessos</td></tr><tr><td>Distribuição</td><td>Segue território vascular</td><td>Ao redor da lesão (perilesional)</td></tr><tr><td>TC</td><td>Hipodensidade de córtex e substância branca (perde a diferenciação córtico-subcortical)</td><td>Hipodensidade na substância branca</td></tr><tr><td>RM difusão (DWI)</td><td>Restrição à difusão</td><td>Geralmente sem restrição</td></tr><tr><td>Reversibilidade</td><td>Frequentemente irreversível</td><td>Potencialmente reversível</td></tr></tbody></table><p>Na aula foram destacados: <strong>substância cinzenta e branca</strong> no citotóxico e <strong>principalmente substância branca</strong> no vasogênico.</p>",
-   "imgFutura": "content/img/imagem/s39.jpg"
+   "html": "<table><thead><tr><th>Característica</th><th>Citotóxico</th><th>Vasogênico</th></tr></thead><tbody><tr><td>Mecanismo</td><td>Falência da bomba Na⁺/K⁺-ATPase</td><td>Ruptura da barreira hematoencefálica</td></tr><tr><td>Onde</td><td><strong>Substância cinzenta e branca</strong></td><td><strong>Principalmente substância branca</strong></td></tr><tr><td>Causa clássica</td><td>AVC isquêmico agudo</td><td>Tumores, metástases, abscessos</td></tr><tr><td>Distribuição</td><td>Segue território vascular</td><td>Ao redor da lesão (perilesional)</td></tr><tr><td>TC</td><td>Hipodensidade de córtex e substância branca (perde a diferenciação córtico-subcortical)</td><td>Hipodensidade na substância branca</td></tr><tr><td>RM difusão (DWI)</td><td>Restrição à difusão</td><td>Geralmente sem restrição</td></tr><tr><td>Reversibilidade</td><td>Frequentemente irreversível</td><td>Potencialmente reversível</td></tr></tbody></table><p>Na aula foram destacados: <strong>substância cinzenta e branca</strong> no citotóxico e <strong>principalmente substância branca</strong> no vasogênico.</p>"
   },
   {
    "tipo": "slide",
    "titulo": "Edema vasogênico × edema citotóxico na TC",
-   "html": "<p>Duas TC de crânio lado a lado. À esquerda, <strong>edema vasogênico</strong>: hipodensidade em “dedos de luva”, só na substância branca, poupando o córtex. À direita, <strong>edema citotóxico</strong>: hipodensidade que pega córtex e substância branca juntos, com perda da diferenciação córtico-subcortical.</p>",
-   "imgFutura": "content/img/imagem/s40.jpg"
+   "html": "<p>Duas TC de crânio lado a lado. À esquerda, <strong>edema vasogênico</strong>: hipodensidade em “dedos de luva”, só na substância branca, poupando o córtex. À direita, <strong>edema citotóxico</strong>: hipodensidade que pega córtex e substância branca juntos, com perda da diferenciação córtico-subcortical.</p>"
   },
   {
    "tipo": "slide",
    "titulo": "1 · TC · 2 · RM T1 · 3 · RM T2 · 4 · RM FLAIR (slide do vídeo)",
-   "html": "<p>O mesmo cérebro em 4 exames: <strong>1 TC · 2 RM T1 · 3 RM T2 · 4 RM FLAIR</strong>.</p><table><thead><tr><th>Exame</th><th>Líquido (LCR nos ventrículos)</th><th>Dica</th></tr></thead><tbody><tr><td>TC</td><td>Escuro (hipodenso)</td><td>Osso da calota bem branco</td></tr><tr><td>RM T1</td><td>Escuro</td><td>Boa para anatomia; substância branca mais clara que a cinzenta</td></tr><tr><td>RM T2</td><td><strong>Branco</strong></td><td>“T2 = água branca”</td></tr><tr><td>RM FLAIR</td><td>Escuro (o LCR é suprimido)</td><td>É um T2 que apaga o líquor: lesões e edema ficam brancos</td></tr></tbody></table>",
-   "imgFutura": "content/img/imagem/svid.jpg"
+   "html": "<p>O mesmo cérebro em 4 exames: <strong>1 TC · 2 RM T1 · 3 RM T2 · 4 RM FLAIR</strong>.</p><table><thead><tr><th>Exame</th><th>Líquido (LCR nos ventrículos)</th><th>Dica</th></tr></thead><tbody><tr><td>TC</td><td>Escuro (hipodenso)</td><td>Osso da calota bem branco</td></tr><tr><td>RM T1</td><td>Escuro</td><td>Boa para anatomia; substância branca mais clara que a cinzenta</td></tr><tr><td>RM T2</td><td><strong>Branco</strong></td><td>“T2 = água branca”</td></tr><tr><td>RM FLAIR</td><td>Escuro (o LCR é suprimido)</td><td>É um T2 que apaga o líquor: lesões e edema ficam brancos</td></tr></tbody></table>"
   },
   {
    "tipo": "q",
@@ -1028,7 +1017,7 @@
    "certa": 2,
    "explica": "De fora para dentro: dura → aracnoide → pia (colada no cérebro).",
    "tempo": 40,
-   "imgFutura": "content/img/imagem/k31.jpg"
+   "img": "content/img/imagem/k31.jpg"
   },
   {
    "tipo": "q",
@@ -1043,7 +1032,7 @@
    "certa": 2,
    "explica": "Entre aracnoide e pia, com LCR e as artérias do polígono de Willis.",
    "tempo": 30,
-   "imgFutura": "content/img/imagem/k32.jpg"
+   "img": "content/img/imagem/k32.jpg"
   },
   {
    "tipo": "q",
@@ -1058,8 +1047,8 @@
    "certa": 0,
    "explica": "Suspeita de fratura começa pelo RX.",
    "tempo": 20,
-   "imgFutura": "content/img/imagem/k33.jpg",
-   "anot": "Escrito na foto: <strong>RX</strong> para fratura; a TC/RM ficaria para depois, ou “se fosse muscular” (ver K34)."
+   "anot": "Escrito na foto: <strong>RX</strong> para fratura; a TC/RM ficaria para depois, ou “se fosse muscular” (ver K34).",
+   "img": "content/img/imagem/k33.jpg"
   },
   {
    "tipo": "q",
@@ -1078,8 +1067,8 @@
     1,
     2
    ],
-   "imgFutura": "content/img/imagem/k34.jpg",
-   "anot": "Na foto, a alternativa circulada foi a TC. A literatura indica US como exame inicial na lesão muscular; aqui as duas contam como certas."
+   "anot": "Na foto, a alternativa circulada foi a TC. A literatura indica US como exame inicial na lesão muscular; aqui as duas contam como certas.",
+   "img": "content/img/imagem/k34.jpg"
   }
  ],
  "kahootInfo": {

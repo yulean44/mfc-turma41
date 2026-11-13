@@ -98,6 +98,9 @@ h1{font-weight:200;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(
 .desc b{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc2);font-weight:400;margin-bottom:4px}
 .anot{margin-top:10px;padding:10px 14px;border-left:2px solid var(--gold);background:rgba(242,196,110,.08);border-radius:8px;color:#e9f0f8;font-weight:300;font-size:14.5px}
 .anot strong{font-weight:500}
+.pfig{position:relative;width:100%;max-width:320px;aspect-ratio:1;margin:0 auto}
+.pfig img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity 1.2s ease}
+.pfig .cheio{filter:drop-shadow(0 0 30px rgba(143,214,255,.22))}
 .oculto{display:none!important}
 </style>
 </head>
@@ -112,7 +115,7 @@ h1{font-weight:200;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(
       <h1>Kahoot</h1>
       <p class="muted" id="capaSub">O Kahoot da aula na ordem da professora, com as imagens e os slides de explicação. Responda rápido: quanto mais cedo acertar, mais pontos.</p>
       <ul>
-        <li>Cada acerto faz surgir algo no planeta.</li>
+        <li>No fim, seu planeta floresce conforme os acertos.</li>
         <li>3 acertos seguidos viram uma sequência e valem bônus.</li>
         <li>No final você vê o que errou, com a explicação.</li>
       </ul>
@@ -140,7 +143,7 @@ h1{font-weight:200;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(
   <section id="telaFim" class="vidro fim oculto">
     <div class="kicker">Resultado</div>
     <h1 id="fimTit">Seu planeta</h1>
-    <div id="planetaFim" style="max-width:300px;margin:0 auto"></div>
+    <div id="planetaFim" style="max-width:280px;margin:0 auto"></div>
     <div class="placar"><div><b id="fPts">0</b>pontos</div><div><b id="fAc">0</b>acertos</div><div><b id="fSeq">0</b>maior sequência</div></div>
     <p class="muted" id="fimMsg"></p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn" id="btDeNovo">Jogar de novo</button><button class="btn sec" id="btSoErros">Refazer só os erros</button></div>
@@ -161,6 +164,12 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 /* planeta em SVG: um elemento novo a cada acerto */
+let FIGS = null;
+/* planetas no estilo do site (figuras.js): vazio → completo conforme os acertos */
+function planetaFig(pct) {
+  if (!FIGS || !FIGS.planeta_vazio || !FIGS.planeta_completo) return planetaSVG(Math.round(pct * 18));
+  return `<div class="pfig"><img src="${FIGS.planeta_vazio}" alt=""><img class="cheio" src="${FIGS.planeta_completo}" alt="" style="opacity:${pct.toFixed(2)}"></div>`;
+}
 let nPl = 0;
 function planetaSVG(n) {
   const u = "p" + (++nPl);
@@ -205,12 +214,13 @@ const perguntas = () => DADOS.kahoot.filter(x => x.tipo !== "slide");
 
 async function carrega() {
   const mat = new URLSearchParams(location.search).get("mat") || "imagem";
-  try { const r = await fetch(`content/${mat}.json?v=17`); if (!r.ok) throw 0; DADOS = await r.json(); }
+  try { const r = await fetch(`content/${mat}.json?v=18`); if (!r.ok) throw 0; DADOS = await r.json(); }
   catch { DADOS = EMBUTIDO; }
   if (!DADOS || !DADOS.kahoot) { $("#capaSub").textContent = "Não encontrei perguntas para esta matéria."; $("#btJogar").disabled = true; return; }
   $("#capaSigla").textContent = (DADOS.kahootInfo && DADOS.kahootInfo.titulo) || DADOS.nome;
   $("#chipMat").innerHTML = `Kahoot · <b>${esc(DADOS.sigla || DADOS.nome)}</b>`;
-  $("#planetaCapa").innerHTML = planetaSVG(6);
+  try { FIGS = (await import("./figuras.js?v=18")).FIG; } catch {}
+  $("#planetaCapa").innerHTML = planetaFig(1);
   const n = perguntas().length, sl = DADOS.kahoot.length - n;
   $("#capaSub").textContent = `${n} perguntas na ordem da professora${sl ? `, ${sl} slides de explicação` : ""} e as anotações da aula no gabarito. Quanto mais cedo acertar, mais pontos.`;
   const fotos = [...new Set(DADOS.kahoot.map(x => x.foto).filter(Boolean))];
@@ -284,7 +294,7 @@ function fim() {
   tela("telaFim");
   const pct = nPerg ? acertos / nPerg : 0;
   $("#fPts").textContent = pontos; $("#fAc").textContent = `${acertos}/${nPerg}`; $("#fSeq").textContent = maiorSeq;
-  $("#planetaFim").innerHTML = planetaSVG(Math.round(pct * 18));
+  $("#planetaFim").innerHTML = planetaFig(0); requestAnimationFrame(() => setTimeout(() => { const c = $("#planetaFim .cheio"); if (c) c.style.opacity = pct.toFixed(2); else $("#planetaFim").innerHTML = planetaFig(pct); }, 80));
   $("#fimTit").textContent = pct >= .85 ? "Planeta florescendo" : pct >= .6 ? "Planeta crescendo" : "Planeta brotando";
   $("#fimMsg").textContent = pct >= .85 ? "Pronto para a prova. Mantenha os flashcards em dia." : pct >= .6 ? "Bom caminho. Revise os erros abaixo e jogue de novo." : "Releia os blocos do Kahoot destrinchado e tente outra vez.";
   $("#btSoErros").classList.toggle("oculto", !erros.length);
