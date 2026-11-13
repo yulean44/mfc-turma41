@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Estudos">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=28">
-<link rel="icon" type="image/png" href="favicon.png?v=28">
-<link rel="manifest" href="manifest.webmanifest?v=28">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=29">
+<link rel="icon" type="image/png" href="favicon.png?v=29">
+<link rel="manifest" href="manifest.webmanifest?v=29">
 <title>Planeta de Estudos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
@@ -666,6 +666,37 @@ body.arv-aberta .main{z-index:60}
 
 .consulta .lin{min-width:0}.consulta .lin > *{flex-shrink:0}.consulta .lin .kicker{flex-shrink:1;min-width:0}
 @media (max-width:600px){#cnTroca{font-size:0;gap:0;width:40px;padding:0;justify-content:center}.consulta .acomp{font-size:12px}}
+
+/* ===== menu lateral no estilo do Claude: painel fixo à esquerda, compacto ===== */
+.arv-topo{display:flex;align-items:center;gap:4px;min-height:40px;padding:0 2px 0 10px}
+.arv-marca{flex:1;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden}
+.arv-topo .arv-tit{display:none}
+.arv-btn{display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;border-radius:8px;background:none;color:var(--muted);cursor:pointer;transition:background-color .12s,color .12s}
+.arv-btn svg{width:17px;height:17px}
+.arv-btn:hover{background:var(--glass3);color:var(--ink)}
+.arv-btn.on{background:var(--glass3);color:var(--forte)}
+.arv-apps{display:flex;justify-content:space-between;gap:2px;padding:6px 4px 10px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.arv-sec{padding:6px 10px 6px;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.02em}
+.arv-it.on{background:var(--glass3)!important;color:var(--forte)}
+.arv-it.raiz{margin-bottom:2px}
+.trilha{box-shadow:none;border-radius:12px}
+@media (min-width:901px){
+  .arv-x{display:none!important}
+  body.estudo:not(.arv-oculta) .nav,body.estudo:not(.arv-oculta) .marca{display:none}
+  body.estudo:not(.arv-oculta) .main{padding-left:calc(272px + 30px)}
+  body.estudo .ws{grid-template-columns:minmax(0,1fr);max-width:1240px;margin:0 auto}
+  body.estudo .arvore{position:fixed;left:0;top:0;bottom:0;width:272px;max-height:none;border-radius:0;border:0;border-right:1px solid var(--line);box-shadow:none;padding:calc(10px + env(safe-area-inset-top)) 10px 18px calc(10px + env(safe-area-inset-left));background:var(--solid);background:color-mix(in srgb,var(--solid) 94%,var(--ink) 6%);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+}
+@media (max-width:900px){
+  .arv-apps,.arv-rec,.arv-marca{display:none}
+  .arv-topo .arv-tit{display:block;flex:1}
+  .arv-sec{display:none}
+  .arv-btn.arv-x{width:44px;height:44px}
+}
+
+.ws .toc{background:none;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:4px 4px}
+@media (min-width:901px){body.estudo:not(.arv-oculta) #espaco{opacity:0;visibility:hidden;transition:opacity .3s}}
+.ws .toc.vidro{background:transparent!important;box-shadow:none!important;border-color:transparent!important}.ws .toc.vidro::before,.ws .toc.vidro::after{display:none}
 </style>
 </head>
 <body>
@@ -686,6 +717,6 @@ body.arv-aberta .main{z-index:60}
 <div id="timerPill" class="timerpill chipi" hidden></div>
 <aside class="consulta vidro" id="consulta" aria-label="Consulta lateral"></aside>
 <div id="modalRoot"></div>
-<script type="module" src="app.js?v=28"></script>
+<script type="module" src="app.js?v=29"></script>
 </body>
 </html>

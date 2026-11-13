@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=28";
-import { ic, ICONES_MATERIA } from "./icons.js?v=28";
-import { FIG } from "./figuras.js?v=28";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=29";
+import { ic, ICONES_MATERIA } from "./icons.js?v=29";
+import { FIG } from "./figuras.js?v=29";
 
 /* =========================================================
    utilidades
@@ -387,7 +387,7 @@ let atual = null, sub = LS.get("sub", { tela: "lista" }), editando = false;
 function show(v, opts = {}) {
   if (!VIEWS.some(x => x[0] === v)) v = "inicio";
   if (editando && v !== "materias") editando = false;
-  atual = v; LS.set("view", v);
+  atual = v; LS.set("view", v); document.body.classList.toggle("estudo", v === "materias"); if (v !== "materias") fechaArvore();
   VIEWS.forEach(([k]) => { $("#view-" + k).hidden = k !== v; });
   $$(".navbtn[data-view]").forEach(b => b.classList.toggle("active", b.dataset.view === v));
   layoutMundo(); render(); renderConsulta(); sincronizaHash();
@@ -455,7 +455,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=28"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=29"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -652,7 +652,7 @@ function trilha(partes, ferramentas = "") {
 const fechaArvore = () => document.body.classList.remove("arv-aberta");
 document.addEventListener("click", e => {
   const h = e.target.closest(".trilha [data-hash]"); if (h) { const d = h.dataset.hash; if (d.split("/").length === 2) { abaMat = "secoes"; LS.set("abaMat", abaMat); } if (location.hash === "#" + d) render(); else location.hash = d; return; }
-  if (e.target.closest("#btArv")) {
+  if (e.target.closest("#btArv,#arvRecolhe")) {
     if (matchMedia("(max-width:900px)").matches) document.body.classList.toggle("arv-aberta");
     else { const o = !document.body.classList.contains("arv-oculta"); document.body.classList.toggle("arv-oculta", o); LS.set("arvOculta", o); }
     return;
@@ -682,7 +682,9 @@ function renderArvore() {
       <button class="arv-it arv-m ${sub.tela === "mat" && sub.mat === m.id && abaMat === "secoes" ? "on" : ""}" data-arv-abre="${esc(m.id)}" title="${esc(m.nome)}">${ic("pasta", "s")}<span>${esc(m.nome)}</span><em>${li}/${tot}</em></button></div>
       ${aberto ? `<div class="arv-filhos">${corpo || '<p class="arv-vazio">Nenhuma seção ainda.</p>'}${extras ? `<div class="arv-sep"></div>${extras}` : ""}</div>` : ""}`;
   };
-  el.innerHTML = `<div class="arv-cab"><span class="arv-tit">Matérias</span><button class="btn ic sm arv-x" id="arvFecha" title="Fechar" aria-label="Fechar menu">${ic("x", "s")}</button></div>
+  el.innerHTML = `<div class="arv-topo"><span class="arv-marca">Planeta de Estudos</span><span class="arv-tit">Matérias</span><button class="arv-btn arv-x" id="arvFecha" title="Fechar" aria-label="Fechar menu">${ic("x", "s")}</button><button class="arv-btn arv-rec" id="arvRecolhe" title="Recolher menu" aria-label="Recolher menu">${ic("painel", "s")}</button></div>
+    <div class="arv-apps" role="navigation" aria-label="Ir para">${VIEWS.map(([k, i, t]) => `<button class="arv-btn ${k === "materias" ? "on" : ""}" data-arv-view="${k}" title="${t}" aria-label="${t}">${ic(i, "s")}</button>`).join("")}</div>
+    <div class="arv-sec">Matérias</div>
     <label class="arv-busca">${ic("lupa", "s")}<input id="busca" type="search" placeholder="Buscar em tudo" aria-label="Buscar em todas as seções" autocomplete="off" value="${esc(buscaMat)}"></label>
     <div id="resBusca"></div>
     <button class="arv-it raiz ${sub.tela === "lista" ? "on" : ""}" data-arv-raiz>${ic("casa", "s")}<span>Todas as matérias</span></button>
@@ -695,6 +697,7 @@ function renderArvore() {
   $("[data-arv-raiz]", el).addEventListener("click", () => { fechaArvore(); sub = { tela: "lista" }; LS.set("sub", sub); render(); sincronizaHash(); });
   $("#arvNova", el)?.addEventListener("click", novaMateria);
   $("#arvFecha", el).addEventListener("click", fechaArvore);
+  $$("[data-arv-view]", el).forEach(b => b.addEventListener("click", () => { if (b.dataset.arvView !== "materias") show(b.dataset.arvView); }));
   const inp = $("#busca", el); inp.addEventListener("input", () => { buscaMat = inp.value; mostraBusca(); }); mostraBusca();
   el.scrollTop = rol;
 }
@@ -1338,7 +1341,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=28`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=29`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1379,6 +1382,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=28").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=29").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();
