@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=26";
-import { ic, ICONES_MATERIA } from "./icons.js?v=26";
-import { FIG } from "./figuras.js?v=26";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=27";
+import { ic, ICONES_MATERIA } from "./icons.js?v=27";
+import { FIG } from "./figuras.js?v=27";
 
 /* =========================================================
    utilidades
@@ -396,7 +396,7 @@ function show(v, opts = {}) {
 function layoutMundo() {
   if (!mundo) return;
   const leitura = atual === "materias" && sub.tela === "sec";
-  mundo.layout(atual === "inicio" ? "centro" : atual === "mundo" ? "mundo" : leitura || atual === "revisao" ? "fundo" : "lado");
+  mundo.layout(atual === "inicio" ? "centro" : atual === "mundo" ? "mundo" : leitura || atual === "materias" || atual === "revisao" ? "fundo" : "lado");
 }
 /* endereço da página acompanha a tela: dá para salvar o link de uma seção e o "voltar" funciona */
 let viaHash = false;
@@ -455,7 +455,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=26"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=27"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -617,25 +617,86 @@ function abreSecao(mat, sid) { sub = { tela: "sec", mat, sid }; LS.set("sub", su
 function abreMateria(mat) { sub = { tela: "mat", mat }; LS.set("sub", sub); editando = false; show("materias"); }
 let buscaMat = "", destacar = "";
 function renderMaterias() {
-  const v = $("#view-materias");
+  const v0 = $("#view-materias");
   layoutMundo();
+  if (!$("#ws", v0)) v0.innerHTML = `<div class="ws" id="ws"><nav class="arvore" id="arvore" aria-label="Matérias e seções"></nav><div class="ws-main" id="wsMain"></div></div>`;
+  $("#ws", v0).classList.toggle("em-lista", !(sub.tela === "sec" && materia(sub.mat)) && !(sub.tela === "mat" && materia(sub.mat)));
+  const v = $("#wsMain", v0);
   if (sub.tela === "sec" && materia(sub.mat)) return renderLeitura(v);
   renderConsulta();
   if (sub.tela === "mat" && materia(sub.mat)) return renderMateria(v);
+  renderArvore();
   const ms = materias();
   v.innerHTML = `<div class="pagina">
-    <h1 class="titulo p">Matérias</h1>
-    <p class="intro"><b>Abra</b> uma seção · <b>leia</b> · <b>conclua</b> = +20 XP</p>
-    <label class="f" style="display:flex;align-items:center;gap:10px;max-width:520px;margin-bottom:22px;color:var(--muted)">${ic("lupa", "s")}<input id="busca" style="border:0;background:none;outline:0;flex:1;font:400 14.5px var(--font);color:var(--ink)" placeholder="Buscar em todas as seções" value="${esc(buscaMat)}"></label>
-    <div id="resBusca"></div>
-    <div class="mats">${ms.map(m => { const tot = m.secoes.length, li = m.secoes.filter(s => S.lidas[`${m.id}--${s.id}`]).length, st = S.mats[m.id];
-      return `<div class="mat vidro" data-mat="${esc(m.id)}"><div class="hd">${icoBox(iconeMat(m))}<div><b>${esc(m.nome)}</b><br><small>${esc(m.sub || "")}</small></div></div>
-        <div class="bar"><i style="width:${tot ? li / tot * 100 : 0}%"></i></div>
-        <small>${li} de ${tot} seções · ${cardsCompartilhados(m.id).length + (S.meus[m.id] || []).length} cards${st?.min ? " · " + fmtMin(st.min) : ""}</small></div>`; }).join("")}
-      ${souDono ? `<div class="mat vidro add" id="novaMat">${ic("mais")} Nova matéria</div>` : ""}</div></div>`;
-  $$("[data-mat]", v).forEach(b => b.addEventListener("click", () => abreMateria(b.dataset.mat)));
+    ${trilha([{ t: "Matérias" }])}
+    <h1 class="doc-tit">Matérias</h1>
+    <p class="intro"><b>Abra</b> uma seção no menu ao lado · <b>leia</b> · <b>conclua</b> = +20 XP</p>
+    <div class="explorer">
+      <div class="ex-cab"><span>Nome</span><span>Seções</span><span>Progresso</span></div>
+      ${ms.map(m => { const tot = m.secoes.length, li = m.secoes.filter(s => S.lidas[`${m.id}--${s.id}`]).length, pc = tot ? Math.round(li / tot * 100) : 0;
+        return `<button class="ex-lin" data-mat="${esc(m.id)}">${ic("pasta", "s")}<span class="nm"><b>${esc(m.nome)}</b><small>${esc(m.sub || "")}</small></span><span class="q">${tot}</span><span class="pg"><i class="bar"><i style="width:${pc}%"></i></i><small>${pc}%</small></span></button>`; }).join("")}
+      ${souDono ? `<button class="ex-lin novo" id="novaMat">${ic("mais", "s")}<span class="nm"><b>Nova matéria</b></span></button>` : ""}
+    </div></div>`;
+  $$("[data-mat]", v).forEach(b => b.addEventListener("click", () => { arvAbertas[b.dataset.mat] = true; LS.set("arvAbertas", arvAbertas); abaMat = "secoes"; LS.set("abaMat", abaMat); abreMateria(b.dataset.mat); }));
   $("#novaMat", v)?.addEventListener("click", novaMateria);
-  const inp = $("#busca", v); inp.addEventListener("input", () => { buscaMat = inp.value; mostraBusca(); }); mostraBusca();
+}
+/* ---------- menu lateral em árvore (matéria > grupo > seção) ---------- */
+let arvAbertas = LS.get("arvAbertas", {});
+document.body.classList.toggle("arv-oculta", LS.get("arvOculta", false));
+function trilha(partes, ferramentas = "") {
+  return `<div class="trilha"><button class="btn ic sm" id="btArv" title="Mostrar ou esconder o menu" aria-label="Menu de matérias">${ic("painel", "s")}</button>
+    <nav class="migalhas" aria-label="Você está em">${partes.map((p, i) => i === partes.length - 1 ? `<b aria-current="page">${esc(p.t)}</b>`
+      : (p.h != null ? `<button data-hash="${esc(p.h)}">${esc(p.t)}</button>` : `<span class="mig-g">${esc(p.t)}</span>`) + `<span class="sepm">${ic("chev", "s")}</span>`).join("")}</nav>
+    <span class="grow"></span>${ferramentas}</div>`;
+}
+const fechaArvore = () => document.body.classList.remove("arv-aberta");
+document.addEventListener("click", e => {
+  const h = e.target.closest(".trilha [data-hash]"); if (h) { location.hash = h.dataset.hash; return; }
+  if (e.target.closest("#btArv")) {
+    if (matchMedia("(max-width:900px)").matches) document.body.classList.toggle("arv-aberta");
+    else { const o = !document.body.classList.contains("arv-oculta"); document.body.classList.toggle("arv-oculta", o); LS.set("arvOculta", o); }
+    return;
+  }
+  if (document.body.classList.contains("arv-aberta") && !e.target.closest("#arvore")) fechaArvore();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.body.classList.contains("arv-aberta")) fechaArvore(); });
+function renderArvore() {
+  const el = $("#arvore"); if (!el) return;
+  const rol = el.scrollTop;
+  if (sub.tela !== "lista" && materia(sub.mat)) {
+    arvAbertas[sub.mat] = true;
+    if (sub.tela === "sec") { const g = grupoDe(materia(sub.mat), sub.sid); if (g) arvAbertas[sub.mat + "|" + g] = true; }
+  }
+  const pasta = m => {
+    const aberto = !!arvAbertas[m.id], tot = m.secoes.length, li = m.secoes.filter(s => S.lidas[`${m.id}--${s.id}`]).length;
+    const grupos = []; m.secoes.forEach(s => { const g = s.grupo || ""; let G = grupos.find(x => x.g === g); if (!G) grupos.push(G = { g, l: [] }); G.l.push(s); });
+    const item = s => { const lida = !!S.lidas[`${m.id}--${s.id}`], on = sub.tela === "sec" && sub.mat === m.id && sub.sid === s.id;
+      return `<button class="arv-it arv-d ${on ? "on" : ""} ${lida ? "lida" : ""}" data-arv-sec="${esc(s.id)}" data-arv-mat="${esc(m.id)}" title="${esc(s.titulo)}" ${on ? 'aria-current="page"' : ""}>${ic("doc", "s")}<span>${esc(s.titulo)}</span>${lida ? `<i class="arv-ok" aria-label="concluída">${ic("check", "s")}</i>` : ""}</button>`; };
+    const corpo = grupos.map(G => { if (!G.g) return G.l.map(item).join("");
+      const k = m.id + "|" + G.g, ab = !!arvAbertas[k];
+      return `<button class="arv-it pasta" data-arv-tog="${esc(k)}" aria-expanded="${ab}">${ic("chev", "s chev")}${ic("pasta", "s")}<span>${esc(G.g)}</span><em>${G.l.length}</em></button>${ab ? `<div class="arv-filhos">${G.l.map(item).join("")}</div>` : ""}`; }).join("");
+    const nCards = cardsCompartilhados(m.id).length + (S.meus[m.id] || []).length;
+    const extras = abasMat(m, nCards).filter(a => a[0] !== "secoes").map(([k, t, i]) => { const [nm, n] = t.split(" · ");
+      return `<button class="arv-it extra ${sub.tela === "mat" && sub.mat === m.id && abaMat === k ? "on" : ""}" data-arv-aba="${k}" data-arv-mat="${esc(m.id)}">${ic(i, "s")}<span>${esc(nm)}</span>${n ? `<em>${esc(n)}</em>` : ""}</button>`; }).join("");
+    return `<div class="arv-linha"><button class="arv-tg" data-arv-tog="${esc(m.id)}" aria-expanded="${aberto}" aria-label="${aberto ? "Recolher" : "Abrir"} ${esc(m.nome)}">${ic("chev", "s chev")}</button>
+      <button class="arv-it arv-m ${sub.tela === "mat" && sub.mat === m.id && abaMat === "secoes" ? "on" : ""}" data-arv-abre="${esc(m.id)}" title="${esc(m.nome)}">${ic("pasta", "s")}<span>${esc(m.nome)}</span><em>${li}/${tot}</em></button></div>
+      ${aberto ? `<div class="arv-filhos">${corpo || '<p class="arv-vazio">Nenhuma seção ainda.</p>'}${extras ? `<div class="arv-sep"></div>${extras}` : ""}</div>` : ""}`;
+  };
+  el.innerHTML = `<div class="arv-cab"><span class="arv-tit">Matérias</span><button class="btn ic sm arv-x" id="arvFecha" title="Fechar" aria-label="Fechar menu">${ic("x", "s")}</button></div>
+    <label class="arv-busca">${ic("lupa", "s")}<input id="busca" type="search" placeholder="Buscar em tudo" aria-label="Buscar em todas as seções" autocomplete="off" value="${esc(buscaMat)}"></label>
+    <div id="resBusca"></div>
+    <button class="arv-it raiz ${sub.tela === "lista" ? "on" : ""}" data-arv-raiz>${ic("casa", "s")}<span>Todas as matérias</span></button>
+    ${materias().map(pasta).join("")}
+    ${souDono ? `<button class="arv-it novo" id="arvNova">${ic("mais", "s")}<span>Nova matéria</span></button>` : ""}`;
+  $$("[data-arv-tog]", el).forEach(b => b.addEventListener("click", () => { const k = b.dataset.arvTog; arvAbertas[k] = !arvAbertas[k]; LS.set("arvAbertas", arvAbertas); renderArvore(); }));
+  $$("[data-arv-sec]", el).forEach(b => b.addEventListener("click", () => { fechaArvore(); abreSecao(b.dataset.arvMat, b.dataset.arvSec); }));
+  $$("[data-arv-abre]", el).forEach(b => b.addEventListener("click", () => { arvAbertas[b.dataset.arvAbre] = true; LS.set("arvAbertas", arvAbertas); abaMat = "secoes"; LS.set("abaMat", abaMat); fechaArvore(); abreMateria(b.dataset.arvAbre); }));
+  $$("[data-arv-aba]", el).forEach(b => b.addEventListener("click", () => { abaMat = b.dataset.arvAba; LS.set("abaMat", abaMat); fechaArvore(); abreMateria(b.dataset.arvMat); }));
+  $("[data-arv-raiz]", el).addEventListener("click", () => { fechaArvore(); sub = { tela: "lista" }; LS.set("sub", sub); render(); sincronizaHash(); });
+  $("#arvNova", el)?.addEventListener("click", novaMateria);
+  $("#arvFecha", el).addEventListener("click", fechaArvore);
+  const inp = $("#busca", el); inp.addEventListener("input", () => { buscaMat = inp.value; mostraBusca(); }); mostraBusca();
+  el.scrollTop = rol;
 }
 function mostraBusca() {
   const box = $("#resBusca"); if (!box) return;
@@ -673,16 +734,16 @@ function renderMateria(v) {
   const grupos = []; m.secoes.forEach(s => { const g = s.grupo || ""; let G = grupos.find(x => x.g === g); if (!G) grupos.push(G = { g, l: [] }); G.l.push(s); });
   const nCards = cardsCompartilhados(m.id).length + (S.meus[m.id] || []).length;
   v.innerHTML = `<div class="pagina">
-    <button class="backlink" id="voltar">${ic("seta", "s")} Matérias</button>
+    ${trilha([{ t: "Matérias", h: "materias" }, { t: m.nome }])}
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
       ${icoBox(iconeMat(m))}
-      <div style="flex:1;min-width:200px"><h1 class="titulo p" style="font-size:clamp(20px,2.4vw,30px)">${esc(m.nome)}</h1><p class="sub" style="margin-top:6px">${esc(m.sub || "")}</p></div>
+      <div style="flex:1;min-width:200px"><h1 class="doc-tit" style="margin:0">${esc(m.nome)}</h1><p class="sub" style="margin-top:6px">${esc(m.sub || "")}</p></div>
       ${souDono ? `<button class="btn sm" id="edMat">${ic("lapis", "s")}Editar</button><button class="btn sm bad" id="apMat">${ic("lixo", "s")}</button>` : ""}
     </div>
     <div class="barraTopo"><div class="tabs grande">${abasMat(m, nCards).map(([k, t, i]) => `<button class="${abaMat === k ? "on" : ""}" data-am="${k}">${k === "kahoot" && estiloIcone === "3d" && FIG.trofeu ? `<img class="tabfig" src="${FIG.trofeu}" alt="">` : ic(i, "s")}<span>${t}</span></button>`).join("")}</div></div>
     <div class="${abaMat === "kahoot" ? "" : "vidro card"}" id="matCorpo"></div></div>`;
-  $("#voltar").addEventListener("click", () => { sub = { tela: "lista" }; LS.set("sub", sub); render(); sincronizaHash(); });
-  $$("[data-am]", v).forEach(b => b.addEventListener("click", () => { abaMat = b.dataset.am; LS.set("abaMat", abaMat); renderMateria(v); }));
+  renderArvore();
+  $$("[data-am]", v).forEach(b => b.addEventListener("click", () => { abaMat = b.dataset.am; LS.set("abaMat", abaMat); renderMateria(v); sincronizaHash(); }));
   $("#edMat", v)?.addEventListener("click", () => editaMateria(m));
   $("#apMat", v)?.addEventListener("click", async () => { if (await confirma(`Apagar ${m.nome}?`, "A matéria some do site. O progresso das pessoas não é apagado.", "Apagar", true)) { await salvaIndice(materias().filter(x => x.id !== m.id)); sub = { tela: "lista" }; render(); } });
   const corpo = $("#matCorpo");
@@ -801,18 +862,13 @@ function renderLeitura(v) {
   if (consulta && consulta.mat === m.id && acompanhar && !trocando) { const p = parDe(m.id, s.id); if (p && p !== consulta.sid) { consulta = { mat: m.id, sid: p }; LS.set("consulta", consulta); } }
   trocando = false;
   v.innerHTML = `<div class="pagina larga">
-    <div class="barraTopo leit">
-      <button class="btn ic sm" id="voltar" title="Voltar para ${esc(m.nome)}">${ic("seta", "s")}</button>
-      ${gruposL.length > 1 ? `<div class="tabs">${gruposL.map(g => `<button class="${g === gAt ? "on" : ""}" data-lg="${esc(g)}">${esc(g)}</button>`).join("")}</div>` : ""}
-      <select class="f" id="lSec">${m.secoes.filter(x => (x.grupo || "Seções") === gAt).map(x => `<option value="${esc(x.id)}" ${x.id === s.id ? "selected" : ""}>${esc(x.titulo)}</option>`).join("")}</select>
-      <button class="btn ic sm" id="lAnt" ${ant ? "" : "disabled"} title="Seção anterior">${ic("seta", "s")}</button><button class="btn ic sm" id="lProx" ${prox ? "" : "disabled"} title="Próxima seção">${ic("setad", "s")}</button>
-      <span style="flex:1"></span>
-      <button class="btn sm ${consulta ? "on" : ""}" id="btConsulta" title="Abrir a parte correspondente ao lado">${ic("livro", "s")}${consulta ? "Fechar lado a lado" : "Lado a lado"}</button>
-      <button class="btn sm" id="lNotas" title="Minhas notas desta seção">${ic("lapis", "s")}Notas${nGr ? " · " + nGr : ""}</button>
-    </div>
+    ${trilha([{ t: "Matérias", h: "materias" }, { t: m.nome, h: "materias/" + m.id }, ...(s.grupo ? [{ t: s.grupo }] : []), { t: s.titulo }],
+      `<button class="btn ic sm" id="lAnt" ${ant ? "" : "disabled"} title="Seção anterior" aria-label="Seção anterior">${ic("seta", "s")}</button><button class="btn ic sm" id="lProx" ${prox ? "" : "disabled"} title="Próxima seção" aria-label="Próxima seção">${ic("setad", "s")}</button>
+      <button class="btn sm ${consulta ? "on" : ""}" id="btConsulta" title="Abrir a parte correspondente ao lado">${ic("livro", "s")}<span class="rot2">${consulta ? "Fechar lado a lado" : "Lado a lado"}</span></button>
+      <button class="btn sm" id="lNotas" title="Minhas notas desta seção">${ic("lapis", "s")}<span class="rot2">Notas${nGr ? " · " + nGr : ""}</span></button>`)}
     <div class="leitura">
       <article class="doc vidro">
-        <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:220px"><div class="kicker">${esc(s.grupo || m.sigla || "")}</div><h1 class="titulo p" style="font-size:clamp(20px,2.3vw,28px);margin-top:8px;letter-spacing:.14em">${esc(s.titulo)}</h1></div>
+        <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:220px"><div class="kicker">${esc(s.grupo || m.sigla || "")}</div><h1 class="doc-tit">${esc(s.titulo)}</h1></div>
         ${souDono ? `<button class="btn sm" id="btEditar2">${ic("lapis", "s")}Editar</button>` : ""}</div>
         <div class="linha"></div>
         <div id="pane">${html || '<p class="muted">Seção vazia.</p>'}</div>
@@ -823,10 +879,11 @@ function renderLeitura(v) {
       </article>
       <aside class="toc vidro"><div class="kicker" style="padding:0 10px 8px">Nesta seção</div><ul id="tocL"></ul>${S.timer ? "" : `<button class="btn sm" style="margin:12px 6px 4px" data-go="foco">${ic("relogio", "s")}Estudar com foco</button>`}</aside>
     </div></div>`;
+  renderArvore();
   const pane = $("#pane"); melhoraDoc(pane, m.id); aplicaGrifos(pane, k); ativaGrifos(pane, k, () => renderNotasSec(m, s));
   renderNotasSec(m, s);
   $$("[data-lg]", v).forEach(b => b.addEventListener("click", () => { const g = b.dataset.lg; if (g === gAt) return; const p = parDe(m.id, s.id); const alvo = (p && (m.secoes.find(x => x.id === p).grupo || "Seções") === g) ? p : m.secoes.find(x => (x.grupo || "Seções") === g).id; abreSecao(m.id, alvo); }));
-  $("#lSec").addEventListener("change", e => abreSecao(m.id, e.target.value));
+  $("#lSec")?.addEventListener("change", e => abreSecao(m.id, e.target.value));
   $("#lAnt").addEventListener("click", () => ant && abreSecao(m.id, ant.id));
   $("#lProx").addEventListener("click", () => prox && abreSecao(m.id, prox.id));
   $("#lNotas").addEventListener("click", () => $("#notasSec").scrollIntoView({ behavior: "smooth", block: "start" }));
@@ -843,7 +900,6 @@ function renderLeitura(v) {
   if (!hs.length) toc.innerHTML = `<li><a>${esc(s.titulo)}</a></li>`;
   hs.forEach((h, i) => { h.id = "h" + i; const li = document.createElement("li"), a = document.createElement("a"); a.href = "#"; a.textContent = h.textContent; a.addEventListener("click", e => { e.preventDefault(); h.scrollIntoView({ block: "start", behavior: "smooth" }); }); li.append(a); toc.append(li); });
   if (destacar) { realca(pane, destacar); destacar = ""; }
-  $("#voltar").addEventListener("click", () => abreMateria(m.id));
   $("#btLida").addEventListener("click", () => marcaLida(m.id, s.id, !lida));
   $("#btProx")?.addEventListener("click", () => abreSecao(m.id, prox.id));
   $("#btAnt")?.addEventListener("click", () => abreSecao(m.id, ant.id));
@@ -1283,7 +1339,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=26`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=27`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1324,6 +1380,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=26").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=27").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();
