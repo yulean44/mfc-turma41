@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=19";
-import { ic, ICONES_MATERIA } from "./icons.js?v=19";
-import { FIG } from "./figuras.js?v=19";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=20";
+import { ic, ICONES_MATERIA } from "./icons.js?v=20";
+import { FIG } from "./figuras.js?v=20";
 
 /* =========================================================
    utilidades
@@ -397,7 +397,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=19"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=20"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -628,7 +628,7 @@ function renderMateria(v) {
       <div style="flex:1;min-width:200px"><h1 class="titulo p" style="font-size:clamp(20px,2.4vw,30px)">${esc(m.nome)}</h1><p class="sub" style="margin-top:6px">${esc(m.sub || "")}</p></div>
       ${souDono ? `<button class="btn sm" id="edMat">${ic("lapis", "s")}Editar</button><button class="btn sm bad" id="apMat">${ic("lixo", "s")}</button>` : ""}
     </div>
-    <div class="barraTopo"><div class="tabs grande">${abasMat(m, nCards).map(([k, t, i]) => `<button class="${abaMat === k ? "on" : ""}" data-am="${k}">${ic(i, "s")}<span>${t}</span></button>`).join("")}</div></div>
+    <div class="barraTopo"><div class="tabs grande">${abasMat(m, nCards).map(([k, t, i]) => `<button class="${abaMat === k ? "on" : ""}" data-am="${k}">${k === "kahoot" && estiloIcone === "3d" && FIG.trofeu ? `<img class="tabfig" src="${FIG.trofeu}" alt="">` : ic(i, "s")}<span>${t}</span></button>`).join("")}</div></div>
     <div class="${abaMat === "kahoot" ? "" : "vidro card"}" id="matCorpo"></div></div>`;
   $("#voltar").addEventListener("click", () => { sub = { tela: "lista" }; LS.set("sub", sub); render(); });
   $$("[data-am]", v).forEach(b => b.addEventListener("click", () => { abaMat = b.dataset.am; LS.set("abaMat", abaMat); renderMateria(v); }));
@@ -1218,7 +1218,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=19`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=20`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1259,6 +1259,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=19").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=20").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();

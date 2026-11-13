@@ -112,7 +112,7 @@ h1{font-weight:200;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(
   <section id="telaCapa" class="vidro capa">
     <div>
       <div class="kicker" id="capaSigla">Diagnóstico por Imagem</div>
-      <h1>Kahoot</h1>
+      <h1 style="display:flex;align-items:center;gap:14px"><img id="capaIco" alt="" class="oculto" style="width:64px;height:64px;object-fit:contain">Kahoot</h1>
       <p class="muted" id="capaSub">O Kahoot da aula na ordem da professora, com as imagens e os slides de explicação. Responda rápido: quanto mais cedo acertar, mais pontos.</p>
       <ul>
         <li>No fim, seu planeta floresce conforme os acertos.</li>
@@ -214,13 +214,14 @@ const perguntas = () => DADOS.kahoot.filter(x => x.tipo !== "slide");
 
 async function carrega() {
   const mat = new URLSearchParams(location.search).get("mat") || "imagem";
-  try { const r = await fetch(`content/${mat}.json?v=19`); if (!r.ok) throw 0; DADOS = await r.json(); }
+  try { const r = await fetch(`content/${mat}.json?v=20`); if (!r.ok) throw 0; DADOS = await r.json(); }
   catch { DADOS = EMBUTIDO; }
   if (!DADOS || !DADOS.kahoot) { $("#capaSub").textContent = "Não encontrei perguntas para esta matéria."; $("#btJogar").disabled = true; return; }
   $("#capaSigla").textContent = (DADOS.kahootInfo && DADOS.kahootInfo.titulo) || DADOS.nome;
   $("#chipMat").innerHTML = `Kahoot · <b>${esc(DADOS.sigla || DADOS.nome)}</b>`;
-  try { FIGS = (await import("./figuras.js?v=19")).FIG; } catch {}
+  try { FIGS = (await import("./figuras.js?v=20")).FIG; } catch {}
   $("#planetaCapa").innerHTML = planetaFig(1);
+  if (FIGS && FIGS.trofeu) { $("#capaIco").src = FIGS.trofeu; $("#capaIco").classList.remove("oculto"); }
   const n = perguntas().length, sl = DADOS.kahoot.length - n;
   $("#capaSub").textContent = `${n} perguntas na ordem da professora${sl ? `, ${sl} slides de explicação` : ""} e as anotações da aula no gabarito. Quanto mais cedo acertar, mais pontos.`;
   const fotos = [...new Set(DADOS.kahoot.map(x => x.foto).filter(Boolean))];
