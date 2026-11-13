@@ -352,6 +352,70 @@ table.tb td{padding:11px 10px;border-bottom:1px solid var(--line);font-weight:30
   .cardrow{grid-template-columns:1fr}
   .titulo{letter-spacing:.2em}
 }
+
+/* ---- barra fixa no topo das matérias e da leitura ---- */
+.barraTopo{position:sticky;top:10px;z-index:6;margin:20px 0 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px;border-radius:22px;background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.barraTopo .tabs{border:0;background:transparent;padding:0;flex-wrap:wrap}
+.barraTopo .tabs.grande button{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;font-size:12px}
+.barraTopo .tabs.grande button svg{width:15px;height:15px}
+.barraTopo.leit{margin-top:4px}
+.barraTopo.leit select.f{width:auto;max-width:min(380px,60vw);padding:7px 12px;border-radius:99px;font-size:13.5px}
+.barraTopo .btn.on{background:var(--acc-soft);border-color:var(--acc)}
+.btn[disabled]{opacity:.35;cursor:default}
+@media (max-width:700px){.barraTopo{top:6px;border-radius:18px}.barraTopo .tabs.grande button span{font-size:10.5px}.barraTopo.leit select.f{max-width:100%;flex:1 1 100%;order:9}}
+/* ---- consulta ao lado ---- */
+.consulta .acomp{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;margin-right:4px}
+/* ---- grifos ---- */
+mark.grifo{color:inherit;border-radius:3px;padding:0 1px;cursor:pointer;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.g-a{background:rgba(242,196,110,.38)}.g-v{background:rgba(159,224,176,.36)}.g-z{background:rgba(143,214,255,.34)}.g-r{background:rgba(242,160,190,.36)}
+mark.grifo.comnota{border-bottom:2px dotted rgba(255,255,255,.7)}
+mark.grifo.pisca{outline:2px solid var(--ink);outline-offset:2px}
+.gtool{position:fixed;z-index:60;display:flex;align-items:center;gap:6px;padding:7px 9px;border-radius:99px;flex-wrap:wrap;max-width:min(420px,94vw)}
+.gtool .gc{width:24px;height:24px;border-radius:50%;border:1px solid var(--line2);cursor:pointer;padding:0}
+.gtool .gc.on{outline:2px solid var(--ink);outline-offset:1px}
+.gtool .gnota{flex:1 1 100%;font-size:13.5px;font-weight:300;padding:4px 6px 6px;color:var(--doc)}
+.notasSec{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);scroll-margin-top:90px}
+.notasSec .dica{font-size:13px;margin:4px 0 10px}
+.glist{display:grid;gap:8px;margin-bottom:10px}
+.gitem{display:flex;flex-direction:column;gap:4px;text-align:left;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:14px;padding:10px 12px;color:var(--ink);font:300 14px var(--font);cursor:pointer;width:100%;margin-bottom:8px}
+.gitem:hover{border-color:var(--line2)}
+.gitem .gq{border-radius:4px;padding:1px 4px;align-self:flex-start}
+.gitem .gn{color:var(--muted);font-size:13.5px}
+.nbloco{margin-bottom:12px}
+/* ---- Kahoot dentro da matéria ---- */
+.kframe{width:100%;height:760px;border:0;display:block;background:transparent;border-radius:22px}
+.zoomP{position:fixed;inset:0;z-index:80;background:rgba(6,9,16,.92);display:grid;place-items:center;padding:20px;cursor:zoom-out}
+.zoomP img{max-width:96vw;max-height:92vh;border-radius:12px}
+/* ---- casos clínicos ---- */
+.casos{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.caso{display:flex;flex-direction:column;gap:6px;text-align:left;padding:18px;border-radius:20px;color:var(--ink);font:300 14px var(--font);cursor:pointer;transition:.2s;border:1px solid var(--line)}
+.caso:hover{transform:translateY(-2px);border-color:var(--line2)}
+.caso b{font-weight:400;font-size:16.5px;line-height:1.35}
+.caso .lin{display:flex;align-items:center;justify-content:space-between}
+.caso .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.caso .tags i{font-style:normal;font-size:11px;letter-spacing:.06em;padding:3px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.okchip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ok)}
+.casoTopo{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+#matCorpo .prog{height:3px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:16px}
+#matCorpo .prog i{display:block;height:100%;background:var(--acc);transition:width .4s}
+.abertura{padding:16px 18px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--line);margin-bottom:14px}
+.etapa{padding:16px 0;border-top:1px solid var(--line)}
+.etapa .info{padding:12px 16px;border-left:2px solid var(--acc2);background:rgba(143,214,255,.06);border-radius:10px;margin:8px 0}
+.etapa .pq{font-size:17px;font-weight:400;margin:10px 0}
+.etapa.feita .pq{font-size:15px;color:var(--doc)}
+.etapa .rok{color:var(--ok);margin:4px 0}.etapa .rno{color:var(--bad);margin:4px 0}
+.etapa .ex{font-size:14px;margin:4px 0 0}
+.etapa .ops{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:700px){.etapa .ops{grid-template-columns:1fr}}
+.etapa .op{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);font:400 15px var(--font);cursor:pointer;transition:.15s}
+.etapa .op b{font-weight:500;color:var(--acc)}
+.etapa .op:hover:not([disabled]){border-color:var(--line2);background:rgba(255,255,255,.06)}
+.etapa .op.certa{border-color:var(--ok);background:rgba(159,224,176,.14)}.etapa .op.errada{border-color:var(--bad);background:rgba(242,160,143,.1)}.etapa .op.apaga{opacity:.4}
+.fbcaso{margin-top:12px;padding:14px 16px;border-radius:16px;border:1px solid var(--line)}
+.fbcaso.ok b{color:var(--ok)}.fbcaso.no b{color:var(--bad)}
+.fbcaso p{color:var(--doc);font-weight:300;margin:6px 0 12px}
+.doc img{max-width:min(100%,440px);border-radius:12px;display:block;margin:10px 0;border:1px solid var(--line)}
+.fimcaso .relac{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 </style>
 </head>
 <body>
@@ -372,6 +436,6 @@ table.tb td{padding:11px 10px;border-bottom:1px solid var(--line);font-weight:30
 <div id="timerPill" class="timerpill chipi" hidden></div>
 <aside class="consulta vidro" id="consulta" aria-label="Consulta lateral"></aside>
 <div id="modalRoot"></div>
-<script type="module" src="app.js?v=15"></script>
+<script type="module" src="app.js?v=16"></script>
 </body>
 </html>

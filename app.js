@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=15";
-import { ic, ICONES_MATERIA } from "./icons.js?v=15";
-import { FIG } from "./figuras.js?v=15";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=16";
+import { ic, ICONES_MATERIA } from "./icons.js?v=16";
+import { FIG } from "./figuras.js?v=16";
 
 /* =========================================================
    utilidades
@@ -48,7 +48,7 @@ const iconeMat = m => m.icone || (m.id === "mfc" ? "estetoscopio" : "livro");
 function novoEstado() {
   return { v: 2, upd: 0, xp: 0, nivel: 1, totMin: 0, totCards: 0, totOk: 0, totErr: 0, rev: 0, criados: 0,
     dias: {}, cards: {}, lidas: {}, premLidas: {}, checks: {}, decos: [], criaturas: [], efeitos: {}, verde: 0,
-    jornada: 0, conq: {}, diarias: null, diasCompletos: 0, log: [], maxSess: 0, meus: {}, mats: {}, ultimo: null, timer: null };
+    jornada: 0, conq: {}, diarias: null, diasCompletos: 0, log: [], maxSess: 0, meus: {}, mats: {}, ultimo: null, timer: null, notas: {}, casos: {}, kahootDia: {} };
 }
 let S = Object.assign(novoEstado(), LS.get("estado", {}));
 if (S.inv) { for (const [k, n] of Object.entries(S.inv)) for (let i = 0; i < n; i++) S.decos.push({ id: uid6(), k, d: [0, 1, 0], r: Math.random() * 6.28, s: Math.floor(Math.random() * 1e6) }); delete S.inv; }
@@ -81,9 +81,13 @@ let FABRICA = [];
 const CONT = { indice: null, secoes: {}, cards: {} };
 function materias() {
   if (CONT.indice && Array.isArray(CONT.indice.materias)) return CONT.indice.materias;
-  return FABRICA.map(m => ({ id: m.id, nome: m.nome, sigla: m.sigla, icone: m.icone, cor: m.cor, sub: m.sub, secoes: m.secoes.map(s => ({ id: s.id, titulo: s.titulo, grupo: s.grupo })) }));
+  return FABRICA.map(m => ({ id: m.id, nome: m.nome, sigla: m.sigla, icone: m.icone, cor: m.cor, sub: m.sub, secoes: m.secoes.map(s => ({ id: s.id, titulo: s.titulo, grupo: s.grupo, par: s.par })) }));
 }
 const materia = id => materias().find(m => m.id === id);
+const fab = id => FABRICA.find(m => m.id === id) || {};
+const temKahoot = id => Array.isArray(fab(id).kahoot) && fab(id).kahoot.length > 0;
+const casosDe = id => fab(id).casos || [];
+function parDe(mat, sid) { const m = materia(mat); if (!m) return null; const s = m.secoes.find(x => x.id === sid); let p = s && (s.par || ((fab(mat).secoes || []).find(x => x.id === sid) || {}).par); return p && m.secoes.find(x => x.id === p) ? p : null; }
 function htmlSecao(mat, sid) {
   const o = CONT.secoes[`${mat}--${sid}`]; if (o && typeof o.html === "string") return o.html;
   const f = FABRICA.find(m => m.id === mat); const s = f && f.secoes.find(x => x.id === sid);
@@ -393,7 +397,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=15"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=16"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -604,7 +608,15 @@ async function novaMateria() {
 async function editaMateria(m) { const o = await formulario("Editar matéria", camposMateria(m)); if (o) await salvaIndice(materias().map(x => x.id === m.id ? { ...x, ...o } : x)); }
 const alteraSecoes = (matId, fn) => salvaIndice(materias().map(x => x.id === matId ? { ...x, secoes: fn(x.secoes.map(s => ({ ...s }))) } : x));
 
-let abaMat = "secoes";
+let abaMat = LS.get("abaMat", "secoes");
+function abasMat(m, nCards) {
+  const a = [["secoes", `Seções · ${m.secoes.length}`, "livro"]];
+  if (temKahoot(m.id)) a.push(["kahoot", `Kahoot · ${fab(m.id).kahoot.filter(x => x.tipo !== "slide").length}`, "alvo"]);
+  if (casosDe(m.id).length) a.push(["casos", `Casos clínicos · ${casosDe(m.id).length}`, "estetoscopio"]);
+  a.push(["cards", `Flashcards · ${nCards}`, "cards"]);
+  const nN = contaNotas(m.id); a.push(["notas", `Minhas notas${nN ? " · " + nN : ""}`, "lapis"]);
+  return a;
+}
 function renderMateria(v) {
   const m = materia(sub.mat);
   const grupos = []; m.secoes.forEach(s => { const g = s.grupo || ""; let G = grupos.find(x => x.g === g); if (!G) grupos.push(G = { g, l: [] }); G.l.push(s); });
@@ -616,13 +628,17 @@ function renderMateria(v) {
       <div style="flex:1;min-width:200px"><h1 class="titulo p" style="font-size:clamp(20px,2.4vw,30px)">${esc(m.nome)}</h1><p class="sub" style="margin-top:6px">${esc(m.sub || "")}</p></div>
       ${souDono ? `<button class="btn sm" id="edMat">${ic("lapis", "s")}Editar</button><button class="btn sm bad" id="apMat">${ic("lixo", "s")}</button>` : ""}
     </div>
-    <div style="margin:22px 0 16px"><div class="tabs"><button class="${abaMat === "secoes" ? "on" : ""}" data-am="secoes">Seções · ${m.secoes.length}</button><button class="${abaMat === "cards" ? "on" : ""}" data-am="cards">Flashcards · ${nCards}</button></div></div>
-    <div class="vidro card" id="matCorpo"></div></div>`;
+    <div class="barraTopo"><div class="tabs grande">${abasMat(m, nCards).map(([k, t, i]) => `<button class="${abaMat === k ? "on" : ""}" data-am="${k}">${ic(i, "s")}<span>${t}</span></button>`).join("")}</div></div>
+    <div class="${abaMat === "kahoot" ? "" : "vidro card"}" id="matCorpo"></div></div>`;
   $("#voltar").addEventListener("click", () => { sub = { tela: "lista" }; LS.set("sub", sub); render(); });
-  $$("[data-am]", v).forEach(b => b.addEventListener("click", () => { abaMat = b.dataset.am; renderMateria(v); }));
+  $$("[data-am]", v).forEach(b => b.addEventListener("click", () => { abaMat = b.dataset.am; LS.set("abaMat", abaMat); renderMateria(v); }));
   $("#edMat", v)?.addEventListener("click", () => editaMateria(m));
   $("#apMat", v)?.addEventListener("click", async () => { if (await confirma(`Apagar ${m.nome}?`, "A matéria some do site. O progresso das pessoas não é apagado.", "Apagar", true)) { await salvaIndice(materias().filter(x => x.id !== m.id)); sub = { tela: "lista" }; render(); } });
   const corpo = $("#matCorpo");
+  if (!abasMat(m, nCards).some(a => a[0] === abaMat)) abaMat = "secoes";
+  if (abaMat === "kahoot") return renderKahootMat(corpo, m);
+  if (abaMat === "casos") return renderCasos(corpo, m);
+  if (abaMat === "notas") return renderNotasMat(corpo, m);
   if (abaMat !== "secoes") return renderCardsMateria(corpo, m);
   corpo.innerHTML = (grupos.map((G, gi) => `${G.g ? `<div class="grupo" ${gi ? "" : 'style="margin-top:4px"'}>${esc(G.g)}</div>` : ""}<div class="secs">${G.l.map(s => { const lida = !!S.lidas[`${m.id}--${s.id}`];
     return `<div class="sec ${lida ? "lida" : ""}" data-sec="${esc(s.id)}"><span class="ck">${lida ? ic("check", "s") : ""}</span><span class="t">${esc(s.titulo)}</span>
@@ -697,6 +713,7 @@ function melhoraDoc(pane, mat, naConsulta = false) {
 }
 /* ---------- consulta lateral ---------- */
 let consulta = LS.get("consulta", null);   // {mat, sid} ou null
+let acompanhar = LS.get("acompanhar", true), trocando = false;
 function grupoDe(m, sid) { return (m.secoes.find(x => x.id === sid) || {}).grupo || ""; }
 function abreConsulta(mat, sid) { const novo = !consulta; consulta = { mat, sid }; LS.set("consulta", consulta); renderConsulta(); if (novo && atual === "materias") { const b = $("#btConsulta"); if (b) b.lastChild.textContent = "Fechar consulta"; } }
 function fechaConsulta() { consulta = null; LS.set("consulta", null); renderConsulta(); }
@@ -709,13 +726,15 @@ function renderConsulta() {
   const grupos = [...new Set(m.secoes.map(x => x.grupo || "Seções"))], gAtual = grupoDe(m, consulta.sid) || "Seções";
   const doGrupo = m.secoes.filter(x => (x.grupo || "Seções") === gAtual);
   el.innerHTML = `<div class="cab">
-      <div class="lin"><span class="kicker" style="flex:1">Consulta ao lado</span><button class="btn ic sm" id="cnFecha" title="Fechar consulta">${ic("x", "s")}</button></div>
+      <div class="lin"><span class="kicker" style="flex:1">Ao lado</span><label class="acomp" title="Ao trocar de seção, abre aqui a parte correspondente"><input type="checkbox" id="cnAcomp" ${acompanhar ? "checked" : ""}> Acompanhar</label><button class="btn sm" id="cnTroca" title="Trocar de lado: abrir esta no centro">${ic("setad", "s")}Abrir no centro</button><button class="btn ic sm" id="cnFecha" title="Fechar">${ic("x", "s")}</button></div>
       ${grupos.length > 1 ? `<div class="tabs">${grupos.map(g => `<button class="${g === gAtual ? "on" : ""}" data-cg="${esc(g)}">${esc(g)}</button>`).join("")}</div>` : ""}
       <select class="f" id="cnSec">${doGrupo.map(x => `<option value="${esc(x.id)}" ${x.id === consulta.sid ? "selected" : ""}>${esc(x.titulo)}</option>`).join("")}</select>
     </div>
     <div class="corpo doc" id="cnCorpo">${htmlSecao(m.id, consulta.sid) || '<p class="muted">Seção vazia.</p>'}</div>`;
-  melhoraDoc($("#cnCorpo"), m.id, true);
-  $("#cnFecha").addEventListener("click", fechaConsulta);
+  melhoraDoc($("#cnCorpo"), m.id, true); aplicaGrifos($("#cnCorpo"), `${m.id}--${consulta.sid}`);
+  $("#cnFecha").addEventListener("click", () => { fechaConsulta(); if (atual === "materias") render(); });
+  $("#cnAcomp").addEventListener("change", e => { acompanhar = e.target.checked; LS.set("acompanhar", acompanhar); });
+  $("#cnTroca").addEventListener("click", () => { const antes = sub.sid, alvo = consulta.sid; consulta = { mat: m.id, sid: antes }; LS.set("consulta", consulta); trocando = true; abreSecao(m.id, alvo); });
   $("#cnSec").addEventListener("change", e => abreConsulta(m.id, e.target.value));
   $$("[data-cg]", el).forEach(b => b.addEventListener("click", () => { const p = m.secoes.find(x => (x.grupo || "Seções") === b.dataset.cg); if (p) abreConsulta(m.id, p.id); }));
 }
@@ -725,22 +744,39 @@ function renderLeitura(v) {
   const k = `${m.id}--${s.id}`, lida = !!S.lidas[k], idx = m.secoes.indexOf(s), prox = m.secoes[idx + 1], ant = m.secoes[idx - 1];
   const html = htmlSecao(m.id, s.id);
   if (editando && souDono) return renderEditor(v, m, s, html);
+  const gruposL = [...new Set(m.secoes.map(x => x.grupo || "Seções"))], gAt = s.grupo || "Seções", nGr = ((S.notas[k] || {}).g || []).length;
+  if (consulta && consulta.mat === m.id && acompanhar && !trocando) { const p = parDe(m.id, s.id); if (p && p !== consulta.sid) { consulta = { mat: m.id, sid: p }; LS.set("consulta", consulta); } }
+  trocando = false;
   v.innerHTML = `<div class="pagina larga">
-    <button class="backlink" id="voltar">${ic("seta", "s")} ${esc(m.nome)}</button>
+    <div class="barraTopo leit">
+      <button class="btn ic sm" id="voltar" title="Voltar para ${esc(m.nome)}">${ic("seta", "s")}</button>
+      ${gruposL.length > 1 ? `<div class="tabs">${gruposL.map(g => `<button class="${g === gAt ? "on" : ""}" data-lg="${esc(g)}">${esc(g)}</button>`).join("")}</div>` : ""}
+      <select class="f" id="lSec">${m.secoes.filter(x => (x.grupo || "Seções") === gAt).map(x => `<option value="${esc(x.id)}" ${x.id === s.id ? "selected" : ""}>${esc(x.titulo)}</option>`).join("")}</select>
+      <button class="btn ic sm" id="lAnt" ${ant ? "" : "disabled"} title="Seção anterior">${ic("seta", "s")}</button><button class="btn ic sm" id="lProx" ${prox ? "" : "disabled"} title="Próxima seção">${ic("setad", "s")}</button>
+      <span style="flex:1"></span>
+      <button class="btn sm ${consulta ? "on" : ""}" id="btConsulta" title="Abrir a parte correspondente ao lado">${ic("livro", "s")}${consulta ? "Fechar lado a lado" : "Lado a lado"}</button>
+      <button class="btn sm" id="lNotas" title="Minhas notas desta seção">${ic("lapis", "s")}Notas${nGr ? " · " + nGr : ""}</button>
+    </div>
     <div class="leitura">
       <article class="doc vidro">
         <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:220px"><div class="kicker">${esc(s.grupo || m.sigla || "")}</div><h1 class="titulo p" style="font-size:clamp(20px,2.3vw,28px);margin-top:8px;letter-spacing:.14em">${esc(s.titulo)}</h1></div>
-        <button class="btn sm" id="btConsulta" title="Deixar outra seção aberta ao lado">${ic("livro", "s")}${consulta ? "Fechar consulta" : "Resumo ao lado"}</button>
         ${souDono ? `<button class="btn sm" id="btEditar2">${ic("lapis", "s")}Editar</button>` : ""}</div>
         <div class="linha"></div>
         <div id="pane">${html || '<p class="muted">Seção vazia.</p>'}</div>
         <div class="leiturafim"><div class="ico ${lida ? "ok" : ""}">${ic(lida ? "check" : "livro", "s")}</div><div class="t"><b style="font-weight:400">${lida ? "Seção concluída" : "Terminou de ler?"}</b><br><small class="muted">${lida ? "Desmarque se quiser rever." : "Marque como concluída e ganhe 20 XP."}</small></div>
           <button class="btn ${lida ? "" : "pri"}" id="btLida">${lida ? "Desmarcar" : "Concluir seção"}</button></div>
+        <div class="notasSec" id="notasSec"></div>
         <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">${ant ? `<button class="btn" id="btAnt">${ic("seta", "s")}${esc(ant.titulo)}</button>` : ""}<span style="flex:1"></span>${prox ? `<button class="btn" id="btProx">${esc(prox.titulo)}${ic("setad", "s")}</button>` : ""}</div>
       </article>
       <aside class="toc vidro"><div class="kicker" style="padding:0 10px 8px">Nesta seção</div><ul id="tocL"></ul>${S.timer ? "" : `<button class="btn sm" style="margin:12px 6px 4px" data-go="foco">${ic("relogio", "s")}Estudar com foco</button>`}</aside>
     </div></div>`;
-  const pane = $("#pane"); melhoraDoc(pane, m.id);
+  const pane = $("#pane"); melhoraDoc(pane, m.id); aplicaGrifos(pane, k); ativaGrifos(pane, k, () => renderNotasSec(m, s));
+  renderNotasSec(m, s);
+  $$("[data-lg]", v).forEach(b => b.addEventListener("click", () => { const g = b.dataset.lg; if (g === gAt) return; const p = parDe(m.id, s.id); const alvo = (p && (m.secoes.find(x => x.id === p).grupo || "Seções") === g) ? p : m.secoes.find(x => (x.grupo || "Seções") === g).id; abreSecao(m.id, alvo); }));
+  $("#lSec").addEventListener("change", e => abreSecao(m.id, e.target.value));
+  $("#lAnt").addEventListener("click", () => ant && abreSecao(m.id, ant.id));
+  $("#lProx").addEventListener("click", () => prox && abreSecao(m.id, prox.id));
+  $("#lNotas").addEventListener("click", () => $("#notasSec").scrollIntoView({ behavior: "smooth", block: "start" }));
   const ch = (S.checks[k] ||= {});
   $$("li[data-checked]", pane).forEach((li, i) => {
     li.querySelector("input")?.remove();
@@ -761,11 +797,151 @@ function renderLeitura(v) {
   $("#btEditar2")?.addEventListener("click", () => { editando = true; render(); });
   $("#btConsulta").addEventListener("click", () => {
     // abre o outro grupo (ex.: lendo o Guia, abre o Resumo) na seção mais parecida
-    const g = s.grupo || "", outro = m.secoes.find(x => (x.grupo || "") !== g) || m.secoes.find(x => x.id !== s.id) || s;
+    const g = s.grupo || "", p = parDe(m.id, s.id), outro = (p && m.secoes.find(x => x.id === p)) || m.secoes.find(x => (x.grupo || "") !== g) || m.secoes.find(x => x.id !== s.id) || s;
     if (consulta) { fechaConsulta(); render(); } else { abreConsulta(m.id, outro.id); render(); }
   });
   renderConsulta();
 }
+/* ---------- grifos e mini notas ---------- */
+const CORES_GRIFO = [["a", "Amarelo"], ["v", "Verde"], ["z", "Azul"], ["r", "Rosa"]];
+function contaNotas(mat) { let n = 0; for (const [k, o] of Object.entries(S.notas || {})) if (k.startsWith(mat + "--")) n += (o.g || []).length + (o.txt ? 1 : 0); return n; }
+function textosDe(pane) {
+  const w = document.createTreeWalker(pane, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement && n.parentElement.closest(".notasSec,.gtool") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  const nodes = []; let n, cum = 0; while ((n = w.nextNode())) { nodes.push({ n, ini: cum }); cum += n.nodeValue.length; }
+  return { nodes, txt: nodes.map(x => x.n.nodeValue).join("") };
+}
+function aplicaGrifos(pane, k) {
+  const lista = (S.notas[k] || {}).g || []; if (!lista.length || !pane) return;
+  for (const gr of lista) {
+    const { nodes, txt } = textosDe(pane);
+    let pos = -1, de = 0; for (let o = 0; o <= (gr.o || 0); o++) { pos = txt.indexOf(gr.t, de); if (pos < 0) break; de = pos + 1; }
+    if (pos < 0) pos = txt.indexOf(gr.t); if (pos < 0) continue;
+    const fim = pos + gr.t.length;
+    nodes.forEach(({ n, ini }) => {
+      const a = Math.max(pos, ini), b = Math.min(fim, ini + n.nodeValue.length); if (a >= b || !n.nodeValue.slice(a - ini, b - ini).trim()) return;
+      const r = document.createRange(); r.setStart(n, a - ini); r.setEnd(n, b - ini);
+      const mk = document.createElement("mark"); mk.className = `grifo g-${gr.c}${gr.n ? " comnota" : ""}`; mk.dataset.g = gr.id; if (gr.n) mk.title = gr.n;
+      try { r.surroundContents(mk); } catch {}
+    });
+  }
+}
+let gtool = null;
+function fechaGtool() { gtool?.remove(); gtool = null; }
+function ativaGrifos(pane, k, depois) {
+  const salva = () => { salvar(); depois && depois(); };
+  const mostra = (x, y, html, liga) => { fechaGtool(); gtool = document.createElement("div"); gtool.className = "gtool vidro"; gtool.innerHTML = html; document.body.append(gtool);
+    const w = gtool.offsetWidth; gtool.style.left = Math.max(8, Math.min(innerWidth - w - 8, x - w / 2)) + "px"; gtool.style.top = Math.max(8, y - gtool.offsetHeight - 10) + "px"; liga(gtool); };
+  const novo = (c, comNota) => {
+    const sel = getSelection(); if (!sel.rangeCount || sel.isCollapsed) return; const r = sel.getRangeAt(0); if (!pane.contains(r.commonAncestorContainer)) return;
+    const { nodes, txt } = textosDe(pane); let a = Infinity, b = -1;
+    nodes.forEach(({ n, ini }) => { if (!r.intersectsNode(n)) return; const s0 = n === r.startContainer ? r.startOffset : 0, e0 = n === r.endContainer ? r.endOffset : n.nodeValue.length; if (e0 > s0) { a = Math.min(a, ini + s0); b = Math.max(b, ini + e0); } });
+    if (b <= a) return; const t = txt.slice(a, b); if (!t.trim()) return;
+    let o = 0, d = 0; while (true) { const p = txt.indexOf(t, d); if (p < 0 || p >= a) break; o++; d = p + 1; }
+    const gr = { id: uid6(), t, o, c, n: "", em: Date.now() }; sel.removeAllRanges(); fechaGtool();
+    const fecha = () => { (S.notas[k] ||= { g: [], txt: "" }).g.push(gr); limpaGrifos(pane); aplicaGrifos(pane, k); salva(); };
+    if (comNota) formulario("Nota do grifo", [{ k: "n", label: `“${t.slice(0, 80)}${t.length > 80 ? "…" : ""}”`, tipo: "area" }], "Salvar").then(o2 => { if (o2) gr.n = o2.n || ""; fecha(); });
+    else fecha();
+  };
+  pane.addEventListener("mouseup", e => setTimeout(() => {
+    const sel = getSelection(); if (!sel.rangeCount || sel.isCollapsed || !pane.contains(sel.anchorNode)) return;
+    const rc = sel.getRangeAt(0).getBoundingClientRect();
+    mostra(rc.left + rc.width / 2, rc.top, `${CORES_GRIFO.map(([c, t]) => `<button class="gc g-${c}" data-c="${c}" title="Grifar em ${t.toLowerCase()}"></button>`).join("")}<button class="btn sm" data-nota>${ic("lapis", "s")}Grifar com nota</button>`,
+      el => { $$("[data-c]", el).forEach(b => b.addEventListener("mousedown", ev => { ev.preventDefault(); novo(b.dataset.c, false); })); $("[data-nota]", el).addEventListener("mousedown", ev => { ev.preventDefault(); novo("a", true); }); });
+  }, 10));
+  pane.addEventListener("click", e => {
+    const mk = e.target.closest("mark.grifo"); if (!mk || !getSelection().isCollapsed) return;
+    const lista = (S.notas[k] || {}).g || [], gr = lista.find(x => x.id === mk.dataset.g); if (!gr) return;
+    const rc = mk.getBoundingClientRect();
+    mostra(rc.left + rc.width / 2, rc.top, `${gr.n ? `<div class="gnota">${esc(gr.n)}</div>` : ""}${CORES_GRIFO.map(([c, t]) => `<button class="gc g-${c} ${c === gr.c ? "on" : ""}" data-c="${c}" title="${t}"></button>`).join("")}<button class="btn sm" data-ed>${ic("lapis", "s")}${gr.n ? "Editar nota" : "Nota"}</button><button class="btn ic sm" data-rm title="Tirar grifo">${ic("lixo", "s")}</button>`,
+      el => {
+        $$("[data-c]", el).forEach(b => b.addEventListener("click", () => { gr.c = b.dataset.c; fechaGtool(); limpaGrifos(pane); aplicaGrifos(pane, k); salva(); }));
+        $("[data-ed]", el).addEventListener("click", async () => { fechaGtool(); const o2 = await formulario("Nota do grifo", [{ k: "n", label: `“${gr.t.slice(0, 80)}${gr.t.length > 80 ? "…" : ""}”`, tipo: "area", valor: gr.n }], "Salvar"); if (o2) { gr.n = o2.n || ""; limpaGrifos(pane); aplicaGrifos(pane, k); salva(); } });
+        $("[data-rm]", el).addEventListener("click", () => { S.notas[k].g = lista.filter(x => x.id !== gr.id); fechaGtool(); limpaGrifos(pane); aplicaGrifos(pane, k); salva(); });
+      });
+  });
+}
+function limpaGrifos(pane) { $$("mark.grifo", pane).forEach(mk => { const p = mk.parentNode; while (mk.firstChild) p.insertBefore(mk.firstChild, mk); mk.remove(); p.normalize(); }); }
+document.addEventListener("mousedown", e => { if (gtool && !gtool.contains(e.target)) fechaGtool(); });
+addEventListener("scroll", fechaGtool, { passive: true });
+function irParaGrifo(id) { setTimeout(() => { const mk = document.querySelector(`#pane mark.grifo[data-g="${id}"]`); if (mk) { mk.scrollIntoView({ block: "center", behavior: "smooth" }); mk.classList.add("pisca"); setTimeout(() => mk.classList.remove("pisca"), 1600); } }, 120); }
+function renderNotasSec(m, s) {
+  const k = `${m.id}--${s.id}`, o = S.notas[k] || { g: [], txt: "" }, box = $("#notasSec"); if (!box) return;
+  box.innerHTML = `<div class="kicker">Minhas notas desta seção</div>
+    <p class="muted dica">Selecione qualquer trecho do texto para grifar (4 cores) ou grifar com nota. Clique num grifo para mudar a cor, editar ou apagar.</p>
+    ${(o.g || []).length ? `<div class="glist">${o.g.map(g => `<button class="gitem" data-gi="${esc(g.id)}"><span class="gq g-${g.c}">${esc(g.t.length > 160 ? g.t.slice(0, 160) + "…" : g.t)}</span>${g.n ? `<span class="gn">${esc(g.n)}</span>` : ""}</button>`).join("")}</div>` : ""}
+    <textarea class="f" id="notaTxt" rows="3" placeholder="Anotação livre desta seção (fica salva no seu progresso)">${esc(o.txt || "")}</textarea>`;
+  $$("[data-gi]", box).forEach(b => b.addEventListener("click", () => irParaGrifo(b.dataset.gi)));
+  let t = null; $("#notaTxt").addEventListener("input", e => { clearTimeout(t); t = setTimeout(() => { (S.notas[k] ||= { g: [], txt: "" }).txt = e.target.value; salvar(); }, 500); });
+}
+function renderNotasMat(corpo, m) {
+  const itens = m.secoes.map(s => ({ s, o: S.notas[`${m.id}--${s.id}`] })).filter(x => x.o && ((x.o.g || []).length || x.o.txt));
+  corpo.innerHTML = itens.length ? itens.map(({ s, o }) => `<div class="nbloco"><div class="grupo" style="margin-top:4px">${esc(s.grupo || "")} · ${esc(s.titulo)}</div>
+      ${(o.g || []).map(g => `<button class="gitem" data-s="${esc(s.id)}" data-gi="${esc(g.id)}"><span class="gq g-${g.c}">${esc(g.t.length > 220 ? g.t.slice(0, 220) + "…" : g.t)}</span>${g.n ? `<span class="gn">${esc(g.n)}</span>` : ""}</button>`).join("")}
+      ${o.txt ? `<button class="gitem" data-s="${esc(s.id)}"><span class="gn">${esc(o.txt)}</span></button>` : ""}</div>`).join("")
+    : `<div class="empty">Nenhuma nota ainda. Abra uma seção e selecione um trecho do texto para grifar.</div>`;
+  $$("[data-s]", corpo).forEach(b => b.addEventListener("click", () => { const gi = b.dataset.gi; abreSecao(m.id, b.dataset.s); if (gi) irParaGrifo(gi); }));
+}
+/* ---------- Kahoot dentro da matéria ---------- */
+function renderKahootMat(corpo, m) {
+  corpo.innerHTML = `<iframe class="kframe" src="kahoot.html?mat=${encodeURIComponent(m.id)}&embed=1&v=16" title="Kahoot de ${esc(m.nome)}"></iframe>`;
+}
+function zoomImg(src) { const z = document.createElement("div"); z.className = "zoomP"; z.innerHTML = `<img src="${esc(src)}" alt="">`; z.addEventListener("click", () => z.remove()); document.body.append(z); }
+addEventListener("message", e => {
+  if (e.origin !== location.origin) return; const d = e.data || {};
+  const f = $(".kframe");
+  if (d.tipo === "kahoot-altura" && f) f.style.height = Math.max(560, d.h) + "px";
+  if (d.tipo === "kahoot-topo" && f) { const y = f.getBoundingClientRect().top + scrollY - 90; if (scrollY > y) scrollTo({ top: y, behavior: "smooth" }); }
+  if (d.tipo === "kahoot-zoom") zoomImg(d.src);
+  if (d.tipo === "kahoot-fim") {
+    const k = `${d.mat}:${hoje()}`;
+    if (!S.kahootDia[k]) { S.kahootDia[k] = 1; const xp = Math.max(10, (d.acertos || 0) * 2); ganhaXP(xp); diaObj().cards += 0; toast(`Kahoot concluído · +${xp} XP`); checaTudo(); salvar(); renderTopo(); }
+    else toast("Kahoot concluído. O XP do Kahoot vale uma vez por dia.");
+  }
+});
+/* ---------- casos clínicos ---------- */
+let casoAberto = null;
+function renderCasos(corpo, m) {
+  const lista = casosDe(m.id);
+  if (casoAberto && casoAberto.mat === m.id) { const c = lista.find(x => x.id === casoAberto.id); if (c) return jogaCaso(corpo, m, c); }
+  corpo.innerHTML = `<p class="muted" style="margin:0 0 14px;font-weight:300">Casos em etapas: você recebe a história aos poucos e decide em cada passo, como no plantão. No fim, os pontos-chave e as pegadinhas.</p>
+    <div class="casos">${lista.map(c => { const p = S.casos[`${m.id}--${c.id}`]; return `<button class="caso vidro" data-caso="${esc(c.id)}">
+      <div class="lin"><span class="kicker">${esc(c.nivel || "Caso")}</span>${p && p.fim ? `<span class="okchip">${ic("check", "s")}${p.ac}/${p.tot}</span>` : ""}</div>
+      <b>${esc(c.titulo)}</b><span class="muted">${esc(c.resumo || "")}</span>
+      <span class="tags">${(c.tags || []).map(t => `<i>${esc(t)}</i>`).join("")}</span></button>`; }).join("")}</div>`;
+  $$("[data-caso]", corpo).forEach(b => b.addEventListener("click", () => { casoAberto = { mat: m.id, id: b.dataset.caso, etapa: 0, ac: 0, resp: [] }; renderCasos(corpo, m); }));
+}
+function jogaCaso(corpo, m, c) {
+  const st = casoAberto, et = c.etapas, i = st.etapa, fimCaso = i >= et.length;
+  const feitas = et.slice(0, i).map((e, j) => `<div class="etapa feita"><div class="kicker">Etapa ${j + 1} · ${esc(e.titulo || "")}</div>${e.info ? `<div class="doc info">${e.info}</div>` : ""}<p class="pq">${esc(e.pergunta)}</p>
+      <p class="${st.resp[j] === e.certa ? "rok" : "rno"}">${st.resp[j] === e.certa ? "Você acertou: " : `Você marcou: ${esc(e.opcoes[st.resp[j]])} · Certo: `}<b>${esc(e.opcoes[e.certa])}</b></p><p class="muted ex">${e.explica}</p></div>`).join("");
+  const e = et[i];
+  corpo.innerHTML = `<div class="casoTopo"><button class="btn sm" id="csVolta">${ic("seta", "s")}Casos</button><span class="kicker" style="flex:1">${esc(c.nivel || "")} · ${esc(c.titulo)}</span><span class="chipi">${Math.min(i, et.length)}/${et.length}</span></div>
+    <div class="prog"><i style="width:${Math.min(i, et.length) / et.length * 100}%"></i></div>
+    <div class="doc abertura">${c.abertura}</div>
+    ${feitas}
+    ${fimCaso ? `<div class="etapa fimcaso"><div class="kicker">Fechamento · ${st.ac}/${et.length} decisões certas</div><div class="doc">${c.fechamento}</div>
+        ${(c.secoes || []).length ? `<div class="relac">${c.secoes.map(sid => { const s = m.secoes.find(x => x.id === sid); return s ? `<button class="btn sm" data-ver="${esc(sid)}">${ic("livro", "s")}${esc(s.titulo)}</button>` : ""; }).join("")}</div>` : ""}
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap"><button class="btn pri" id="csDeNovo">Refazer caso</button><button class="btn" id="csLista">Outros casos</button></div></div>`
+      : `<div class="etapa atual"><div class="kicker">Etapa ${i + 1} · ${esc(e.titulo || "")}</div>${e.info ? `<div class="doc info">${e.info}</div>` : ""}<p class="pq">${esc(e.pergunta)}</p>
+        <div class="ops">${e.opcoes.map((o, k) => `<button class="op" data-op="${k}"><b>${"ABCDE"[k]}</b><span>${esc(o)}</span></button>`).join("")}</div><div id="csFb"></div></div>`}`;
+  $("#csVolta").addEventListener("click", () => { casoAberto = null; renderCasos(corpo, m); });
+  $("#csLista")?.addEventListener("click", () => { casoAberto = null; renderCasos(corpo, m); });
+  $("#csDeNovo")?.addEventListener("click", () => { casoAberto = { mat: m.id, id: c.id, etapa: 0, ac: 0, resp: [] }; renderCasos(corpo, m); });
+  $$("[data-ver]", corpo).forEach(b => b.addEventListener("click", () => { abreSecao(m.id, b.dataset.ver); }));
+  if (fimCaso) {
+    const k = `${m.id}--${c.id}`, ja = S.casos[k];
+    if (!ja || !ja.fim || st.ac > (ja.ac || 0)) { if (!ja || !ja.fim) { ganhaXP(25); toast("Caso concluído · +25 XP"); } S.casos[k] = { fim: Date.now(), ac: st.ac, tot: et.length }; checaTudo(); salvar(); renderTopo(); }
+    return;
+  }
+  $$("[data-op]", corpo).forEach(b => b.addEventListener("click", () => {
+    if (b.closest(".ops").classList.contains("feito")) return; b.closest(".ops").classList.add("feito");
+    const k = +b.dataset.op, ok = k === e.certa; st.resp[i] = k; if (ok) st.ac++;
+    $$("[data-op]", corpo).forEach(x => { const n = +x.dataset.op; x.disabled = true; x.classList.add(n === e.certa ? "certa" : n === k ? "errada" : "apaga"); });
+    $("#csFb").innerHTML = `<div class="fbcaso ${ok ? "ok" : "no"}"><b>${ok ? "Boa decisão." : "Não foi a melhor decisão."}</b><p>${e.explica}</p><button class="btn pri" id="csProx">${i + 1 < et.length ? "Próxima etapa" : "Ver fechamento"}</button></div>`;
+    $("#csProx").addEventListener("click", () => { st.etapa++; renderCasos(corpo, m); setTimeout(() => $(".etapa.atual,.etapa.fimcaso")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60); });
+  }));
+}
+
 function realca(pane, q) {
   const w = document.createTreeWalker(pane, NodeFilter.SHOW_TEXT), nodes = []; let n; while ((n = w.nextNode())) nodes.push(n);
   const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"); let first = null;
@@ -1042,7 +1218,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=15`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=16`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1083,6 +1259,6 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=15").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=16").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();
