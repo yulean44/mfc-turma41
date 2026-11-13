@@ -442,9 +442,9 @@ mark.grifo.pisca{outline:2px solid var(--ink);outline-offset:2px}
 :root{--nav-bg:rgba(18,27,45,.45);--modal-bg:rgba(20,30,50,.88);--veu:rgba(6,10,20,.55)}
 :root[data-tema="claro"],:root[data-tema="amanhecer"]{--nav-bg:rgba(255,255,255,.7);--modal-bg:rgba(255,255,255,.96);--veu:rgba(210,222,234,.55)}
 :root[data-tema="claro"]{
-  --ink:#1b2733; --muted:#5b6b7c; --faint:#a3afbc; --line:rgba(20,40,70,.10); --line2:rgba(20,40,70,.18);
+  --ink:#1b2733; --muted:#5b6b7c; --faint:#8492a3; --line:rgba(20,40,70,.10); --line2:rgba(20,40,70,.18);
   --glass:rgba(255,255,255,.74); --glass2:rgba(20,40,70,.04); --glass3:rgba(20,40,70,.08); --solid:rgba(255,255,255,.95);
-  --acc:#3f9a6a; --acc2:#2f86c0; --acc-soft:rgba(63,154,106,.12); --ok:#3f9a6a; --bad:#c0574b; --gold:#a8790a;
+  --acc:#2f7f56; --acc2:#236f9f; --acc-soft:rgba(63,154,106,.12); --ok:#2f7f56; --bad:#c0574b; --gold:#a8790a;
   --on-ink:#ffffff; --doc:#2a3644; --forte:#0d1824; --opt:#ffffff;
   --fundo:radial-gradient(60% 55% at 35% 45%,#ffffff 0%,rgba(255,255,255,0) 70%),radial-gradient(45% 40% at 90% 10%,rgba(200,230,215,.55),transparent 70%),radial-gradient(45% 40% at 85% 95%,rgba(205,222,242,.7),transparent 70%),linear-gradient(180deg,#f5f8fb 0%,#e7eef5 100%);
   color-scheme:light;
@@ -539,6 +539,8 @@ select.f{background-color:var(--solid);color:var(--ink)}
   .tabs button{min-height:40px}
   .sec{min-height:48px}
 }
+#pane img,.consulta img{max-width:100%;height:auto}
+[role=button]{cursor:pointer}
 /* meta à direita dos títulos de seção */
 .hs-meta{letter-spacing:.06em;text-transform:none;font-size:12.5px;color:var(--faint);white-space:nowrap}
 .h-sec{flex-wrap:wrap;row-gap:4px}
@@ -547,6 +549,15 @@ select.f{background-color:var(--solid);color:var(--ink)}
 /* menos movimento para quem pede */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* auditoria v25: contraste e alvos de toque */
+.hs-meta,.fc-hint{color:var(--muted)}
+.g-n{color:var(--muted)}
+@media (pointer:coarse){
+  button.chipi{min-width:44px;min-height:44px;justify-content:center}
+  .durs button{min-height:44px}
+  .backlink{min-height:44px;padding:0 4px 0 0}
 }
 </style>
 </head>
@@ -568,6 +579,6 @@ select.f{background-color:var(--solid);color:var(--ink)}
 <div id="timerPill" class="timerpill chipi" hidden></div>
 <aside class="consulta vidro" id="consulta" aria-label="Consulta lateral"></aside>
 <div id="modalRoot"></div>
-<script type="module" src="app.js?v=24"></script>
+<script type="module" src="app.js?v=25"></script>
 </body>
 </html>

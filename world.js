@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
-import { CRIATURAS, DECOS } from "./data.js?v=24";
+import { CRIATURAS, DECOS } from "./data.js?v=25";
 
 /* ---------- ruído ---------- */
 function hash(x, y, z) { let h = x * 374761393 + y * 668265263 + z * 2147483647; h = (h ^ (h >>> 13)) * 1274126177; return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
@@ -169,7 +169,8 @@ export function criaMundo(host) {
   camera.position.set(0, 1.4, 6);
   const controls = new OrbitControls(camera, canvas);
   controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = .07;
-  controls.minDistance = 1.5; controls.maxDistance = 10; controls.autoRotate = true; controls.autoRotateSpeed = .45; controls.rotateSpeed = .55; controls.zoomSpeed = .7;
+  const semMovimento = matchMedia("(prefers-reduced-motion: reduce)");
+  controls.minDistance = 1.5; controls.maxDistance = 10; controls.autoRotate = !matchMedia("(prefers-reduced-motion: reduce)").matches; controls.autoRotateSpeed = .45; controls.rotateSpeed = .55; controls.zoomSpeed = .7;
 
   scene.add(new THREE.HemisphereLight("#dff1ff", "#2a3550", 1.1));
   const sol = new THREE.DirectionalLight("#fff3e0", 2.3); sol.castShadow = true;
@@ -394,7 +395,7 @@ export function criaMundo(host) {
     if (document.hidden) return;
     quadro++; if (leve && quadro % 2) return;
     const dt = Math.min(.05, (now - (frame.u || now)) / 1000) * (leve ? 2 : 1); frame.u = now; const t = now / 1000;
-    parado += dt; if (parado > 5) controls.autoRotate = true;
+    parado += dt; if (parado > 5 && !semMovimento.matches) controls.autoRotate = true;
     desl += (deslAlvo - desl) * Math.min(1, dt * 4); deslY += (deslYAlvo - deslY) * Math.min(1, dt * 4);
     if (distAlvo) { const l = camera.position.length(); camera.position.setLength(l + (distAlvo - l) * Math.min(1, dt * 3)); }
     const w = host.clientWidth, h = host.clientHeight;

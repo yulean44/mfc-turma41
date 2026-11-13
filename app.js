@@ -1,6 +1,6 @@
-import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=24";
-import { ic, ICONES_MATERIA } from "./icons.js?v=24";
-import { FIG } from "./figuras.js?v=24";
+import { CRIATURAS, DECOS, EFEITOS, RARIDADE, JORNADA, CONQUISTAS, DIARIAS, nivelXP } from "./data.js?v=25";
+import { ic, ICONES_MATERIA } from "./icons.js?v=25";
+import { FIG } from "./figuras.js?v=25";
 
 /* =========================================================
    utilidades
@@ -390,7 +390,7 @@ function show(v, opts = {}) {
   atual = v; LS.set("view", v);
   VIEWS.forEach(([k]) => { $("#view-" + k).hidden = k !== v; });
   $$(".navbtn[data-view]").forEach(b => b.classList.toggle("active", b.dataset.view === v));
-  layoutMundo(); render(); renderConsulta();
+  layoutMundo(); render(); renderConsulta(); sincronizaHash();
   if (!opts.manterScroll) window.scrollTo(0, 0);
 }
 function layoutMundo() {
@@ -398,6 +398,25 @@ function layoutMundo() {
   const leitura = atual === "materias" && sub.tela === "sec";
   mundo.layout(atual === "inicio" ? "centro" : atual === "mundo" ? "mundo" : leitura || atual === "revisao" ? "fundo" : "lado");
 }
+/* endereço da página acompanha a tela: dá para salvar o link de uma seção e o "voltar" funciona */
+let viaHash = false;
+function hashDe() {
+  let h = "#" + atual;
+  if (atual === "materias" && sub.tela !== "lista" && sub.mat) h += "/" + sub.mat + (sub.tela === "sec" && sub.sid ? "/" + sub.sid : "");
+  return h;
+}
+function sincronizaHash() {
+  if (!atual) return; const h = hashDe();
+  if (location.hash === h) return;
+  try { if (viaHash || !location.hash) history.replaceState(null, "", h); else history.pushState(null, "", h); } catch {}
+}
+function lerHash() {
+  const [v, mat, sid] = decodeURIComponent(location.hash.slice(1)).split("/");
+  if (!VIEWS.some(x => x[0] === v)) return null;
+  if (v === "materias") sub = mat ? (sid ? { tela: "sec", mat, sid } : { tela: "mat", mat }) : { tela: "lista" };
+  return v;
+}
+window.addEventListener("popstate", () => { const v = lerHash(); if (!v) return; viaHash = true; editando = false; LS.set("sub", sub); show(v); viaHash = false; });
 function render() {
   renderTopo();
   ({ inicio: renderInicio, mundo: renderMundo, foco: renderFoco, materias: renderMaterias, revisao: renderRevisao, missoes: renderMissoes, progresso: renderProgresso })[atual]?.();
@@ -436,7 +455,7 @@ temaMundo = () => mundo?.tema?.(tema);
 const estadoMundo = () => ({ verdor: verdor(), efeitos: S.efeitos, decos: S.decos, criaturas: S.criaturas });
 async function garanteMod() {
   if (mundoMod) return mundoMod;
-  try { mundoMod = await import("./world.js?v=24"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
+  try { mundoMod = await import("./world.js?v=25"); sorteioP = mundoMod.sorteiaPonto; } catch (e) { console.warn(e); }
   return mundoMod;
 }
 /* textos somem enquanto o planeta é girado/aproximado e sempre voltam depois */
@@ -662,7 +681,7 @@ function renderMateria(v) {
     </div>
     <div class="barraTopo"><div class="tabs grande">${abasMat(m, nCards).map(([k, t, i]) => `<button class="${abaMat === k ? "on" : ""}" data-am="${k}">${k === "kahoot" && estiloIcone === "3d" && FIG.trofeu ? `<img class="tabfig" src="${FIG.trofeu}" alt="">` : ic(i, "s")}<span>${t}</span></button>`).join("")}</div></div>
     <div class="${abaMat === "kahoot" ? "" : "vidro card"}" id="matCorpo"></div></div>`;
-  $("#voltar").addEventListener("click", () => { sub = { tela: "lista" }; LS.set("sub", sub); render(); });
+  $("#voltar").addEventListener("click", () => { sub = { tela: "lista" }; LS.set("sub", sub); render(); sincronizaHash(); });
   $$("[data-am]", v).forEach(b => b.addEventListener("click", () => { abaMat = b.dataset.am; LS.set("abaMat", abaMat); renderMateria(v); }));
   $("#edMat", v)?.addEventListener("click", () => editaMateria(m));
   $("#apMat", v)?.addEventListener("click", async () => { if (await confirma(`Apagar ${m.nome}?`, "A matéria some do site. O progresso das pessoas não é apagado.", "Apagar", true)) { await salvaIndice(materias().filter(x => x.id !== m.id)); sub = { tela: "lista" }; render(); } });
@@ -1195,8 +1214,8 @@ function telaLogin(podeFechar = false) {
       <h3>Planeta de Estudos</h3><p class="muted" style="font-weight:300;margin:0 0 18px">Entre para salvar seu planeta e seu progresso na nuvem. Funciona em qualquer celular ou computador.</p></div>
     <button class="btn pri" id="lgGoogle" style="width:100%;padding:13px">${ic("estrela", "s")}Entrar com Google</button>
     <div class="linha"></div>
-    <label class="lb" for="lgEmail">E-mail</label><input class="f" id="lgEmail" type="email" autocomplete="email" placeholder="voce@email.com">
-    <label class="lb" for="lgSenha">Senha</label><input class="f" id="lgSenha" type="password" autocomplete="current-password" placeholder="mínimo 6 caracteres">
+    <label class="lb" for="lgEmail">E-mail</label><input class="f" id="lgEmail" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="ex.: voce@email.com">
+    <label class="lb" for="lgSenha">Senha</label><input class="f" id="lgSenha" name="password" type="password" autocapitalize="none" spellcheck="false" autocomplete="current-password" placeholder="mínimo 6 caracteres">
     <p id="lgErro" style="color:var(--bad);font-size:13px;min-height:18px;margin:10px 0 0"></p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn" id="lgEntrar" style="flex:1">Entrar</button><button class="btn" id="lgCriar" style="flex:1">Criar conta</button></div>
     <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="backlink" id="lgEsqueci" style="margin:0">Esqueci a senha</button><button class="backlink" id="lgSem" style="margin:0">${podeFechar ? "Fechar" : "Usar sem conta"}</button></div>`, { onClose: () => { loginAberto = false; } });
@@ -1243,9 +1262,17 @@ async function aoMudarConta(u) {
   } catch (e) { console.warn(e); nuvem = "erro"; toast("Não consegui carregar seu progresso da nuvem."); renderTopo(); }
 }
 
-/* acessibilidade: botões só com ícone ganham nome a partir do título */
-new MutationObserver(() => { document.querySelectorAll("button[title]:not([aria-label])").forEach(b => b.setAttribute("aria-label", b.title)); })
-  .observe(document.body, { childList: true, subtree: true });
+/* acessibilidade: botões só com ícone ganham nome; cartões clicáveis funcionam com Tab + Enter */
+const CLICAVEIS = "[data-mat],[data-sec],[data-foco],[data-r],#novaMat,.mat.add,.fc-card,[data-cg]";
+new MutationObserver(() => {
+  document.querySelectorAll("button[title]:not([aria-label])").forEach(b => b.setAttribute("aria-label", b.title));
+  document.querySelectorAll(CLICAVEIS).forEach(el => { if (/^(BUTTON|A|SELECT|INPUT|OPTION)$/.test(el.tagName) || el.hasAttribute("tabindex")) return; el.tabIndex = 0; el.setAttribute("role", "button"); });
+  document.querySelectorAll("#pane img, .consulta img").forEach(i => { if (!i.loading) i.loading = "lazy"; i.decoding = "async"; });
+}).observe(document.body, { childList: true, subtree: true });
+document.addEventListener("keydown", e => {
+  const el = e.target; if (!(el instanceof HTMLElement) || el.getAttribute("role") !== "button" || /^(BUTTON|A)$/.test(el.tagName) || el.id === "fcCard") return;
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); el.click(); }
+});
 
 /* atalho escondido: 5 cliques no nome do site abrem o painel de administrador */
 { let n = 0, t = null; document.querySelector(".marca").addEventListener("click", () => { n++; clearTimeout(t); t = setTimeout(() => n = 0, 1500); if (n >= 5) { n = 0; painelAdmin(); } }); }
@@ -1256,7 +1283,7 @@ document.querySelector(".marca").style.cursor = "default";
    ========================================================= */
 const CONTEUDOS = ["mfc", "imagem"];   // um arquivo por matéria em content/<id>.json
 async function carregaFabrica() {
-  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=24`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
+  const r = await Promise.all(CONTEUDOS.map(id => fetch(`content/${id}.json?v=25`).then(x => x.ok ? x.json() : null).catch(e => { console.warn("conteúdo", id, e); return null; })));
   FABRICA = r.filter(Boolean);
 }
 async function conectaNuvem() {
@@ -1290,13 +1317,13 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
 (async function inicio() {
   await carregaFabrica();
   diarias();
-  const v0 = LS.get("view", "inicio");
-  show(VIEWS.some(x => x[0] === v0) ? v0 : "inicio");
+  const vh = lerHash(), v0 = vh || LS.get("view", "inicio");
+  viaHash = true; show(VIEWS.some(x => x[0] === v0) ? v0 : "inicio"); viaHash = false;
   await iniciaMundo();
   checaTudo(); atualiza();
   if (S.timer) tick();
   if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Cada minuto de foco, card respondido e seção concluída faz surgir algo novo nele. Comece com 5 minutos de foco." }), 900);
   if (modoConta) {
-    import("./conta.js?v=24").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+    import("./conta.js?v=25").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
   } else conectaNuvem();
 })();
