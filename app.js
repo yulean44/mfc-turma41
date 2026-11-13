@@ -56,9 +56,13 @@ if (S.inv) { for (const [k, n] of Object.entries(S.inv)) for (let i = 0; i < n; 
 let db = null, user = null, uid = null, souDono = !!LS.get("debugDono", false), nuvem = "local";
 let tSalvar = null, salvando = false, pendente = false;
 const modoTeste = () => !!LS.get("backupReal", null);
+const modoConta = !(window.claude && typeof window.claude.use === "function");
+let conta = null, contaMod = null, tConta = null, contaOk = false;
+const chaveEstado = () => conta ? "estado:" + conta.uid : "estado";
 function salvar() {
   S.upd = Date.now();
-  LS.set("estado", S);
+  LS.set(chaveEstado(), S);
+  if (conta && contaOk && !modoTeste()) { clearTimeout(tConta); tConta = setTimeout(async () => { try { await contaMod.salva(conta.uid, JSON.parse(JSON.stringify(S))); nuvem = "ok"; } catch (e) { console.warn(e); nuvem = "erro"; } renderTopo(); }, 1200); }
   if (db && uid && nuvem !== "so-local" && !modoTeste()) { clearTimeout(tSalvar); tSalvar = setTimeout(enviaNuvem, 1200); }
 }
 async function enviaNuvem() {
@@ -342,16 +346,17 @@ $$(".navbtn[data-view]").forEach(b => b.addEventListener("click", () => { if (b.
 
 function renderTopo() {
   const n = S.nivel, a = nivelXP(n), b = nivelXP(n + 1), pct = Math.round((S.xp - a) / (b - a) * 100);
-  const st = nuvem === "ok" ? ["on", "Na conta", "Progresso salvo na sua conta"] : nuvem === "so-local" ? ["", "Local", "Progresso salvo só neste navegador"] : db ? ["", "Sincronizando", ""] : ["", "Local", "Progresso salvo neste navegador"];
+  const st = conta ? (nuvem === "erro" ? ["", "Erro ao salvar", "Não consegui salvar agora; vou tentar de novo na próxima ação"] : ["on", esc(conta.nome || "Conta"), "Progresso salvo na sua conta"]) : nuvem === "ok" ? ["on", "Na conta", "Progresso salvo na sua conta"] : nuvem === "so-local" ? ["", "Local", "Progresso salvo só neste navegador"] : db ? ["", "Sincronizando", ""] : ["", "Local", "Progresso salvo neste navegador"];
   $("#topo").innerHTML = `
     ${modoTeste() ? `<span class="chipi" style="border-color:rgba(242,196,110,.5);color:var(--gold)">Modo teste</span>` : ""}
     <span class="chipi" title="${S.xp} XP no total">${fig("estrela")} Nível ${n}<span class="lbar"><i style="width:${pct}%"></i></span></span>
     <span class="chipi" title="Dias seguidos estudando">${fig("chama")} ${sequencia()}</span>
     <button class="chipi" style="cursor:pointer" id="btTema" title="Aparência">${ic("brilho", "s")} Tema</button>
-    <span class="chipi" title="${esc(st[2])}"><span class="dot ${st[0]}"></span>${st[1]}</span>
+    ${modoConta ? `<button class="chipi" style="cursor:pointer" id="btConta" title="${esc(st[2])}">${conta?.foto ? `<img src="${esc(conta.foto)}" alt="" style="width:20px;height:20px;border-radius:50%;margin:-3px 0" referrerpolicy="no-referrer">` : `<span class="dot ${st[0]}"></span>`}${conta ? st[1] : "Entrar"}</button>` : `<span class="chipi" title="${esc(st[2])}"><span class="dot ${st[0]}"></span>${st[1]}</span>`}
     ${souDono || modoTeste() ? `<button class="chipi" style="cursor:pointer" id="btAdmin" title="Painel de administrador">${ic("lapis", "s")} Admin</button>` : ""}`;
   $("#btAdmin")?.addEventListener("click", painelAdmin);
   $("#btTema")?.addEventListener("click", escolheTema);
+  $("#btConta")?.addEventListener("click", () => conta ? menuConta() : telaLogin(true));
 }
 
 /* =========================================================
@@ -894,6 +899,66 @@ function painelAdmin() {
   }));
 }
 
+/* =========================================================
+   contas (fora do site do Claude)
+   ========================================================= */
+let loginAberto = false;
+function telaLogin(podeFechar = false) {
+  if (!contaMod) { toast("Carregando o sistema de contas…"); return; }
+  if (loginAberto) return; loginAberto = true;
+  let criar = false;
+  const m = modal(`<div style="text-align:center"><div class="festa"><div class="im" style="width:120px;height:120px">${FIG.planeta_vazio ? `<img class="fig" src="${FIG.planeta_vazio}" alt="" style="width:110px;height:110px">` : ic("planeta")}</div></div>
+      <h3>Planeta de Estudos</h3><p class="muted" style="font-weight:300;margin:0 0 18px">Entre para salvar seu planeta e seu progresso na nuvem. Funciona em qualquer celular ou computador.</p></div>
+    <button class="btn pri" id="lgGoogle" style="width:100%;padding:13px">${ic("estrela", "s")}Entrar com Google</button>
+    <div class="linha"></div>
+    <label class="lb" for="lgEmail">E-mail</label><input class="f" id="lgEmail" type="email" autocomplete="email" placeholder="voce@email.com">
+    <label class="lb" for="lgSenha">Senha</label><input class="f" id="lgSenha" type="password" autocomplete="current-password" placeholder="mínimo 6 caracteres">
+    <p id="lgErro" style="color:var(--bad);font-size:13px;min-height:18px;margin:10px 0 0"></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn" id="lgEntrar" style="flex:1">Entrar</button><button class="btn" id="lgCriar" style="flex:1">Criar conta</button></div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="backlink" id="lgEsqueci" style="margin:0">Esqueci a senha</button><button class="backlink" id="lgSem" style="margin:0">${podeFechar ? "Fechar" : "Usar sem conta"}</button></div>`, { onClose: () => { loginAberto = false; } });
+  const erro = t => { $("#lgErro", m.el).textContent = t || ""; };
+  const ocupado = b => $$("button", m.el).forEach(x => x.disabled = b);
+  $("#lgGoogle", m.el).addEventListener("click", async () => { erro(); ocupado(true); try { await contaMod.entraGoogle(); m.fecha(); } catch (e) { erro(contaMod.mensagemErro(e)); } ocupado(false); });
+  const porEmail = async c => { erro(); const em = $("#lgEmail", m.el).value.trim(), se = $("#lgSenha", m.el).value; if (!em || !se) { erro("Preencha e-mail e senha."); return; } ocupado(true); try { await contaMod.entraEmail(em, se, c); m.fecha(); } catch (e) { erro(contaMod.mensagemErro(e)); } ocupado(false); };
+  $("#lgEntrar", m.el).addEventListener("click", () => porEmail(false));
+  $("#lgCriar", m.el).addEventListener("click", () => porEmail(true));
+  $("#lgSenha", m.el).addEventListener("keydown", e => { if (e.key === "Enter") porEmail(false); });
+  $("#lgEsqueci", m.el).addEventListener("click", async () => { const em = $("#lgEmail", m.el).value.trim(); if (!em) { erro("Digite seu e-mail acima e clique de novo."); return; } try { await contaMod.recuperaSenha(em); erro(""); toast("Enviamos um link para redefinir a senha."); } catch (e) { erro(contaMod.mensagemErro(e)); } });
+  $("#lgSem", m.el).addEventListener("click", () => { if (!podeFechar) LS.set("semConta", true); m.fecha(); });
+}
+function menuConta() {
+  const m = modal(`<h3>Sua conta</h3>
+    <div style="display:flex;align-items:center;gap:14px;margin:8px 0 16px">${conta.foto ? `<img src="${esc(conta.foto)}" alt="" referrerpolicy="no-referrer" style="width:52px;height:52px;border-radius:50%">` : `<div class="ico">${ic("estrela")}</div>`}<div><b style="font-weight:400">${esc(conta.nome || "")}</b><br><small class="muted">${esc(conta.email || "")}</small></div></div>
+    <p class="muted" style="font-weight:300;margin:0">${nuvem === "erro" ? "Houve um erro ao salvar. Vamos tentar de novo na próxima ação." : "Seu progresso está salvo na sua conta e aparece em qualquer aparelho em que você entrar."}</p>
+    <div class="acts"><button class="btn bad" id="cSair">Sair da conta</button><button class="btn pri" data-fecha>Fechar</button></div>`);
+  $("#cSair", m.el).addEventListener("click", async () => { m.fecha(); await contaMod.sai(); });
+}
+async function aoMudarConta(u) {
+  const antes = conta?.uid;
+  if (!u) {
+    conta = null; contaOk = false; nuvem = "local";
+    if (antes) { S = Object.assign(novoEstado(), LS.get("estado", {})); toast("Você saiu da conta"); aplicaMundo(); render(); }
+    else if (!LS.get("semConta", false)) setTimeout(() => telaLogin(false), 400);
+    renderTopo(); return;
+  }
+  conta = u; contaOk = false; renderTopo();
+  try {
+    const remoto = await contaMod.carrega(u.uid);
+    let local = LS.get("estado:" + u.uid, null);
+    if (!local && !remoto) local = LS.get("estado", null);   // primeira vez: leva o progresso feito sem conta
+    const base = remoto && (!local || (remoto.upd || 0) >= (local.upd || 0)) ? remoto : local;
+    const timer = S.timer;
+    S = Object.assign(novoEstado(), JSON.parse(JSON.stringify(base || {})));
+    if (!S.timer && timer) S.timer = timer;
+    contaOk = true; nuvem = "ok";
+    LS.set("estado:" + u.uid, S);
+    if (!remoto || base !== remoto) salvar();
+    if (!antes) toast(`Olá, ${u.nome || "bem-vindo"}! Progresso sincronizado.`);
+    if (!base) festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Ele começa como uma rocha de cristal, sem vida. Cada minuto de foco, card respondido e seção concluída faz brotar algo novo: grama, lagos, árvores e criaturas. Comece com 3 minutos de foco." });
+    diarias(); checaTudo(); aplicaMundo(); render();
+  } catch (e) { console.warn(e); nuvem = "erro"; toast("Não consegui carregar seu progresso da nuvem."); renderTopo(); }
+}
+
 /* atalho escondido: 5 cliques no nome do site abrem o painel de administrador */
 { let n = 0, t = null; document.querySelector(".marca").addEventListener("click", () => { n++; clearTimeout(t); t = setTimeout(() => n = 0, 1500); if (n >= 5) { n = 0; painelAdmin(); } }); }
 document.querySelector(".marca").style.cursor = "default";
@@ -940,6 +1005,8 @@ function atualizaConteudo() { clearTimeout(tConteudo); tConteudo = setTimeout(()
   await iniciaMundo();
   checaTudo(); atualiza();
   if (S.timer) tick();
-  if (!S.upd) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Ele começa como uma rocha de cristal, sem vida. Cada minuto de foco, card respondido e seção concluída faz brotar algo novo: grama, lagos, árvores e criaturas. Comece com 5 minutos de foco." }), 900);
-  conectaNuvem();
+  if (!S.upd && !modoConta) setTimeout(() => festa({ icone: "planeta_vazio", titulo: "Seu planeta", texto: "Ele começa como uma rocha de cristal, sem vida. Cada minuto de foco, card respondido e seção concluída faz brotar algo novo: grama, lagos, árvores e criaturas. Comece com 5 minutos de foco." }), 900);
+  if (modoConta) {
+    import("./conta.js").then(async mod => { contaMod = mod; await mod.iniciaConta(aoMudarConta); }).catch(e => { console.warn("contas indisponíveis", e); });
+  } else conectaNuvem();
 })();
